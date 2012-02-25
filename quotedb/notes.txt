@@ -1,0 +1,5 @@
+alias fqdb="fqdb --dsn='dbi:mysql:quotedb' --dsnuser=uwe --dsnpassword=uwe"
+
+fqdb createdb
+fqdb addstock --stocks GOOG --market USA
+fqdb backpopulate --stocks GOOG
