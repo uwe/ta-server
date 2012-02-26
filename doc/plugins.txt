@@ -1,0 +1,5 @@
+state
+- all time high/low
+- trailing ... days high/low
+- aussenstab/innenstab
+

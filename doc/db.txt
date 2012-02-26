@@ -1,0 +1,4 @@
+- one file per data column (open, high, low, close, volume)
+- database for meta data
+- later: different physical formats (beginning: text)
+
