@@ -22,6 +22,8 @@ my $state = {
 };
 
 foreach my $day (@$data) {
+    my $last = $state->{last};
+
     # new high?
     if ($day->{high} > $state->{all_time_high}) {
         warn "New all time high on $day->{date}: $day->{high} vs. $state->{all_time_high}";
@@ -36,6 +38,34 @@ foreach my $day (@$data) {
         $state->{all_low_date} = $day->{date};
     }
 
+    # innenstab?
+    if ($state->{aussenstab}) {
+        if (check_innenstab($state->{aussenstab}, $day)) {
+            warn "Innenstab on $day->{date}.";
+        } else {
+            warn "Breakout";
+            delete $state->{aussenstab};
+        }
+    }
+    else {
+        # aussenstab?
+        if (check_innenstab($last, $day)) {
+            warn "Aussenstab on $last->{date}: $last->{low} - $last->{high} vs. $day->{open} / $day->{close}";
+            $state->{aussenstab} = $last;
+        }
+    }
+
     $state->{last} = $day;
+}
+
+sub check_innenstab {
+    my ($aussen, $innen) = @_;
+
+    if ($innen->{open}  < $aussen->{high} and $innen->{open}  > $aussen->{low} and
+        $innen->{close} < $aussen->{high} and $innen->{close} > $aussen->{low}) {
+        warn "   $aussen->{low} - $aussen->{high} vs. $innen->{open} / $innen->{close}";
+        return 1;
+    }
+    return;
 }
 

@@ -1,0 +1,43 @@
+Dim i
+
+Dim high, low, close, open
+Dim body_high, body_low
+                          
+dim Hoch_Aussenstab, Tief_Aussenstab
+
+'' Bereitstellen der benötigten Daten
+getdaten "High",high      
+getdaten "Low",low
+getdaten "close",close
+getdaten "open", open
+
+'' Berechnen des Kerzenbodys
+if scriptberechneformel("max(open,close)", body_high) and scriptberechneformel("min(open,close)", body_low) then
+
+ Hoch_Aussenstab=0
+ Tief_Aussenstab=0
+
+ '' Aller Ergebnisse mit 0 vorbelegen
+ for i=1 to alleperioden
+  ergebnis(i)=0
+ next
+
+ For i=2 to alleperioden
+  if hoch_Aussenstab=0 then                                   '' es wurde noch kein Aussenstab identifiziert
+   if body_high(i)<high(i-1) and body_low(i)>low(i-1) then    '' der Aktuelle Stab ist der erste Innenstab
+    Hoch_Aussenstab=high(i-1)                                 '' gestriges Hoch merken 
+    Tief_Aussenstab=low(i-1)                                  '' gestriges Tief merken
+    ergebnis(i)=1                                             '' es liegt ein Innenstab vor
+   end if
+  else                                                        '' es wurde bereits ein Aussenstab identifiziert
+  if body_high(i)<Hoch_Aussenstab and body_low(i)>Tief_Aussenstab then
+    ergebnis(i)=1                                             '' der nächste Stab liegt in den grenzen des Aussenstabes
+  else
+    Hoch_Aussenstab=0                                         '' Die Merker für den Aussenstab zurücksetzen
+    Tief_Aussenstab=0
+  end if
+ end if
+next
+
+end if  ''script
+

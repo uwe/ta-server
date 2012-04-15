@@ -1,0 +1,59 @@
+hARRAY = Null; // aussenstab hoch
+
+atARRAY = Null; // aussenstab tief
+
+aussenstabhoch = 0 ;
+
+aussenstabtief = 0 ;
+
+
+innenstab1 = Close < Ref ( High, -1 ) AND Close > Ref ( Low, -1 ) AND Open < Ref ( High, -1 ) AND Open > Ref ( Low, -1 ); // erster innenstab
+
+aussenstab = Ref ( innenstab1, -1 ) ;
+
+Buy = aussenstab ;// nur zur kontrolle ob er innenstäbe findet
+
+for ( i = 1; i < BarCount; i++ )
+
+{
+
+if ( aussenstabhoch == 0 AND innenstab1[ i ] )
+
+{
+
+aussenstabhoch = H[i-1];
+
+aussenstabtief = L[i-1];
+
+}
+
+if ( aussenstabhoch > 0 AND Close[ i ] < aussenstabtief OR Close [ i ] > aussenstabhoch )
+
+{
+
+aussenstabhoch = 0;
+
+aussenstabtief = 0;
+
+}
+
+
+if ( aussenstabhoch > 0 )
+
+{
+
+ahARRAY[i] = aussenstabhoch;
+
+atARRAY[i] = aussenstabtief;
+
+}
+
+}
+
+
+Plot ( ahARRAY, "aussenstabhoch", colorBlue, 4 ) ;
+
+Plot ( atARRAY, "aussenstabtief", colorBlue, 4 ) ;
+
+PlotOHLC( ahARRAY, ahARRAY, atARRAY, atARRAY, "", colorPink,styleCloud ); // ColorRGB( 255, 186, 117 ) 
+
