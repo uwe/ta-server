@@ -1,0 +1,136 @@
+<HTML>
+<HEAD>
+<Title>Multi-Pie Chart</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Multi-Pie Chart</p>
+<hr class="separator">
+<div class="content">
+<img src="images/multipie0.png">&nbsp;&nbsp;<img src="images/multipie1.png">&nbsp;&nbsp;<img src="images/multipie2.png">
+<br><br>
+This example demonstrates drawing multiple pies with different data and colors. It also demonstrates putting labels on the sectors and using sector borders.<br><br>
+<ul><li> The sectors colors are specified using <a href="BaseChart.setColors2.htm">BaseChart.setColors2</a>.<br><br>
+<li> The sectors all have white borders set using <a href="PieChart.setLineColor.htm">PieChart.setLineColor</a>. The borders around the perimeters are invisible as they are the same color as the background. The sector borders internal to the pies become the separating lines among sectors.<br><br>
+<li> The sector labels are configured with a pale yellow background and black border. This is by getting the <a href="TextBox.htm">TextBox</a> object representing the sector label prototype using <a href="PieChart.setLabelStyle.htm">PieChart.setLabelStyle</a>, and then call its <a href="Box.setBackground.htm">Box.setBackground</a> method.<br><br>
+<li> The sector labels are moved inside the pie by using <a href="PieChart.setLabelLayout.htm">PieChart.setLabelLayout</a> with a negative label position.</ul>
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\multipie.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+sub createChart
+{
+    my $img = shift;
+
+    # The data for the pie chart
+    my $data0 = [25, 18, 15];
+    my $data1 = [14, 32, 24];
+    my $data2 = [25, 23, 9];
+
+    # The labels for the pie chart
+    my $labels = ["Software", "Hardware", "Services"];
+
+    # Create a PieChart object of size 180 x 160 pixels
+    my $c = new PieChart(180, 160);
+
+    # Set the center of the pie at (90, 80) and the radius to 60 pixels
+    $c-&gt;setPieSize(90, 80, 60);
+
+    # Set the border color of the sectors to white (ffffff)
+    $c-&gt;setLineColor(0xffffff);
+
+    # Set the background color of the sector label to pale yellow (ffffc0) with a
+    # black border (000000)
+    $c-&gt;setLabelStyle()-&gt;setBackground(0xffffc0, 0x000000);
+
+    # Set the label to be slightly inside the perimeter of the circle
+    $c-&gt;setLabelLayout($perlchartdir::CircleLayout, -10);
+
+    # Set the title, data and colors according to which pie to draw
+    if ($img eq "0") {
+        $c-&gt;addTitle("Alpha Division", "arialbd.ttf", 8);
+        $c-&gt;setData($data0, $labels);
+        $c-&gt;setColors2($perlchartdir::DataColor, [0xff3333, 0xff9999, 0xffcccc]);
+    } elsif ($img eq "1") {
+        $c-&gt;addTitle("Beta Division", "arialbd.ttf", 8);
+        $c-&gt;setData($data1, $labels);
+        $c-&gt;setColors2($perlchartdir::DataColor, [0x33ff33, 0x99ff99, 0xccffcc]);
+    } else {
+        $c-&gt;addTitle("Gamma Division", "arialbd.ttf", 8);
+        $c-&gt;setData($data2, $labels);
+        $c-&gt;setColors2($perlchartdir::DataColor, [0x3333ff, 0x9999ff, 0xccccff]);
+    }
+
+    # Output the chart
+    $c-&gt;makeChart("multipie$img.png")
+}
+
+createChart(0);
+createChart(1);
+createChart(2);</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\multipie.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# Get HTTP query parameters
+use CGI;
+my $query = new CGI;
+
+# The data for the pie chart
+my $data0 = [25, 18, 15];
+my $data1 = [14, 32, 24];
+my $data2 = [25, 23, 9];
+
+# The labels for the pie chart
+my $labels = ["Software", "Hardware", "Services"];
+
+# Create a PieChart object of size 180 x 160 pixels
+my $c = new PieChart(180, 160);
+
+# Set the center of the pie at (90, 80) and the radius to 60 pixels
+$c-&gt;setPieSize(90, 80, 60);
+
+# Set the border color of the sectors to white (ffffff)
+$c-&gt;setLineColor(0xffffff);
+
+# Set the background color of the sector label to pale yellow (ffffc0) with a black
+# border (000000)
+$c-&gt;setLabelStyle()-&gt;setBackground(0xffffc0, 0x000000);
+
+# Set the label to be slightly inside the perimeter of the circle
+$c-&gt;setLabelLayout($perlchartdir::CircleLayout, -10);
+
+# Set the title, data and colors according to which pie to draw
+if ($query-&gt;param("img") eq "0") {
+    $c-&gt;addTitle("Alpha Division", "arialbd.ttf", 8);
+    $c-&gt;setData($data0, $labels);
+    $c-&gt;setColors2($perlchartdir::DataColor, [0xff3333, 0xff9999, 0xffcccc]);
+} elsif ($query-&gt;param("img") eq "1") {
+    $c-&gt;addTitle("Beta Division", "arialbd.ttf", 8);
+    $c-&gt;setData($data1, $labels);
+    $c-&gt;setColors2($perlchartdir::DataColor, [0x33ff33, 0x99ff99, 0xccffcc]);
+} else {
+    $c-&gt;addTitle("Gamma Division", "arialbd.ttf", 8);
+    $c-&gt;setData($data2, $labels);
+    $c-&gt;setColors2($perlchartdir::DataColor, [0x3333ff, 0x9999ff, 0xccccff]);
+}
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

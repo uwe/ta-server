@@ -1,0 +1,47 @@
+<HTML>
+<HEAD>
+<Title>Layer.setHTMLImageMap</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="Layer.htm">Layer</a>.setHTMLImageMap</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setHTMLImageMap(url [, queryFormat [, extraAttr ]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Override the default arguments used when generating HTML image map for the layer.<br><br>
+<a href="BaseChart.getHTMLImageMap.htm">BaseChart.getHTMLImageMap</a> can be used to generate HTML image map for the whole chart. When BaseChart.getHTMLImageMap is used, the image map for all layers will be generated based on the arguments supplied to BaseChart.getHTMLImageMap.<br><br>
+The setHTMLImageMap method can be used to override those arguments for a chart layer, so the image map for that layer can be different.<br><br>
+For a detail description of image maps, please refer to <a href="BaseChart.getHTMLImageMap.htm">BaseChart.getHTMLImageMap</a>.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>url</td><td>(Mandatory)</td><td>The URL to be used in the "href" attribute of the image map. <a href="paramsub.htm">Parameter Substitution and Formatting</a> is supported.<br><br>
+The special keyword "{default}" represents the global URL as specified in <a href="BaseChart.getHTMLImageMap.htm">BaseChart.getHTMLImageMap</a>. This field is useful for specifying appending to the global URL.<br><br>
+Note that an empty string also means to use the global URL. To specify no URL, use the special keyword "{none}".<br><br>
+To disable the entire image map, use the special keyword "{disable}".</td></tr><tr><td>queryFormat</td><td>""</td><td>A text string representing the template of the query parameters to be appended to the URL. <a href="paramsub.htm">Parameter Substitution and Formatting</a> is supported.<br><br>
+The special keyword "{default}" represents the global query parameters as specified in <a href="BaseChart.getHTMLImageMap.htm">BaseChart.getHTMLImageMap</a>. This field is useful for specifying appending to the global query parameters.<br><br>
+Note that an empty string also means to use the global query parameters. To specify no query parameters, use the special keyword "{none}".</td></tr><tr><td>extraAttr</td><td>""</td><td>A text string to specify additional attributes to add to the &lt;area&gt; tag. <a href="paramsub.htm">Parameter Substitution and Formatting</a> is supported.<br><br>
+The special keyword "{default}" represents the global additional attributes as specified in <a href="BaseChart.getHTMLImageMap.htm">BaseChart.getHTMLImageMap</a>. This field is useful for specifying appending to the global additional attributes.<br><br>
+Note that an empty string also means to use the global additional attributes. To specify no additional attributes, use the special keyword "{none}".</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

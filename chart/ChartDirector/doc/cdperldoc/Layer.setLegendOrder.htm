@@ -1,0 +1,44 @@
+<HTML>
+<HEAD>
+<Title>Layer.setLegendOrder</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="Layer.htm">Layer</a>.setLegendOrder</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setLegendOrder(dataSetOrder [, layerOrder ])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the order of the data set names as appeared in the legend box.<br><br>
+By default, ChartDirector will add named data sets to the the legend box. The ordering of the entries follows the order in which the layers are created. For data sets within the same layer, the ordering follows the order in which the data sets are added.<br><br>
+To support flexible ordering of the legend entries, ChartDirector employs a legend entry priority system. Please refer to <a href="LegendBox.htm">LegendBox</a> for details of the legend entry priority system.<br><br>
+The base priority of the layer can be specified using the <b>layerOrder</b> argument. The priority of the data sets within a layer can be modified by using the <b>dataSetOrder</b> argument, which must be one of the following predefined constant.<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="19%">Constant<th width="19%%">Value<th width="60%">Description <tr><td><a href="perlchartdir.NormalLegend.htm">NormalLegend</a><td>0<td>The data set priority is 10 x (data_set_index + 1). Legend entries are ordered in the order with which the data sets are created.
+<tr><td><a href="perlchartdir.ReverseLegend.htm">ReverseLegend</a><td>1<td>The data sets priority is the reverse of the normal data set priority. Legend entries are ordered in the reverse order with which the data sets are created.
+<tr><td><a href="perlchartdir.NoLegend.htm">NoLegend</a><td>2<td>The data set names are not added to the legend box at all.
+</table>
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>dataSetOrder</td><td>(Mandatory)</td><td>One of the predefined constants representing the legend entry ordering method for data sets within the layer.</td></tr><tr><td>layerOrder</td><td>-1</td><td>The base legend entry priority of the layer. -1 means the priority is 10000 x (layer_index + 1).</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

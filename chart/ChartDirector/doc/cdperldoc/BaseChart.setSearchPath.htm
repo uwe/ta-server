@@ -1,0 +1,43 @@
+<HTML>
+<HEAD>
+<Title>BaseChart.setSearchPath</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="BaseChart.htm">BaseChart</a>.setSearchPath</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setSearchPath(path)
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the file system search path for loading image files.<br><br>
+Several ChartDirector operations involve loading image files. Examples are wallpapers (<a href="BaseChart.setWallpaper.htm">BaseChart.setWallpaper</a>), background images (<a href="BaseChart.setBgImage.htm">BaseChart.setBgImage</a> and <a href="PlotArea.setBackground2.htm">PlotArea.setBackground2</a>), user-defined symbols (<a href="DataSet.setDataSymbol2.htm">DataSet.setDataSymbol2</a>) or for embedding images in text using <a href="cdml.htm">ChartDirector Mark Up Language</a>.<br><br>
+By default, if a relative path name or just a file name is used for an image file, ChartDirector will assume the path is relative to the "current directory". The setSearchPath method allows you to specify the directory ChartDirector used to search for the file. You may specify more than one directory by separating the directories with semi-colons.<br><br>
+If you are using ChartDirector in a web server, note that the "current directory" may not be the same as the script directory. It depends on the web server. For example, for the Microsoft IIS, the "current directory" is the directory of the web server executable, which is usually inside [system32].<br><br>
+To ensure you are loading images from the script directory, you may use setSearchPath to specify the script directory. For example:<br><br>
+<div style="margin-left:25;font-family:courier new,courier"> $c->setSearchPath(dirname($0)); </div><br>
+Another thing to note is that setSearchPath expects a file system path, not a URL path. For example, the root of the path is the file system root, not the web server document root. If you are using a URL path, please map it to a file system path first before calling setSearchPath.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>path</td><td>(Mandatory)</td><td>A list of directories, separated with  the path separator of your operating system (";" for Windows, ":" for Linux/UNIX).</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

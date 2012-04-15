@@ -1,0 +1,61 @@
+<HTML>
+<HEAD>
+<Title>ChartDirector Object Model Overview</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">ChartDirector Object Model Overview</p>
+<hr class="separator">
+<div class="content">This section will give a very brief high level overview of the ChartDirector object model, which may be helpful for understanding of subsequent ChartDirector tutorials. The full details object model and API are documented in the <a href="cdref.htm">ChartDirector Reference</a> section.
+</div><p class="heading2">The Top Level</p><div class="content">
+At the top level, all ChartDirector charts (including meters) are subclass of the <a href="BaseChart.htm">BaseChart</a> class. The following describes the top level class hierarchy.<br><br>
+<div style="background-color:#cccccc;width:99%;padding-bottom:0em;padding-top:1em;">
+<ul> <li><b><a href="BaseChart.htm">BaseChart</a></b> : Base class for all charts (including meters) in ChartDirector.<br><br>
+<ul> <li><b><a href="PieChart.htm">PieChart</a></b> : Represents pie and donut charts<br><br>
+<li><b><a href="XYChart.htm">XYChart</a></b> : Represents all charts that have x and y axes, except surface charts.<br><br>
+<li><b><a href="SurfaceChart.htm">SurfaceChart</a></b> : Represents surface charts.<br><br>
+<li><b><a href="PolarChart.htm">PolarChart</a></b> : Represents all charts that uses polar coordinates.<br><br>
+<li><b><a href="PyramidChart.htm">PyramidChart</a></b> : Represents pyramid, cone and funnel charts.<br><br>
+<li><b><a href="BaseMeter.htm">BaseMeter</a></b> : Base class for all meters in ChartDirector.<br><br>
+<ul> <li><b><a href="AngularMeter.htm">AngularMeter</a></b> : Represents angular meters.<br><br>
+<li><b><a href="LinearMeter.htm">LinearMeter</a></b> : Represents linear meters. </ul><br>
+<li><b><a href="MultiChart.htm">MultiChart</a></b> : A container chart that can be used to combine multiple <a href="BaseChart.htm">BaseChart</a> objects together.<br><br>
+<ul> <li><b><a href="FinanceChart.htm">FinanceChart</a></b> : Represents complex finance charts. </ul> </ul> </ul>
+</div><br>
+</div><p class="heading2">BaseChart</p><div class="content">
+The <a href="BaseChart.htm">BaseChart</a> class represents features common to all ChartDirector charts, such as the chart background, legend box (<a href="LegendBox.htm">LegendBox</a>), titles and custom text boxes (<a href="TextBox.htm">TextBox</a>). It also contains a <a href="DrawArea.htm">DrawArea</a> tool, which allows you to add arbitrary custom drawings to the chart.
+</div><p class="heading2">PieChart</p><div class="content">
+The <a href="PieChart.htm">PieChart</a> class, as it name implies, represents pie charts, including donut charts. PieChart objects contain <a href="Sector.htm">Sector</a> objects, which represent the sectors in the pie charts.
+</div><p class="heading2">XYChart</p><div class="content">
+The <a href="XYChart.htm">XYChart</a> class represents all chart types that have x and y axes except surface charts. Each XYChart object contains a <a href="PlotArea.htm">PlotArea</a> object, representing the rectangular region where the chart is actually drawn. A XYChart also contains <a href="Axis.htm">Axis</a> objects, representing the x and y axes.<br><br>
+The actual chart types in a XYChart are implemented as layers. The available layers are listed below. A XYChart can contain many layers, so combination and custom chart types can easily be created.<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="28%">Layer<th width="70%">Description <tr><td><a href="BarLayer.htm">BarLayer</a><td>Represent all style of bar layers, such as simple bar layers, multi-bar layers, stacked bar layers, and percentage bar layers.
+<tr><td><a href="LineLayer.htm">LineLayer</a><td>Represent line layers. <tr><td><a href="SplineLayer.htm">SplineLayer</a><td>Represent spline line layers. <tr><td><a href="StepLineLayer.htm">StepLineLayer</a><td>Represent step line layers.
+<tr><td><a href="TrendLayer.htm">TrendLayer</a><td>Represent trend layers. A trend line or curve is the best fit line or curve computed using the least square method.
+<tr><td><a href="InterLineLayer.htm">InterLineLayer</a><td>A layer used for filling regions between two lines. The lines can come from <a href="LineLayer.htm">LineLayer</a>, <a href="SplineLayer.htm">SplineLayer</a>, <a href="StepLineLayer.htm">StepLineLayer</a>, <a href="TrendLayer.htm">TrendLayer</a>, or from <a href="Mark.htm">Mark</a>.
+<tr><td><a href="ScatterLayer.htm">ScatterLayer</a><td>Represents scatter and bubble layers. <tr><td><a href="AreaLayer.htm">AreaLayer</a><td>Represent area layers. <tr><td><a href="HLOCLayer.htm">HLOCLayer</a><td>Represent high-low-open-close layers. <tr><td><a href="CandleStickLayer.htm">CandleStickLayer</a><td>Represent candlestick layers. <tr><td><a href="BoxWhiskerLayer.htm">BoxWhiskerLayer</a><td>Represent box-whisker layers. <tr><td><a href="VectorLayer.htm">VectorLayer</a><td>Represents vector layers. <tr><td><a href="ContourLayer.htm">ContourLayer</a><td>Represents contour layers. </table><br>
+The above layers are derived from the <a href="Layer.htm">Layer</a> class, which represents features common to all layers.<br><br>
+Each chart layer contains one or more <a href="DataSet.htm">DataSet</a> objects. A DataSet object represents a data series. Several chart types require multiple data series, such as high-low-open-close, candlestick and box-whisker charts. Other chart types support combining the data series in various ways. For example, in a bar chart, multiple data series can be combined to form a stacked bar chart, percentage bar chart, multi-bar chart, multi-stacked bar chart, etc.
+</div><p class="heading2">SurfaceChart</p><div class="content">
+The <a href="SurfaceChart.htm">SurfaceChart</a> class represents surface charts. A surface chart is a 3D chart representing the value of a variable (the z coordinate) over the (x, y) plane.
+</div><p class="heading2">PolarChart</p><div class="content">
+The <a href="PolarChart.htm">PolarChart</a> class represents polar and radar charts. Each PolarChart object contains a <a href="RadialAxis.htm">RadialAxis</a> and an <a href="AngularAxis.htm">AngularAxis</a>. The actual chart types in a PolarChart are implemented as layers. A PolarChart can contain many layers, so combination and custom chart types can easily be created.<br><br>
+The available layers are listed below.<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="28%">Layer<th width="70%">Description <tr><td><a href="PolarLineLayer.htm">PolarLineLayer</a><td>Represent line layers, as well as scatter and bubble layers. (A scatter layer is a line layer with line set to <a href="perlchartdir.Transparent.htm">Transparent</a>. A bubble layer is a scatter layer in which the data symbols are of variable sizes.)
+<tr><td><a href="PolarAreaLayer.htm">PolarAreaLayer</a><td>Represent area layers. <tr><td><a href="PolarSplineLineLayer.htm">PolarSplineLineLayer</a><td>Represent spline line layers. <tr><td><a href="PolarSplineAreaLayer.htm">PolarSplineAreaLayer</a><td>Represent spline area layers. <tr><td><a href="PolarVectorLayer.htm">PolarVectorLayer</a><td>Represent vector layers. </table><br>
+The above layers are derived from the <a href="PolarLayer.htm">PolarLayer</a> class, which represents features common to all layers.
+</div><p class="heading2">PyramidChart</p><div class="content">
+The <a href="PyramidChart.htm">PyramidChart</a> class represents pyramid, cone and funnel charts. PyramidChart objects contain <a href="PyramidLayer.htm">PyramidLayer</a> objects, which represent the layers in the pyramid, cone and funnel charts.
+</div><p class="heading2">BaseMeter</p><div class="content">
+The <a href="BaseMeter.htm">BaseMeter</a> class is the base class for all meters. It represents features common to all meters. A BaseMeter object contains <a href="MeterPointer.htm">MeterPointer</a> objects for representing meter pointers.
+</div><p class="heading2">AngularMeter</p><div class="content">
+The <a href="AngularMeter.htm">AngularMeter</a> class represents angular meters, which are meters of which the meter pointers rotate to show the readings.
+</div><p class="heading2">LinearMeter</p><div class="content">
+The <a href="LinearMeter.htm">LinearMeter</a> class represents horizontal and vertical linear meters, which are meters of which the meter pointers move linearly to show the readings.
+</div><p class="heading2">MultiChart</p><div class="content">
+A <a href="MultiChart.htm">MultiChart</a> object is a container for combining multiple <a href="BaseChart.htm">BaseChart</a> objects into a combined chart object.
+</div><p class="heading2">FinanceChart</p><div class="content">
+<a href="FinanceChart.htm">FinanceChart</a> is a financial charting library built on top of the main ChartDirector library. It extends <a href="MultiChart.htm">MultiChart</a> by implementing many financial indicators, and allowing complex financial charts to be composed easily.</div><br>
+<hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div></body>
+</HTML>

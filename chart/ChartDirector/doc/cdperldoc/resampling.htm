@@ -1,0 +1,26 @@
+<HTML>
+<HEAD>
+<Title>Re-Sampling Filters</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Re-Sampling Filters</p>
+<hr class="separator">
+<div class="content">A number of low level ChartDirector graphics primitives using the <a href="DrawArea.htm">DrawArea</a> object involve moving some or all pixels by a fractional offset. For example, rotating an image by 45 degrees (using <a href="DrawArea.rotate.htm">DrawArea.rotate</a>) will cause some pixels to rotate to non-integer coordinates.<br><br>
+Consider the simplest operation - shifting the image leftwards using <a href="DrawArea.move.htm">DrawArea.move</a>. If the image is shifted by an integer number of pixels, it is easy to determine the new image.<br><br>
+How about if the image is shifted by a non-integer number of pixels, such as 1.5 pixels? In this case, the pixel (10, 10) in the new image corresponds to pixel (8.5, 10) in the original image.<br><br>
+In graphics theory, the proper way to estimate non-integer-coordinate pixel is by re-sampling. In simple terms, the non-integer-coordinate pixel is computed using "two dimensional interpolation" from nearby integer-coordinate pixels. The interpolation method is called a "filter".
+</div><p class="heading2">Re-Sampling Filters</p><div class="content">
+ChartDirector supports a number of filters denoted by the following predefined constants:<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="19%">Constant<th width="19%%">Value<th width="60%">Description <tr><td><a href="perlchartdir.BoxFilter.htm">BoxFilter</a><td>0<td>Box filter. This is equivalent to setting the color of a non-integer-coordinate pixel to the nearest integer-coordinate pixel. <tr><td><a href="perlchartdir.LinearFilter.htm">LinearFilter</a><td>1<td>Linear filter. This is equivalent to setting the color of a non-integer-coordinate pixel as the linear weighted average of nearby integer-coordinate pixels. <tr><td><a href="perlchartdir.QuadraticFilter.htm">QuadraticFilter</a><td>2<td>Quadratic Filter. <tr><td><a href="perlchartdir.BSplineFilter.htm">BSplineFilter</a><td>3<td>B-spline Filter. <tr><td><a href="perlchartdir.HermiteFilter.htm">HermiteFilter</a><td>4<td>Hermite Filter. <tr><td><a href="perlchartdir.CatromFilter.htm">CatromFilter</a><td>5<td>Catrom Filter. <tr><td><a href="perlchartdir.MitchellFilter.htm">MitchellFilter</a><td>6<td>Mitchell Filter. <tr><td><a href="perlchartdir.SincFilter.htm">SincFilter</a><td>7<td>Sinc Filter. <tr><td><a href="perlchartdir.LanczosFilter.htm">LanczosFilter</a><td>8<td>Lanczos Filter. <tr><td><a href="perlchartdir.GaussianFilter.htm">GaussianFilter</a><td>9<td>Gaussian Filter. <tr><td><a href="perlchartdir.HanningFilter.htm">HanningFilter</a><td>10<td>Hanning Filter. <tr><td><a href="perlchartdir.HammingFilter.htm">HammingFilter</a><td>11<td>Hamming Filter. <tr><td><a href="perlchartdir.BlackmanFilter.htm">BlackmanFilter</a><td>12<td>Blackman Filter. <tr><td><a href="perlchartdir.BesselFilter.htm">BesselFilter</a><td>13<td>Bessel Filter. </table><br>
+</div><p class="heading2">Filtering Region</p><div class="content">
+Filtering computes a pixel as the weighted average of nearby pixels. What is meant by "nearby"?<br><br>
+In a linear filter, "nearby" means both the horizontal and vertical distances are less than 1 pixel length from the target pixel. This defines the filtering region of the linear filter. Each pixel can have up to 4 integer-coordinate neighbours. So in a linear filter, each pixel is computed by interpolating from up to 4 neighbouring pixels.<br><br>
+The filtering region of different filters are different. For example, the B-spline filter has a filtering region dimension of 2 pixel distance. Each pixel is computed by interpolating from up to 16 nearby pixels. This is because B-spline, being a cubic polynomial algorithm, requires more points for interpolation.<br><br>
+The filtering region will automatically be extended if the graphics operation involves reducing the image size. It is because the each pixel in the reduced image should corresponding to a larger area in the original image. For example, if an image is resized to 30% of the original in width and height, the filtering region dimension will be increased by a factor of 1 / 0.3 = 3.333.
+</div><p class="heading2">Blur Factor</p><div class="content">
+All ChartDirector API that supports re-sampling also supports an additional blur factor parameter. This parameter can be used to extend or reduce the filtering region. For example, a blur factor of 2.5 will increase the filtering region dimension to 250% of the original.<br><br>
+The effect of increasing the blur factor is to blur the image, making it smoother but less sharp. Reducing the blur factor makes the image sharper but less smooth.</div><br>
+<hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div></body>
+</HTML>

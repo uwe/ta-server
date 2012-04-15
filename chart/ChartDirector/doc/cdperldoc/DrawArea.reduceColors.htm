@@ -1,0 +1,39 @@
+<HTML>
+<HEAD>
+<Title>DrawArea.reduceColors</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="DrawArea.htm">DrawArea</a>.reduceColors</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+reduceColors(colorCount [, blackAndWhite ])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Reduces the number of colors in the image.<br><br>
+The colors in the image will be reduced to at most the number of colors specified, which should be 16 - 256. You may also set the image to black and white. In this case, the color count means number of grey levels.<br><br>
+The colors will be reduced by computing an optimal palette for the image. The image will then be converted using the palette based on the current dithering settings (see <a href="DrawArea.setDitherMethod.htm">DrawArea.setDitherMethod</a>).
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>colorCount</td><td>(Mandatory)</td><td>The maximum number of colors that image should have after after reduction. Must be between 16 - 256.</td></tr><tr><td>blackAndWhite</td><td>false (zero)</td><td>A true (non-zero) value means the image will be converted to black and white (with grey levels). A false (zero) value means the image will not be converted to black and white.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+The actual number of colors the converted image has.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

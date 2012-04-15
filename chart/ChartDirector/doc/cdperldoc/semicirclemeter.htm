@@ -1,0 +1,128 @@
+<HTML>
+<HEAD>
+<Title>Semi-Circle Meter</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Semi-Circle Meter</p>
+<hr class="separator">
+<div class="content">
+<img src="images/semicirclemeter.png">
+<br><br>
+This example demonstrates a simple half circle angular meter.<br><br>
+A basic angular meter can be created using the following steps:<br><br>
+<ul><li> Create an <a href="AngularMeter.htm">AngularMeter</a> object using <a href="AngularMeter.AngularMeter.htm">AngularMeter.AngularMeter</a>. In this example, the background color is set to silver using <a href="perlchartdir.silverColor.htm">perlchartdir::silverColor</a> and the meter border is set to have a raised effect.<br><br>
+<li> Specify the orientation of the meter using <a href="AngularMeter.setMeter.htm">AngularMeter.setMeter</a>. This specifies the center, the radius, and the angular span of the meter.<br><br>
+<li> Set the numeric scale of the meter using <a href="BaseMeter.setScale.htm">BaseMeter.setScale</a><br><br>
+<li> Add a pointer to the meter using <a href="BaseMeter.addPointer.htm">BaseMeter.addPointer</a></ul>
+In addition to the basic angular meter, this example demonstrates the following features:<br><br>
+<ul><li> Define zones on the meter using <a href="AngularMeter.addZone.htm">AngularMeter.addZone</a>. In this example, 3 zones (red, yellow and green) are defined.<br><br>
+<li> Add arbitrary text boxes to the meter using <a href="BaseChart.addText.htm">BaseChart.addText</a>. In this example, a text box is added to specify the meter unit "PSI", and another text box is added to display the data value as text.</ul>
+Note that by default, the drawing ordering of the text box objects and meter pointer follow the order in which they are added to the chart. Thus this sample code adds the meter pointer last, to ensure it stays on top of the custom text boxes.
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\semicirclemeter.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# The value to display on the meter
+my $value = 27.48;
+
+# Create an AngularMeter object of size 200 x 115 pixels, with silver background
+# color, black border, 2 pixel 3D border border and rounded corners
+my $m = new AngularMeter(200, 115, perlchartdir::silverColor(), 0x000000, 2);
+$m-&gt;setRoundedFrame();
+
+# Set the meter center at (100, 100), with radius 85 pixels, and span from -90 to +90
+# degress (semi-circle)
+$m-&gt;setMeter(100, 100, 85, -90, 90);
+
+# Meter scale is 0 - 100, with major tick every 20 units, minor tick every 10 units,
+# and micro tick every 5 units
+$m-&gt;setScale(0, 100, 20, 10, 5);
+
+# Set 0 - 60 as green (66FF66) zone
+$m-&gt;addZone(0, 60, 0, 85, 0x66ff66);
+
+# Set 60 - 80 as yellow (FFFF33) zone
+$m-&gt;addZone(60, 80, 0, 85, 0xffff33);
+
+# Set 80 - 100 as red (FF6666) zone
+$m-&gt;addZone(80, 100, 0, 85, 0xff6666);
+
+# Add a text label centered at (100, 60) with 12 pts Arial Bold font
+$m-&gt;addText(100, 60, "PSI", "arialbd.ttf", 12, $perlchartdir::TextColor,
+    $perlchartdir::Center);
+
+# Add a text box at the top right corner of the meter showing the value formatted to
+# 2 decimal places, using white text on a black background, and with 1 pixel 3D
+# depressed border
+$m-&gt;addText(156, 8, $m-&gt;formatValue($value, "2"), "arial.ttf", 8, 0xffffff
+    )-&gt;setBackground(0x000000, 0, -1);
+
+# Add a semi-transparent blue (40666699) pointer with black border at the specified
+# value
+$m-&gt;addPointer($value, 0x40666699, 0x000000);
+
+# Output the chart
+$m-&gt;makeChart("semicirclemeter.png")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\semicirclemeter.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The value to display on the meter
+my $value = 27.48;
+
+# Create an AngularMeter object of size 200 x 115 pixels, with silver background
+# color, black border, 2 pixel 3D border border and rounded corners
+my $m = new AngularMeter(200, 115, perlchartdir::silverColor(), 0x000000, 2);
+$m-&gt;setRoundedFrame();
+
+# Set the meter center at (100, 100), with radius 85 pixels, and span from -90 to +90
+# degress (semi-circle)
+$m-&gt;setMeter(100, 100, 85, -90, 90);
+
+# Meter scale is 0 - 100, with major tick every 20 units, minor tick every 10 units,
+# and micro tick every 5 units
+$m-&gt;setScale(0, 100, 20, 10, 5);
+
+# Set 0 - 60 as green (66FF66) zone
+$m-&gt;addZone(0, 60, 0, 85, 0x66ff66);
+
+# Set 60 - 80 as yellow (FFFF33) zone
+$m-&gt;addZone(60, 80, 0, 85, 0xffff33);
+
+# Set 80 - 100 as red (FF6666) zone
+$m-&gt;addZone(80, 100, 0, 85, 0xff6666);
+
+# Add a text label centered at (100, 60) with 12 pts Arial Bold font
+$m-&gt;addText(100, 60, "PSI", "arialbd.ttf", 12, $perlchartdir::TextColor,
+    $perlchartdir::Center);
+
+# Add a text box at the top right corner of the meter showing the value formatted to
+# 2 decimal places, using white text on a black background, and with 1 pixel 3D
+# depressed border
+$m-&gt;addText(156, 8, $m-&gt;formatValue($value, "2"), "arial.ttf", 8, 0xffffff
+    )-&gt;setBackground(0x000000, 0, -1);
+
+# Add a semi-transparent blue (40666699) pointer with black border at the specified
+# value
+$m-&gt;addPointer($value, 0x40666699, 0x000000);
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $m-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

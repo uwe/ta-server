@@ -1,0 +1,24 @@
+<HTML>
+<HEAD>
+<Title>Using ChartDirector with Database in Web Pages</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Using ChartDirector with Database in Web Pages</p>
+<hr class="separator">
+<div class="content">To display any image in a HTML web page, an &lt;IMG&gt; tag is needed. The browser will first load the HTML web page. When it sees &lt;IMG&gt; tag, it will load the image using the URL in the &lt;IMG&gt; tag. If the image happens to be a chart, the &lt;IMG&gt; tag URL may point to a charting script that uses ChartDirector to generate the chart on the fly.<br><br>
+Thus two scripts may be invoked when displaying a ChartDirector chart in a HTML web page - the script that create the HTML web page, and the script referenced in the &lt;IMG&gt; tag URL that delivers the chart image to the browser.
+</div><p class="heading2">Strategies in Passing Data to ChartDirector</p><div class="content">
+To create a chart in which the data come from a database, there are several options:<br><br>
+<ol> <li>Perform the database query in the &lt;IMG&gt; tag script to obtain the data, create the chart image, and deliver the chart to the browser.<br><br>
+<li>Perform the database query in the script for the HTML page, then pass the data to the &lt;IMG&gt; tag script as HTTP query parameters. The &lt;IMG&gt; tag script retrieves the data from the HTTP query parameters, create the chart image, and deliver the chart to the browser.<br><br>
+This method allows the data from the database query to be used in multiple charts in the HTML page, and in the HTML page itself (eg. displayed as tables).<br><br>
+One limitation of this method is that most browsers have a limit of around 2048 bytes for query parameters. So it may not be suitable for large amounts of data.<br><br>
+<li>Perform the database query and create the chart image in the HTML page. Save the chart image in a temporary file. Use an &lt;IMG&gt; tag to load the chart back from the temporary file.<br><br>
+In some applications, the chart must be created in the HTML page (e.g. when creating clickable charts). However, the chart image can only be delivered through an &lt;IMG&gt; tag. So the chart image needs to be saved in a temporary location.<br><br>
+To make using temporary files easy, ChartDirector has a special method <a href="BaseChart.makeTmpFile.htm">BaseChart.makeTmpFile</a> that saves charts in temporary files and automatically remove old temporary files.<br><br>
+As an alternative to using temporary files, one method is to use "session variables". However, this requires the web server to support "session variables" and make the variables available to Perl. So this alternative will not be discussed in further details here.<br><br>
+<b>Note:</b> When using temporary files, make sure the security settings allow the web server anonymous user to write to the temporary directory. (By default anonymous users may not have write access to most directories.)</div><br>
+<hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div></body>
+</HTML>

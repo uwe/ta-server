@@ -1,0 +1,157 @@
+<HTML>
+<HEAD>
+<Title>Circular Zones</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Circular Zones</p>
+<hr class="separator">
+<div class="content">
+<img src="images/polarzones.png">
+<br><br>
+This example demonstrates adding circular zones to a polar chart.<br><br>
+In ChartDirector, a zone defined on the radial axis will mark a radius range, and so will appear as ring on a polar chart.<br><br>
+This example contains three circular zones in the plot area background, colored as red, green and blue. The blue region is the original background of the plot area, while the red and green regions are added using <a href="Axis.addZone.htm">Axis.addZone</a> of the radial axis object.
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\polarzones.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# The data for the chart
+my $data = [51, 15, 51, 40, 17, 87, 94, 21, 35, 88, 50, 60];
+
+# The labels for the chart
+my $labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct",
+    "Nov", "Dec"];
+
+# Create a PolarChart object of size 400 x 420 pixels
+my $c = new PolarChart(400, 420);
+
+# Set background color to a 2 pixel pattern color, with a black border and 1 pixel 3D
+# border effect
+$c-&gt;setBackground($c-&gt;patternColor([0xffffff, 0xe0e0e0], 2), 0, 1);
+
+# Add a title to the chart using 16 pts Arial Bold Italic font. The title text is
+# white (0xffffff) on 2 pixel pattern background
+$c-&gt;addTitle("Chemical Concentration", "arialbi.ttf", 16, 0xffffff)-&gt;setBackground(
+    $c-&gt;patternColor([0x000000, 0x000080], 2));
+
+# Set center of plot area at (200, 240) with radius 145 pixels. Set background color
+# to blue (9999ff)
+$c-&gt;setPlotArea(200, 240, 145, 0x9999ff);
+
+# Color the region between radius = 40 to 80 as green (99ff99)
+$c-&gt;radialAxis()-&gt;addZone(40, 80, 0x99ff99);
+
+# Color the region with radius &gt; 80 as red (ff9999)
+$c-&gt;radialAxis()-&gt;addZone(80, 999, 0xff9999);
+
+# Set the grid style to circular grid
+$c-&gt;setGridStyle(0);
+
+# Set the radial axis label format
+$c-&gt;radialAxis()-&gt;setLabelFormat("{value} ppm");
+
+# Use semi-transparent (40ffffff) label background so as not to block the data
+$c-&gt;radialAxis()-&gt;setLabelStyle()-&gt;setBackground(0x40ffffff, 0x40000000);
+
+# Add a legend box at (200, 30) top center aligned, using 9 pts Arial Bold font. with
+# a black border.
+my $legendBox = $c-&gt;addLegend(200, 30, 0, "arialbd.ttf", 9);
+$legendBox-&gt;setAlignment($perlchartdir::TopCenter);
+
+# Add legend keys to represent the red/green/blue zones
+$legendBox-&gt;addKey("Under-Absorp", 0x9999ff);
+$legendBox-&gt;addKey("Normal", 0x99ff99);
+$legendBox-&gt;addKey("Over-Absorp", 0xff9999);
+
+# Add a blue (000080) spline line layer with line width set to 3 pixels and using
+# yellow (ffff00) circles to represent the data points
+my $layer = $c-&gt;addSplineLineLayer($data, 0x000080);
+$layer-&gt;setLineWidth(3);
+$layer-&gt;setDataSymbol($perlchartdir::CircleShape, 11, 0xffff00);
+
+# Set the labels to the angular axis as spokes.
+$c-&gt;angularAxis()-&gt;setLabels($labels);
+
+# Output the chart
+$c-&gt;makeChart("polarzones.png")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\polarzones.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The data for the chart
+my $data = [51, 15, 51, 40, 17, 87, 94, 21, 35, 88, 50, 60];
+
+# The labels for the chart
+my $labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct",
+    "Nov", "Dec"];
+
+# Create a PolarChart object of size 400 x 420 pixels
+my $c = new PolarChart(400, 420);
+
+# Set background color to a 2 pixel pattern color, with a black border and 1 pixel 3D
+# border effect
+$c-&gt;setBackground($c-&gt;patternColor([0xffffff, 0xe0e0e0], 2), 0, 1);
+
+# Add a title to the chart using 16 pts Arial Bold Italic font. The title text is
+# white (0xffffff) on 2 pixel pattern background
+$c-&gt;addTitle("Chemical Concentration", "arialbi.ttf", 16, 0xffffff)-&gt;setBackground(
+    $c-&gt;patternColor([0x000000, 0x000080], 2));
+
+# Set center of plot area at (200, 240) with radius 145 pixels. Set background color
+# to blue (9999ff)
+$c-&gt;setPlotArea(200, 240, 145, 0x9999ff);
+
+# Color the region between radius = 40 to 80 as green (99ff99)
+$c-&gt;radialAxis()-&gt;addZone(40, 80, 0x99ff99);
+
+# Color the region with radius &gt; 80 as red (ff9999)
+$c-&gt;radialAxis()-&gt;addZone(80, 999, 0xff9999);
+
+# Set the grid style to circular grid
+$c-&gt;setGridStyle(0);
+
+# Set the radial axis label format
+$c-&gt;radialAxis()-&gt;setLabelFormat("{value} ppm");
+
+# Use semi-transparent (40ffffff) label background so as not to block the data
+$c-&gt;radialAxis()-&gt;setLabelStyle()-&gt;setBackground(0x40ffffff, 0x40000000);
+
+# Add a legend box at (200, 30) top center aligned, using 9 pts Arial Bold font. with
+# a black border.
+my $legendBox = $c-&gt;addLegend(200, 30, 0, "arialbd.ttf", 9);
+$legendBox-&gt;setAlignment($perlchartdir::TopCenter);
+
+# Add legend keys to represent the red/green/blue zones
+$legendBox-&gt;addKey("Under-Absorp", 0x9999ff);
+$legendBox-&gt;addKey("Normal", 0x99ff99);
+$legendBox-&gt;addKey("Over-Absorp", 0xff9999);
+
+# Add a blue (000080) spline line layer with line width set to 3 pixels and using
+# yellow (ffff00) circles to represent the data points
+my $layer = $c-&gt;addSplineLineLayer($data, 0x000080);
+$layer-&gt;setLineWidth(3);
+$layer-&gt;setDataSymbol($perlchartdir::CircleShape, 11, 0xffff00);
+
+# Set the labels to the angular axis as spokes.
+$c-&gt;angularAxis()-&gt;setLabels($labels);
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

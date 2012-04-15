@@ -1,0 +1,29 @@
+<HTML>
+<HEAD>
+<Title>Incorporating Charts in Web Pages</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Incorporating Charts in Web Pages</p>
+<hr class="separator">
+<div class="content">In many real application, the charts created by ChartDirector are to be displayed inside HTML based web pages.<br><br>
+To include any image in a HTML web page, one needs to insert an &lt;IMG&gt; tag in the HTML web page. When the browser sees the &lt;IMG&gt; tag, it will load the image using the URL in the &lt;IMG&gt; tag with another HTTP connection.<br><br>
+The same method applies when including a ChartDirector chart in a HTML web page. An &lt;IMG&gt; tag should be inserted in the web page, with its URL pointing to a charting script (a script that uses ChartDirector to create and deliver chart images).<br><br>
+For example:<br><br>
+<div style="background-color:#cccccc;width:99%;padding:5px"><pre>&lt;HTML&gt;
+&lt;BODY&gt;
+
+&lt;h1&gt;Hello World!&lt;/h1&gt;
+&lt;p&gt;Hi, this is my first web page with ChartDirector charts.&lt;/p&gt;
+
+&lt;IMG SRC="http://aaa.bbb.ccc.ddd/cgi-bin/perldemo_cgi/simplebar.pl"&gt;
+
+More HTML elements ......
+
+&lt;/BODY&gt;
+&lt;/HTML&gt;</pre></div><br>
+In the above code, the "http://aaa.bbb.ccc.ddd/cgi-bin/perldemo_cgi/simplebar.pl" is a charting script that uses ChartDirector to create and deliver chart images.<br><br>
+You can include multiple charts in the same web page by using multiple &lt;IMG&gt; tags pointing to multiple charting scripts.</div><br>
+<hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div></body>
+</HTML>

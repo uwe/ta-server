@@ -1,0 +1,44 @@
+<HTML>
+<HEAD>
+<Title>JsChartViewer.setZoomDirection</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="JsChartViewer.htm">JsChartViewer</a>.setZoomDirection</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setZoomDirection(direction)
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the zoom direction for mouse zoom in/out actions.<br><br>
+In zoom operations for charts, it is common to restrict zooming to one direction only. For example, in a chart plotting temperature against time, zooming in from a yearly chart to a daily chart may mean the time axis (x-axis) is zoomed in by 36500%, while the temperature axis (y-axis) may be auto-scaled and not zoomed in at all. The user may be surprise if you also zoom in the y-axis by 36500%, in which case the chart may become hardly readable.<br><br>
+This method allows you to determine the zoom direction for mouse zoom actions (see <a href="JsChartViewer.setMouseUsage.htm">JsChartViewer.setMouseUsage</a>), specified using the following predefined constants:<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="19%">Constant<th width="19%%">Value<th width="60%">Description
+<tr><td>JsChartViewer.Horizontal<td>0<td>Zoom actions apply to horizontal direction only.
+<tr><td>JsChartViewer.Vertical<td>1<td>Zoom actions apply to vertical direction only.
+<tr><td>JsChartViewer.HorizontalVertical<td>2<td>Zoom actions apply to both horizontal and vertical directions.
+</table>
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>direction</td><td>(Mandatory)</td><td>The zoom direction for mouse zoom actions.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

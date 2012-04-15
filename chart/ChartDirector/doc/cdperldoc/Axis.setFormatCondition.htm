@@ -1,0 +1,44 @@
+<HTML>
+<HEAD>
+<Title>Axis.setFormatCondition</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="Axis.htm">Axis</a>.setFormatCondition</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setFormatCondition(condition [, operand ])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Specifies the condition that subsequent <a href="Axis.setLabelFormat.htm">Axis.setLabelFormat</a> and <a href="Axis.setMultiFormat.htm">Axis.setMultiFormat</a> will become applicable.<br><br>
+In some applications, the axis range can vary greatly. For example, for a date/time axis, the ticks on the axis can be hourly ticks if the duration is short, or daily ticks (or even monthly or yearly) if the duration is long. One can always use a universal axis format that is applicable in all cases (such as "mmm dd, yyyy&lt;*br*&gt;hh:nn:ss"), or one can leave ChartDirector to automatically come up with a suitable axis format.<br><br>
+Sometimes it may be desirable to explicitly specify different axis formats depending on tick types. For example, one may want to specify a certain format if the ticks are hourly, and another format if the ticks are daily.<br><br>
+If it is possible to predict which kind of ticks will be on the axis, one can always use "if" statements to specify different axis formats for various cases.<br><br>
+The setFormatCondition method is for cases in which it is difficult to predict which type of ticks would appear on the axis. For example, in an auto-scaled axis in which the duration can vary continuously, in some marginal cases, it is difficult to predict if auto-scaling will choose hourly or daily ticks.<br><br>
+The setFormatCondition method allows you to specify a condition to be tested against the auto-scaling result, so that subsequent <a href="Axis.setLabelFormat.htm">Axis.setLabelFormat</a> or <a href="Axis.setMultiFormat.htm">Axis.setMultiFormat</a> will be applicable only if the condition is true.<br><br>
+The types of condition supported are:<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="19%">Condition<th width="79%">Description <tr><td>"align"<td> Test if all the ticks are aligned to the operand. Use 3600 for testing hourly alignment, 86400 (1 day = 86400) for daily alignment, 30 * 86400 for monthly alignment and 360 * 86400 for yearly alignment. (Note: The values for monthly and yearly alignments are special values recognized by ChartDirector. They works even if a month or year is not exactly 30 or 360 days.) <tr><td>"&gt;"<td> Test if the maximum absolute value of the ticks are larger than the operand. This is useful when one needs to apply different formats to large numbers (eg. use scientific formats if the axis range exceed certain values). <tr><td>"&gt;="<td> Test if the maximum absolute value of the ticks is larger than or equal to the operand. <tr><td>"&lt;"<td> Test if the maximum absolute value of the ticks is less than the operand. <tr><td>"&lt;="<td> Test if the maximum absolute value of the ticks is less than or equal to the operand. <tr><td>"=="<td> Test if the maximum absolute value of the ticks is equal to the operand. <tr><td>"="<td> Same as "==" above. <tr><td>"!="<td> Test if the maximum absolute value of the ticks is not equal to the operand. <tr><td>"&lt;&gt;"<td> Same as "!=" above. <tr><td>"else"<td> This condition is true if and only if the previous condition is false. <tr><td>"true"<td> This condition is always true. It is useful as a "catch all" condition. <tr><td>"false"<td> This condition is always false. </table>
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>condition</td><td>(Mandatory)</td><td>The type of condition to test. Must be one of the condition types in the above table. This text string is case sensitive.</td></tr><tr><td>operand</td><td>0</td><td>The operand for condition types that need an operand.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

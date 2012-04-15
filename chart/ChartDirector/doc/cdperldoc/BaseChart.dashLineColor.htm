@@ -1,0 +1,41 @@
+<HTML>
+<HEAD>
+<Title>BaseChart.dashLineColor</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="BaseChart.htm">BaseChart</a>.dashLineColor</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+dashLineColor(color [, patternCode ])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Creates a dash line color.<br><br>
+A dash line color is a dynamic color that switches on and off periodically. When it is used to draw a line, the line will appear as a dash line.<br><br>
+The style of the dash line is defined by a pattern code, which is a 4-byte integer. A value of PPQQRRSS (in hex) means the first PP pixels are turned on, followed by QQ pixels turned off, followed by RR pixels turned on, followed by SS pixels turned off, and then restart from PP again.<br><br>
+ChartDirector comes from several predefined constants for common dash line patterns.<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="19%">Constant<th width="19%%">Value (in Hex)<th width="60%">Dash Line Style <tr><td><a href="perlchartdir.DashLine.htm">DashLine</a><td>00000505<td><img src="images/dashlinedemo.png"> <tr><td><a href="perlchartdir.DotLine.htm">DotLine</a><td>00000202<td><img src="images/dotlinedemo.png"> <tr><td><a href="perlchartdir.DotDashLine.htm">DotDashLine</a><td>05050205<td><img src="images/dotdashlinedemo.png"> <tr><td><a href="perlchartdir.AltDashLine.htm">AltDashLine</a><td>0A050505<td><img src="images/altdashlinedemo.png"> </table>
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>color</td><td>(Mandatory)</td><td>The color to draw the dash line.</td></tr><tr><td>patternCode</td><td><a href="perlchartdir.DashLine.htm">DashLine</a></td><td>A 4-byte integer representing the style of the dash line.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+A 32-bit integer representing the dash line color.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

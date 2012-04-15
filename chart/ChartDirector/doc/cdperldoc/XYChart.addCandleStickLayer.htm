@@ -1,0 +1,44 @@
+<HTML>
+<HEAD>
+<Title>XYChart.addCandleStickLayer</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="XYChart.htm">XYChart</a>.addCandleStickLayer</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+addCandleStickLayer(highData, lowData, openData, closeData [, riseColor [, fallColor [, edgeColor ]]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Adds a candlestick layer to the XYChart, and specify the data sets to use for drawing the layer.<br><br>
+By default, the candlestick symbol will be drawn using the colors specified in the <b>riseColor</b>, <b>fallColor</b> and <b>edgeColor</b> argument. The <b>riseColor</b> and <b>fallColor</b> are used to fill the candle depending on whether the opening value or closing value is larger. The <b>edgeColor</b> is used to the center line and the border of the candle.<br><br>
+Internally, ChartDirector maps the colors of different parts of the candlestick symbol to data set colors as shown in the following table. You may control the colors of the candlestick symbol in more details by setting the data set colors directly. The data set objects can be obtained using <a href="Layer.getDataSet.htm">Layer.getDataSet</a>, and the colors can be changed using <a href="DataSet.setDataColor.htm">DataSet.setDataColor</a>.<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="38%">Candlestick Symbol Color<th width="60%">Data Set Color <tr><td>Fill color for "up" candlesticks<td>Data Color for the first data set (index = 0).
+<tr><td>Fill color for "down" candlesticks<td>Data Color for the second data set (index = 1).
+<tr><td>Border color<td>Edge Color for the first data set (index = 0).
+<tr><td>Center line color<td>Edge Color for the second data set (index = 1).
+</table>
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>highData</td><td>(Mandatory)</td><td>An array of numbers representing the high values.</td></tr><tr><td>lowData</td><td>(Mandatory)</td><td>An array of numbers representing the low values.</td></tr><tr><td>openData</td><td>(Mandatory)</td><td>An array of numbers representing the opening values.</td></tr><tr><td>closeData</td><td>(Mandatory)</td><td>An array of numbers representing the closing values.</td></tr><tr><td>riseColor</td><td>FFFFFF</td><td>The color used to fill the candle if the closing value is higher than the opening value.</td></tr><tr><td>fallColor</td><td>000000</td><td>The color used to fill the candle if the opening value is higher than the closing value.</td></tr><tr><td>edgeColor</td><td><a href="perlchartdir.LineColor.htm">LineColor</a></td><td>The color used to draw the center line and the border of the candle.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+A <a href="CandleStickLayer.htm">CandleStickLayer</a> object representing the candlestick layer created.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

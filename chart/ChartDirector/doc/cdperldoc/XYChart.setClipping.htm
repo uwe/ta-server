@@ -1,0 +1,40 @@
+<HTML>
+<HEAD>
+<Title>XYChart.setClipping</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="XYChart.htm">XYChart</a>.setClipping</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setClipping([ margin ])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Enables clipping on the plot area.<br><br>
+In normal usage, ChartDirector will auto-scale the axis to ensure all the data points will be within the plot area.<br><br>
+However, if manual scaling is used (e.g. using <a href="Axis.setLinearScale.htm">Axis.setLinearScale</a>), it is possible to choose an axis scale such that some data points will be outside the plot area. So some of the data representation (bars, lines, etc) will be outside the plot area.<br><br>
+This method can be used to clip the plot area, so that any data representation that is outside the plot area will not be drawn.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>margin</td><td>0</td><td>Additional margin, measured in pixels, to be added to the 4 sides of the plot area for the purpose of clipping. A positive value means the clipping region will be larger than the plot area. A negative value means the clipping region will be smaller than the plot area. 0 means the clipping region is equal to the plot area.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

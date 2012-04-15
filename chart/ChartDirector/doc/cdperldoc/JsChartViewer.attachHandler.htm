@@ -1,0 +1,39 @@
+<HTML>
+<HEAD>
+<Title>JsChartViewer.attachHandler</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="JsChartViewer.htm">JsChartViewer</a>.attachHandler</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+attachHandler(eventId, handler)
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Attaches a function to be used as the event handler for an event.<br><br>
+Multiple functions may be attached to the same event may be attached by calling this method multiple times, in which case the functions will be called in the sequence of their attachment.<br><br>
+Note that this method expects the function to be a real function object, not a text string. The function will be called as if it is a method of the JsChartViewer object, which means the "this" pointer inside the function represents the JsChartViewer object that calls the function.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>eventId</td><td>(Mandatory)</td><td>A text string representing the event to attach to.</td></tr><tr><td>handler</td><td>(Mandatory)</td><td>A function object</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+An handler id representing the attachment of the handler to the event. This id can be used in <a href="JsChartViewer.detachHandler.htm">JsChartViewer.detachHandler</a> to detach the handler.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

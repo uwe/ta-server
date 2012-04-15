@@ -1,0 +1,41 @@
+<HTML>
+<HEAD>
+<Title>SurfaceChart.setInterpolation</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="SurfaceChart.htm">SurfaceChart</a>.setInterpolation</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setInterpolation(xSamples [, ySamples [, isSmooth ]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Enables and sets the degree and method of interpolation of the data points.<br><br>
+A surface chart consists of planar patches, drawn using the data points as the vertices. To create visually smooth surfaces, we may use a large number of small planar patches. However, this requires a large number of data points.<br><br>
+For example, consider a plot region of which the x and y dimensions are both 400 pixels in length. To create a smooth surface, if gridded data are used, the distance between grid lines should be no more than a few pixels. Suppose a grid spacing of 8 pixels is used. The grid size will be 51 x 51, and 2601 data points will be needed.<br><br>
+If the number of available data points are too small to create a smooth surface, This method can be used to generate a denser grid of data points from the original data points using interpolation.<br><br>
+Two types of interpolation are supported. In spline surface interpolation, ChartDirector will compute a smooth surface that passes through the original data points, and sample the spline surface for the new data points. In bilinear/linear interpolation, ChartDirector will apply bilinear/linear interpolation to its vertices of the original patches to compute the new data points.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>xSamples</td><td>(Mandatory)</td><td>The number of samples on the x-dimension to interpolate to.</td></tr><tr><td>ySamples</td><td>-1</td><td>The number of samples on the y-dimension to interpolate to. -1 means it is the same as xSamples.</td></tr><tr><td>isSmooth</td><td>true (non-zero)</td><td>A true (non-zero) value means to use spline surface interpolation. A false (zero) value means to use bilinear/linear interpolation.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

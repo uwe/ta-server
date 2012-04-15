@@ -1,0 +1,996 @@
+<HTML>
+<HEAD>
+<Title>Interactive Financial Chart</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Interactive Financial Chart</p>
+<hr class="separator">
+<div class="content">
+<img src="images/financedemo.png"><br><br>
+This example demonstrates a full-featured financial chart in which the user can select the time ranges, technical indicators, and various chart options.<br><br>
+The Interactive Financial Chart is implemented in two parts - "financedemo.pl" for the containing web page, and "financedemochart.pl" for the charting page.<br><br>
+The containing web page "financedemo.pl"  is basically just a standard HTML Form. When the "Update Chart" button is pressed, instead of posting to the server, a client side Javascript function is activated. This function combines all Form elements into a query string, appends it to the charting URL "financedemochart.pl"  and uses it to update the &lt;IMG&gt; tag.<br><br>
+The "financedemochart.pl" draws the finance chart according to the query parameters, which reflects user selections, and outputs the chart to the &lt;IMG&gt; tag.<br><br>
+The "financedemochart.pl" contains two key parts.<br><br>
+<ul>
+<li>The get15MinData, getDailyData, getWeeklyData and getMonthlyData functions are for retrieving stock data. In this example, they just retrieve data from a random number generator. You may replace the code in these functions with your own code to get data from your data source.<br><br>
+<li>The drawChart function is the real charting code. It creates a <a href="FinanceChart.htm">FinanceChart</a> object, sets data to it, and configures it according to query parameters.<br><br>
+</ul>
+</div><p class="heading1a">Source Code Listing</p><div class="content">
+<b>[CGI Version]</b> perldemo_cgi\financedemo.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+print "Content-type: text/html\n\n";
+print &lt;&lt;EndOfHTML
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;ChartDirector Financial Chart Demonstration&lt;/title&gt;
+&lt;style&gt;
+.inputtitle {font-size:11px; margin:10px 5px; font-family:verdana}
+.input {font-size:11px; font-family:verdana}
+&lt;/style&gt;
+&lt;script language="Javascript"&gt;
+
+//Cross browser method to get an object
+function getObject(id)
+{
+    if (document.getElementById)
+        //IE 5.x or NS 6.x or above
+        return document.getElementById(id);
+    else if (document.all)
+        //IE 4.x
+        return document.all[id];
+    else
+        //Netscape 4.x
+        return document[id];
+}
+
+//Update the chart according to user selection
+function updateChart()
+{
+    //
+    //we encode the values of all form elements as query parameters
+    //
+    var elements = getObject("Form1").elements;
+    var url = "financedemochart.pl?";
+    for (var i = 0; i &lt; elements.length; ++i)
+    {
+        var e = elements[i];
+        if (e.type == "checkbox")
+            url = url + e.id + "=" + (e.checked ? "1" : "0") + "&";
+        else
+            url = url + e.id + "=" + escape(e.value) + "&";
+    }
+
+    //Now we update the URL of the image to update the chart
+    getObject("ChartImage").src = url;
+}
+&lt;/script&gt;
+&lt;/head&gt;
+&lt;body style="margin:0px" onLoad="updateChart();"&gt;
+&lt;table cellspacing="0" cellpadding="0" border="0"&gt;
+    &lt;tr&gt;
+        &lt;td align="right" colspan="2" style="background:#000088"&gt;
+            &lt;div style="padding-right:3px; padding-bottom:2px; font-family:arial; font-size:10pt; font-weight:bold; font-style:italic"&gt;
+                &lt;a style="color:#ffff00; text-decoration:none" href="http://www.advsofteng.com"&gt;
+                    Advanced Software Engineering
+                &lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr valign="top"&gt;
+        &lt;td style="width:150px; background:#bbddff"&gt;
+            &lt;form id="Form1" action="javascript:updateChart()"&gt;
+            &lt;div class="inputtitle"&gt;
+                &lt;b&gt;Ticker Symbol&lt;/b&gt;&lt;br /&gt;
+                &lt;input id="TickerSymbol" name="TickerSymbol" class="input" style="width:140px;" value="ASE.SYMBOL"&gt;
+            &lt;/div&gt;
+            &lt;div class="inputtitle"&gt;
+                &lt;b&gt;Compare With&lt;/b&gt;&lt;br /&gt;
+                &lt;input id="CompareWith" name="CompareWith" class="input" style="width:140px;" value=""&gt;
+            &lt;/div&gt;
+            &lt;div class="inputtitle"&gt;
+                &lt;b&gt;Time Period&lt;/b&gt;&lt;br /&gt;
+                &lt;select id="TimeRange" name="TimeRange" class="input" style="width:140px;"&gt;
+                    &lt;option value="1"&gt;1 day&lt;/option&gt;
+                    &lt;option value="2"&gt;2 days&lt;/option&gt;
+                    &lt;option value="5"&gt;5 days&lt;/option&gt;
+                    &lt;option value="10"&gt;10 days&lt;/option&gt;
+                    &lt;option value="30"&gt;1 month&lt;/option&gt;
+                    &lt;option value="60"&gt;2 months&lt;/option&gt;
+                    &lt;option value="90"&gt;3 months&lt;/option&gt;
+                    &lt;option value="180" selected&gt;6 months&lt;/option&gt;
+                    &lt;option value="360"&gt;1 year&lt;/option&gt;
+                    &lt;option value="720"&gt;2 years&lt;/option&gt;
+                    &lt;option value="1080"&gt;3 years&lt;/option&gt;
+                    &lt;option value="1440"&gt;4 years&lt;/option&gt;
+                    &lt;option value="1800"&gt;5 years&lt;/option&gt;
+                    &lt;option value="3600"&gt;10 years&lt;/option&gt;
+                &lt;/select&gt;
+            &lt;/div&gt;
+            &lt;div class="inputtitle"&gt;
+                &lt;b&gt;Chart Size&lt;/b&gt;&lt;br /&gt;
+                &lt;select id="ChartSize" name="ChartSize" class="input" style="width:140px;"&gt;
+                    &lt;option value="S"&gt;Small&lt;/option&gt;
+                    &lt;option value="M"&gt;Medium&lt;/option&gt;
+                    &lt;option value="L" selected&gt;Large&lt;/option&gt;
+                    &lt;option value="H"&gt;Huge&lt;/option&gt;
+                &lt;/select&gt;&lt;br /&gt;
+            &lt;/div&gt;
+            &lt;div class="inputtitle"&gt;
+                &lt;input type="checkbox" id="Volume" name="Volume" checked&gt;&lt;label for="Volume"&gt;Show Volume Bars&lt;/label&gt;&lt;br /&gt;
+                &lt;input type="checkbox" id="ParabolicSAR" name="ParabolicSAR"&gt;&lt;label for="ParabolicSAR"&gt;Parabolic SAR&lt;/label&gt;&lt;br /&gt;
+                &lt;input type="checkbox" id="LogScale" name="LogScale"&gt;&lt;label for="LogScale"&gt;Log Scale&lt;/label&gt;&lt;br /&gt;
+                &lt;input type="checkbox" id="PercentageScale" name="PercentageScale"&gt;&lt;label for="PercentageScale"&gt;Percentage Scale&lt;/label&gt;&lt;br /&gt;
+            &lt;/div&gt;
+            &lt;div class="inputtitle"&gt;
+                &lt;b&gt;Chart Type&lt;/b&gt;&lt;br /&gt;
+                &lt;select id="ChartType" name="ChartType" class="input" style="width:140px;"&gt;
+                    &lt;option value="None"&gt;None&lt;/option&gt;
+                    &lt;option value="CandleStick" selected&gt;CandleStick&lt;/option&gt;
+                    &lt;option value="Close"&gt;Closing Price&lt;/option&gt;
+                    &lt;option value="Median"&gt;Median Price&lt;/option&gt;
+                    &lt;option value="OHLC"&gt;OHLC&lt;/option&gt;
+                    &lt;option value="TP"&gt;Typical Price&lt;/option&gt;
+                    &lt;option value="WC"&gt;Weighted Close&lt;/option&gt;
+                &lt;/select&gt;
+            &lt;/div&gt;
+            &lt;div class="inputtitle"&gt;
+                &lt;b&gt;Price Band&lt;/b&gt;&lt;br /&gt;
+                &lt;select id="Band" name="Band" class="input" style="width:140px;"&gt;
+                    &lt;option value="None"&gt;None&lt;/option&gt;
+                    &lt;option value="BB" selected&gt;Bollinger Band&lt;/option&gt;
+                    &lt;option value="DC"&gt;Donchain Channel&lt;/option&gt;
+                    &lt;option value="Envelop"&gt;Envelop (SMA 20 +/- 10%)&lt;/option&gt;
+                &lt;/select&gt;
+            &lt;/div&gt;
+            &lt;div class="inputtitle"&gt;
+                &lt;b&gt;Moving Averages&lt;/b&gt;&lt;br /&gt;
+                &lt;nobr&gt;&lt;select id="avgType1" name="avgType1" class="input" style="width:105px;"&gt;
+                    &lt;option value="None"&gt;None&lt;/option&gt;
+                    &lt;option value="SMA" selected&gt;Simple&lt;/option&gt;
+                    &lt;option value="EMA"&gt;Exponential&lt;/option&gt;
+                    &lt;option value="TMA"&gt;Triangular&lt;/option&gt;
+                    &lt;option value="WMA"&gt;Weighted&lt;/option&gt;
+                &lt;/select&gt;
+                &lt;input id="movAvg1" name="movAvg1" class="input" style="width:30px;" value="10"&gt;&lt;/nobr&gt;&lt;br /&gt;
+                &lt;nobr&gt;&lt;select id="avgType2" name="avgType2" class="input" style="width:105px;"&gt;
+                    &lt;option value="None"&gt;None&lt;/option&gt;
+                    &lt;option value="SMA" selected&gt;Simple&lt;/option&gt;
+                    &lt;option value="EMA"&gt;Exponential&lt;/option&gt;
+                    &lt;option value="TMA"&gt;Triangular&lt;/option&gt;
+                    &lt;option value="WMA"&gt;Weighted&lt;/option&gt;
+                &lt;/select&gt;
+                &lt;input id="movAvg2" name="movAvg2" class="input" style="width:30px;" value="25"&gt;&lt;/nobr&gt;&lt;br /&gt;
+            &lt;/div&gt;
+            &lt;div class="inputtitle"&gt;
+                &lt;b&gt;Technical Indicators&lt;/b&gt;&lt;br /&gt;
+                &lt;select id="Indicator1" name="Indicator1" class="input" style="width:140px;"&gt;
+                    &lt;option value="None"&gt;None&lt;/option&gt;
+                    &lt;option value="AccDist"&gt;Accumulation/Distribution&lt;/option&gt;
+                    &lt;option value="AroonOsc"&gt;Aroon Oscillator&lt;/option&gt;
+                    &lt;option value="Aroon"&gt;Aroon Up/Down&lt;/option&gt;
+                    &lt;option value="ADX"&gt;Avg Directional Index&lt;/option&gt;
+                    &lt;option value="ATR"&gt;Avg True Range&lt;/option&gt;
+                    &lt;option value="BBW"&gt;Bollinger Band Width&lt;/option&gt;
+                    &lt;option value="CMF"&gt;Chaikin Money Flow&lt;/option&gt;
+                    &lt;option value="COscillator"&gt;Chaikin Oscillator&lt;/option&gt;
+                    &lt;option value="CVolatility"&gt;Chaikin Volatility&lt;/option&gt;
+                    &lt;option value="CLV"&gt;Close Location Value&lt;/option&gt;
+                    &lt;option value="CCI"&gt;Commodity Channel Index&lt;/option&gt;
+                    &lt;option value="DPO"&gt;Detrended Price Osc&lt;/option&gt;
+                    &lt;option value="DCW"&gt;Donchian Channel Width&lt;/option&gt;
+                    &lt;option value="EMV"&gt;Ease of Movement&lt;/option&gt;
+                    &lt;option value="FStoch"&gt;Fast Stochastic&lt;/option&gt;
+                    &lt;option value="MACD"&gt;MACD&lt;/option&gt;
+                    &lt;option value="MDX"&gt;Mass Index&lt;/option&gt;
+                    &lt;option value="Momentum"&gt;Momentum&lt;/option&gt;
+                    &lt;option value="MFI"&gt;Money Flow Index&lt;/option&gt;
+                    &lt;option value="NVI"&gt;Neg Volume Index&lt;/option&gt;
+                    &lt;option value="OBV"&gt;On Balance Volume&lt;/option&gt;
+                    &lt;option value="Performance"&gt;Performance&lt;/option&gt;
+                    &lt;option value="PPO"&gt;% Price Oscillator&lt;/option&gt;
+                    &lt;option value="PVO"&gt;% Volume Oscillator&lt;/option&gt;
+                    &lt;option value="PVI"&gt;Pos Volume Index&lt;/option&gt;
+                    &lt;option value="PVT"&gt;Price Volume Trend&lt;/option&gt;
+                    &lt;option value="ROC"&gt;Rate of Change&lt;/option&gt;
+                    &lt;option value="RSI" selected&gt;RSI&lt;/option&gt;
+                    &lt;option value="SStoch"&gt;Slow Stochastic&lt;/option&gt;
+                    &lt;option value="StochRSI"&gt;StochRSI&lt;/option&gt;
+                    &lt;option value="TRIX"&gt;TRIX&lt;/option&gt;
+                    &lt;option value="UO"&gt;Ultimate Oscillator&lt;/option&gt;
+                    &lt;option value="Vol"&gt;Volume&lt;/option&gt;
+                    &lt;option value="WilliamR"&gt;William's %R&lt;/option&gt;
+                &lt;/select&gt;&lt;br /&gt;
+                &lt;select id="Indicator2" name="Indicator2" class="input" style="width:140px;"&gt;
+                    &lt;option value="None"&gt;None&lt;/option&gt;
+                    &lt;option value="AccDist"&gt;Accumulation/Distribution&lt;/option&gt;
+                    &lt;option value="AroonOsc"&gt;Aroon Oscillator&lt;/option&gt;
+                    &lt;option value="Aroon"&gt;Aroon Up/Down&lt;/option&gt;
+                    &lt;option value="ADX"&gt;Avg Directional Index&lt;/option&gt;
+                    &lt;option value="ATR"&gt;Avg True Range&lt;/option&gt;
+                    &lt;option value="BBW"&gt;Bollinger Band Width&lt;/option&gt;
+                    &lt;option value="CMF"&gt;Chaikin Money Flow&lt;/option&gt;
+                    &lt;option value="COscillator"&gt;Chaikin Oscillator&lt;/option&gt;
+                    &lt;option value="CVolatility"&gt;Chaikin Volatility&lt;/option&gt;
+                    &lt;option value="CLV"&gt;Close Location Value&lt;/option&gt;
+                    &lt;option value="CCI"&gt;Commodity Channel Index&lt;/option&gt;
+                    &lt;option value="DPO"&gt;Detrended Price Osc&lt;/option&gt;
+                    &lt;option value="DCW"&gt;Donchian Channel Width&lt;/option&gt;
+                    &lt;option value="EMV"&gt;Ease of Movement&lt;/option&gt;
+                    &lt;option value="FStoch"&gt;Fast Stochastic&lt;/option&gt;
+                    &lt;option value="MACD" selected&gt;MACD&lt;/option&gt;
+                    &lt;option value="MDX"&gt;Mass Index&lt;/option&gt;
+                    &lt;option value="Momentum"&gt;Momentum&lt;/option&gt;
+                    &lt;option value="MFI"&gt;Money Flow Index&lt;/option&gt;
+                    &lt;option value="NVI"&gt;Neg Volume Index&lt;/option&gt;
+                    &lt;option value="OBV"&gt;On Balance Volume&lt;/option&gt;
+                    &lt;option value="Performance"&gt;Performance&lt;/option&gt;
+                    &lt;option value="PPO"&gt;% Price Oscillator&lt;/option&gt;
+                    &lt;option value="PVO"&gt;% Volume Oscillator&lt;/option&gt;
+                    &lt;option value="PVI"&gt;Pos Volume Index&lt;/option&gt;
+                    &lt;option value="PVT"&gt;Price Volume Trend&lt;/option&gt;
+                    &lt;option value="ROC"&gt;Rate of Change&lt;/option&gt;
+                    &lt;option value="RSI"&gt;RSI&lt;/option&gt;
+                    &lt;option value="SStoch"&gt;Slow Stochastic&lt;/option&gt;
+                    &lt;option value="StochRSI"&gt;StochRSI&lt;/option&gt;
+                    &lt;option value="TRIX"&gt;TRIX&lt;/option&gt;
+                    &lt;option value="UO"&gt;Ultimate Oscillator&lt;/option&gt;
+                    &lt;option value="Vol"&gt;Volume&lt;/option&gt;
+                    &lt;option value="WilliamR"&gt;William's %R&lt;/option&gt;
+                &lt;/select&gt;&lt;br /&gt;
+                &lt;select id="Indicator3" name="Indicator3" class="input" style="width:140px;"&gt;
+                    &lt;option value="None" selected&gt;None&lt;/option&gt;
+                    &lt;option value="AccDist"&gt;Accumulation/Distribution&lt;/option&gt;
+                    &lt;option value="AroonOsc"&gt;Aroon Oscillator&lt;/option&gt;
+                    &lt;option value="Aroon"&gt;Aroon Up/Down&lt;/option&gt;
+                    &lt;option value="ADX"&gt;Avg Directional Index&lt;/option&gt;
+                    &lt;option value="ATR"&gt;Avg True Range&lt;/option&gt;
+                    &lt;option value="BBW"&gt;Bollinger Band Width&lt;/option&gt;
+                    &lt;option value="CMF"&gt;Chaikin Money Flow&lt;/option&gt;
+                    &lt;option value="COscillator"&gt;Chaikin Oscillator&lt;/option&gt;
+                    &lt;option value="CVolatility"&gt;Chaikin Volatility&lt;/option&gt;
+                    &lt;option value="CLV"&gt;Close Location Value&lt;/option&gt;
+                    &lt;option value="CCI"&gt;Commodity Channel Index&lt;/option&gt;
+                    &lt;option value="DPO"&gt;Detrended Price Osc&lt;/option&gt;
+                    &lt;option value="DCW"&gt;Donchian Channel Width&lt;/option&gt;
+                    &lt;option value="EMV"&gt;Ease of Movement&lt;/option&gt;
+                    &lt;option value="FStoch"&gt;Fast Stochastic&lt;/option&gt;
+                    &lt;option value="MACD"&gt;MACD&lt;/option&gt;
+                    &lt;option value="MDX"&gt;Mass Index&lt;/option&gt;
+                    &lt;option value="Momentum"&gt;Momentum&lt;/option&gt;
+                    &lt;option value="MFI"&gt;Money Flow Index&lt;/option&gt;
+                    &lt;option value="NVI"&gt;Neg Volume Index&lt;/option&gt;
+                    &lt;option value="OBV"&gt;On Balance Volume&lt;/option&gt;
+                    &lt;option value="Performance"&gt;Performance&lt;/option&gt;
+                    &lt;option value="PPO"&gt;% Price Oscillator&lt;/option&gt;
+                    &lt;option value="PVO"&gt;% Volume Oscillator&lt;/option&gt;
+                    &lt;option value="PVI"&gt;Pos Volume Index&lt;/option&gt;
+                    &lt;option value="PVT"&gt;Price Volume Trend&lt;/option&gt;
+                    &lt;option value="ROC"&gt;Rate of Change&lt;/option&gt;
+                    &lt;option value="RSI"&gt;RSI&lt;/option&gt;
+                    &lt;option value="SStoch"&gt;Slow Stochastic&lt;/option&gt;
+                    &lt;option value="StochRSI"&gt;StochRSI&lt;/option&gt;
+                    &lt;option value="TRIX"&gt;TRIX&lt;/option&gt;
+                    &lt;option value="UO"&gt;Ultimate Oscillator&lt;/option&gt;
+                    &lt;option value="Vol"&gt;Volume&lt;/option&gt;
+                    &lt;option value="WilliamR"&gt;William's %R&lt;/option&gt;
+                &lt;/select&gt;&lt;br /&gt;
+                &lt;select id="Indicator4" name="Indicator4" class="input" style="width:140px;"&gt;
+                    &lt;option value="None" selected&gt;None&lt;/option&gt;
+                    &lt;option value="AccDist"&gt;Accumulation/Distribution&lt;/option&gt;
+                    &lt;option value="AroonOsc"&gt;Aroon Oscillator&lt;/option&gt;
+                    &lt;option value="Aroon"&gt;Aroon Up/Down&lt;/option&gt;
+                    &lt;option value="ADX"&gt;Avg Directional Index&lt;/option&gt;
+                    &lt;option value="ATR"&gt;Avg True Range&lt;/option&gt;
+                    &lt;option value="BBW"&gt;Bollinger Band Width&lt;/option&gt;
+                    &lt;option value="CMF"&gt;Chaikin Money Flow&lt;/option&gt;
+                    &lt;option value="COscillator"&gt;Chaikin Oscillator&lt;/option&gt;
+                    &lt;option value="CVolatility"&gt;Chaikin Volatility&lt;/option&gt;
+                    &lt;option value="CLV"&gt;Close Location Value&lt;/option&gt;
+                    &lt;option value="CCI"&gt;Commodity Channel Index&lt;/option&gt;
+                    &lt;option value="DPO"&gt;Detrended Price Osc&lt;/option&gt;
+                    &lt;option value="DCW"&gt;Donchian Channel Width&lt;/option&gt;
+                    &lt;option value="EMV"&gt;Ease of Movement&lt;/option&gt;
+                    &lt;option value="FStoch"&gt;Fast Stochastic&lt;/option&gt;
+                    &lt;option value="MACD"&gt;MACD&lt;/option&gt;
+                    &lt;option value="MDX"&gt;Mass Index&lt;/option&gt;
+                    &lt;option value="Momentum"&gt;Momentum&lt;/option&gt;
+                    &lt;option value="MFI"&gt;Money Flow Index&lt;/option&gt;
+                    &lt;option value="NVI"&gt;Neg Volume Index&lt;/option&gt;
+                    &lt;option value="OBV"&gt;On Balance Volume&lt;/option&gt;
+                    &lt;option value="Performance"&gt;Performance&lt;/option&gt;
+                    &lt;option value="PPO"&gt;% Price Oscillator&lt;/option&gt;
+                    &lt;option value="PVO"&gt;% Volume Oscillator&lt;/option&gt;
+                    &lt;option value="PVI"&gt;Pos Volume Index&lt;/option&gt;
+                    &lt;option value="PVT"&gt;Price Volume Trend&lt;/option&gt;
+                    &lt;option value="ROC"&gt;Rate of Change&lt;/option&gt;
+                    &lt;option value="RSI"&gt;RSI&lt;/option&gt;
+                    &lt;option value="SStoch"&gt;Slow Stochastic&lt;/option&gt;
+                    &lt;option value="StochRSI"&gt;StochRSI&lt;/option&gt;
+                    &lt;option value="TRIX"&gt;TRIX&lt;/option&gt;
+                    &lt;option value="UO"&gt;Ultimate Oscillator&lt;/option&gt;
+                    &lt;option value="Vol"&gt;Volume&lt;/option&gt;
+                    &lt;option value="WilliamR"&gt;William's %R&lt;/option&gt;
+                &lt;/select&gt;
+            &lt;/div&gt;
+            &lt;div class="inputtitle" style="text-align:center"&gt;
+                &lt;input id="Button1" name="Button1" type="submit" class="input" value="Update Chart"&gt;
+            &lt;/div&gt;
+            &lt;/form&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+            &lt;div style="font-weight:bold;  font-family:arial; font-size:20pt; margin:5px 0px 0px 5px"&gt;
+                ChartDirector Financial Chart Demonstration
+            &lt;/div&gt;
+            &lt;hr style="border:solid 1px #000080" /&gt;
+            &lt;br /&gt;
+            &lt;img id="ChartImage" align="top" border="0"&gt;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+EndOfHTML
+;</pre></tr></td></table><br>
+<b>[CGI Version]</b> perldemo_cgi\financedemochart.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use FinanceChart;
+
+# Get HTTP query parameters
+use CGI;
+my $query = new CGI;
+
+# Utility to compute modulus for large positive numbers. Although Perl has fmod in the
+# POSIX module, we want to avoid using such a large module. So we define our own fmod2.
+sub fmod2 { my ($a, $b) = @_; return $a - int($a / $b) * $b; }
+
+#
+# Create a finance chart based on user selections, which are encoded as query
+# parameters. This code is designed to work with the financedemo HTML form.
+#
+
+# The timeStamps, volume, high, low, open and close data
+#
+# ** NOTE ** : This sample code is written assuming the time stamps are in
+# ChartDirector chartTime format. It is because this format supports dates before
+# 1970 (which may be needed in some long term charts). See the ChartDirector
+# documentation on chartTime for details. When you retrieve the time stamps from your
+# database, please remember to convert them to chartTime.
+my $timeStamps = undef;
+my $volData = undef;
+my $highData = undef;
+my $lowData = undef;
+my $openData = undef;
+my $closeData = undef;
+
+# An extra data series to compare with the close data
+my $compareData = undef;
+
+# The resolution of the data in seconds. 1 day = 86400 seconds.
+my $resolution = 86400;
+
+#/ &lt;summary&gt;
+#/ Get the timeStamps, highData, lowData, openData, closeData and volData.
+#/ &lt;/summary&gt;
+#/ &lt;param name="ticker"&gt;The ticker symbol for the data series.&lt;/param&gt;
+#/ &lt;param name="startDate"&gt;The starting date/time for the data series.&lt;/param&gt;
+#/ &lt;param name="endDate"&gt;The ending date/time for the data series.&lt;/param&gt;
+#/ &lt;param name="durationInDays"&gt;The number of trading days to get.&lt;/param&gt;
+#/ &lt;param name="extraPoints"&gt;The extra leading data points needed in order to
+#/ compute moving averages.&lt;/param&gt;
+#/ &lt;returns&gt;True if successfully obtain the data, otherwise false.&lt;/returns&gt;
+sub getData
+{
+    my ($ticker, $startDate, $endDate, $durationInDays, $extraPoints) = @_;
+    # This method should return false if the ticker symbol is invalid. In this sample
+    # code, as we are using a random number generator for the data, all ticker symbol
+    # is allowed, but we still assumed an empty symbol is invalid.
+    if ($ticker eq "") {
+        return 0;
+    }
+
+    # In this demo, we can get 15 min, daily, weekly or monthly data depending on the
+    # time range.
+    $resolution = 86400;
+    if ($durationInDays &lt;= 10) {
+        # 10 days or less, we assume 15 minute data points are available
+        $resolution = 900;
+
+        # We need to adjust the startDate backwards for the extraPoints. We assume
+        # 6.5 hours trading time per day, and 5 trading days per week.
+        my $dataPointsPerDay = 6.5 * 3600 / $resolution;
+        my $adjustedStartDate = $startDate - fmod2($startDate, 86400) - int(
+            $extraPoints / $dataPointsPerDay * 7 / 5 + 0.9999999) * 86400 - 2 * 86400
+            ;
+
+        # Get the required 15 min data
+        get15MinData($ticker, $adjustedStartDate, $endDate);
+
+    } elsif ($durationInDays &gt;= 4.5 * 360) {
+        # 4 years or more - use monthly data points.
+        $resolution = 30 * 86400;
+
+        # Adjust startDate backwards to cater for extraPoints
+        my $YMD = perlchartdir::getChartYMD($startDate);
+        my $currentMonth = int($YMD / 100) % 100 - $extraPoints;
+        my $currentYear = int($YMD / 10000);
+        while ($currentMonth &lt; 1) {
+            $currentYear = $currentYear - 1;
+            $currentMonth = $currentMonth + 12;
+        }
+        my $adjustedStartDate = perlchartdir::chartTime($currentYear, $currentMonth,
+            1);
+
+        # Get the required monthly data
+        getMonthlyData($ticker, $adjustedStartDate, $endDate);
+
+    } elsif ($durationInDays &gt;= 1.5 * 360) {
+        # 1 year or more - use weekly points.
+        $resolution = 7 * 86400;
+
+        # Adjust startDate backwards to cater for extraPoints
+        my $adjustedStartDate = $startDate - $extraPoints * 7 * 86400 - 6 * 86400;
+
+        # Get the required weekly data
+        getWeeklyData($ticker, $adjustedStartDate, $endDate);
+
+    } else {
+        # Default - use daily points
+        $resolution = 86400;
+
+        # Adjust startDate backwards to cater for extraPoints. We multiply the days
+        # by 7/5 as we assume 1 week has 5 trading days.
+        my $adjustedStartDate = $startDate - fmod2($startDate, 86400) - int((
+            $extraPoints * 7 + 4) / 5) * 86400 - 2 * 86400;
+
+        # Get the required daily data
+        getDailyData($ticker, $adjustedStartDate, $endDate);
+    }
+
+    return 1;
+}
+
+#/ &lt;summary&gt;
+#/ Get 15 minutes data series for timeStamps, highData, lowData, openData, closeData
+#/ and volData.
+#/ &lt;/summary&gt;
+#/ &lt;param name="ticker"&gt;The ticker symbol for the data series.&lt;/param&gt;
+#/ &lt;param name="startDate"&gt;The starting date/time for the data series.&lt;/param&gt;
+#/ &lt;param name="endDate"&gt;The ending date/time for the data series.&lt;/param&gt;
+sub get15MinData
+{
+    my ($ticker, $startDate, $endDate) = @_;
+    #
+    # In this demo, we use a random number generator to generate the data. In
+    # practice, you may get the data from a database or by other means. If you do not
+    # have 15 minute data, you may modify the "drawChart" method below to not using
+    # 15 minute data.
+    #
+    generateRandomData($ticker, $startDate, $endDate, 900);
+}
+
+#/ &lt;summary&gt;
+#/ Get daily data series for timeStamps, highData, lowData, openData, closeData
+#/ and volData.
+#/ &lt;/summary&gt;
+#/ &lt;param name="ticker"&gt;The ticker symbol for the data series.&lt;/param&gt;
+#/ &lt;param name="startDate"&gt;The starting date/time for the data series.&lt;/param&gt;
+#/ &lt;param name="endDate"&gt;The ending date/time for the data series.&lt;/param&gt;
+sub getDailyData
+{
+    my ($ticker, $startDate, $endDate) = @_;
+    #
+    # In this demo, we use a random number generator to generate the data. In
+    # practice, you may get the data from a database or by other means.
+    #
+    generateRandomData($ticker, $startDate, $endDate, 86400);
+}
+
+#/ &lt;summary&gt;
+#/ Get weekly data series for timeStamps, highData, lowData, openData, closeData
+#/ and volData.
+#/ &lt;/summary&gt;
+#/ &lt;param name="ticker"&gt;The ticker symbol for the data series.&lt;/param&gt;
+#/ &lt;param name="startDate"&gt;The starting date/time for the data series.&lt;/param&gt;
+#/ &lt;param name="endDate"&gt;The ending date/time for the data series.&lt;/param&gt;
+sub getWeeklyData
+{
+    my ($ticker, $startDate, $endDate) = @_;
+    #
+    # If you do not have weekly data, you may call "getDailyData(startDate, endDate)"
+    # to get daily data, then call "convertDailyToWeeklyData()" to convert to weekly
+    # data.
+    #
+    generateRandomData($ticker, $startDate, $endDate, 86400 * 7);
+}
+
+#/ &lt;summary&gt;
+#/ Get monthly data series for timeStamps, highData, lowData, openData, closeData
+#/ and volData.
+#/ &lt;/summary&gt;
+#/ &lt;param name="ticker"&gt;The ticker symbol for the data series.&lt;/param&gt;
+#/ &lt;param name="startDate"&gt;The starting date/time for the data series.&lt;/param&gt;
+#/ &lt;param name="endDate"&gt;The ending date/time for the data series.&lt;/param&gt;
+sub getMonthlyData
+{
+    my ($ticker, $startDate, $endDate) = @_;
+    #
+    # If you do not have weekly data, you may call "getDailyData(startDate, endDate)"
+    # to get daily data, then call "convertDailyToMonthlyData()" to convert to
+    # monthly data.
+    #
+    generateRandomData($ticker, $startDate, $endDate, 86400 * 30);
+}
+
+#/ &lt;summary&gt;
+#/ A random number generator designed to generate realistic financial data.
+#/ &lt;/summary&gt;
+#/ &lt;param name="ticker"&gt;The ticker symbol for the data series.&lt;/param&gt;
+#/ &lt;param name="startDate"&gt;The starting date/time for the data series.&lt;/param&gt;
+#/ &lt;param name="endDate"&gt;The ending date/time for the data series.&lt;/param&gt;
+#/ &lt;param name="resolution"&gt;The period of the data series.&lt;/param&gt;
+sub generateRandomData
+{
+    my ($ticker, $startDate, $endDate, $resolution) = @_;
+    my $db = new FinanceSimulator($ticker, $startDate, $endDate, $resolution);
+    $timeStamps = $db-&gt;getTimeStamps();
+    $highData = $db-&gt;getHighData();
+    $lowData = $db-&gt;getLowData();
+    $openData = $db-&gt;getOpenData();
+    $closeData = $db-&gt;getCloseData();
+    $volData = $db-&gt;getVolData();
+}
+
+#/ &lt;summary&gt;
+#/ A utility to convert daily to weekly data.
+#/ &lt;/summary&gt;
+sub convertDailyToWeeklyData
+{
+    aggregateData(new ArrayMath($timeStamps)-&gt;selectStartOfWeek());
+}
+
+#/ &lt;summary&gt;
+#/ A utility to convert daily to monthly data.
+#/ &lt;/summary&gt;
+sub convertDailyToMonthlyData
+{
+    aggregateData(new ArrayMath($timeStamps)-&gt;selectStartOfMonth());
+}
+
+#/ &lt;summary&gt;
+#/ An internal method used to aggregate daily data.
+#/ &lt;/summary&gt;
+sub aggregateData
+{
+    my ($aggregator) = @_;
+    $timeStamps = $aggregator-&gt;aggregate($timeStamps, $perlchartdir::AggregateFirst);
+    $highData = $aggregator-&gt;aggregate($highData, $perlchartdir::AggregateMax);
+    $lowData = $aggregator-&gt;aggregate($lowData, $perlchartdir::AggregateMin);
+    $openData = $aggregator-&gt;aggregate($openData, $perlchartdir::AggregateFirst);
+    $closeData = $aggregator-&gt;aggregate($closeData, $perlchartdir::AggregateLast);
+    $volData = $aggregator-&gt;aggregate($volData, $perlchartdir::AggregateSum);
+}
+
+#/ &lt;summary&gt;
+#/ Create a financial chart according to user selections. The user selections are
+#/ encoded in the query parameters.
+#/ &lt;/summary&gt;
+sub drawChart
+{
+    # In this demo, we just assume we plot up to the latest time. So end date is now.
+    my $endDate = perlchartdir::chartTime2(time());
+
+    # If the trading day has not yet started (before 9:30am), or if the end date is
+    # on on Sat or Sun, we set the end date to 4:00pm of the last trading day
+    while ((fmod2($endDate, 86400) &lt; 9 * 3600 + 30 * 60) || (
+        perlchartdir::getChartWeekDay($endDate) == 0) || (
+        perlchartdir::getChartWeekDay($endDate) == 6)) {
+        $endDate = $endDate - fmod2($endDate, 86400) - 86400 + 16 * 3600;
+    }
+
+    # The duration selected by the user
+    my $durationInDays = int($query-&gt;param("TimeRange"));
+
+    # Compute the start date by subtracting the duration from the end date.
+    my $startDate = $endDate;
+    if ($durationInDays &gt;= 30) {
+        # More or equal to 30 days - so we use months as the unit
+        my $YMD = perlchartdir::getChartYMD($endDate);
+        my $startMonth = int($YMD / 100) % 100 - int($durationInDays / 30);
+        my $startYear = int($YMD / 10000);
+        while ($startMonth &lt; 1) {
+            $startYear = $startYear - 1;
+            $startMonth = $startMonth + 12;
+        }
+        $startDate = perlchartdir::chartTime($startYear, $startMonth, 1);
+    } else {
+        # Less than 30 days - use day as the unit. The starting point of the axis is
+        # always at the start of the day (9:30am). Note that we use trading days, so
+        # we skip Sat and Sun in counting the days.
+        $startDate = $endDate - fmod2($endDate, 86400) + 9 * 3600 + 30 * 60;
+        for(my $i = 1; $i &lt; $durationInDays; ++$i) {
+            if (perlchartdir::getChartWeekDay($startDate) == 1) {
+                $startDate = $startDate - 3 * 86400;
+            } else {
+                $startDate = $startDate - 86400;
+            }
+        }
+    }
+
+    # The moving average periods selected by the user.
+    my $avgPeriod1 = 0;
+    $avgPeriod1 = int($query-&gt;param("movAvg1"));
+    my $avgPeriod2 = 0;
+    $avgPeriod2 = int($query-&gt;param("movAvg2"));
+
+    if ($avgPeriod1 &lt; 0) {
+        $avgPeriod1 = 0;
+    } elsif ($avgPeriod1 &gt; 300) {
+        $avgPeriod1 = 300;
+    }
+
+    if ($avgPeriod2 &lt; 0) {
+        $avgPeriod2 = 0;
+    } elsif ($avgPeriod2 &gt; 300) {
+        $avgPeriod2 = 300;
+    }
+
+    # We need extra leading data points in order to compute moving averages.
+    my $extraPoints = 20;
+    if ($avgPeriod1 &gt; $extraPoints) {
+        $extraPoints = $avgPeriod1;
+    }
+    if ($avgPeriod2 &gt; $extraPoints) {
+        $extraPoints = $avgPeriod2;
+    }
+
+    # Get the data series to compare with, if any.
+    my $compareKey = (($query-&gt;param("CompareWith") =~ /(\S.*?)\s*$/s)[0] || "");
+    $compareData = undef;
+    if (getData($compareKey, $startDate, $endDate, $durationInDays, $extraPoints)) {
+          $compareData = $closeData;
+    }
+
+    # The data series we want to get.
+    my $tickerKey = (($query-&gt;param("TickerSymbol") =~ /(\S.*?)\s*$/s)[0] || "");
+    if (!getData($tickerKey, $startDate, $endDate, $durationInDays, $extraPoints)) {
+        return errMsg("Please enter a valid ticker symbol");
+    }
+
+    # We now confirm the actual number of extra points (data points that are before
+    # the start date) as inferred using actual data from the database.
+    $extraPoints = scalar(@$timeStamps);
+    for(my $i = 0; $i &lt; scalar(@$timeStamps); ++$i) {
+        if ($timeStamps-&gt;[$i] &gt;= $startDate) {
+            $extraPoints = $i;
+            last;
+        }
+    }
+
+    # Check if there is any valid data
+    if ($extraPoints &gt;= scalar(@$timeStamps)) {
+        # No data - just display the no data message.
+        return errMsg("No data available for the specified time period");
+    }
+
+    # In some finance chart presentation style, even if the data for the latest day
+    # is not fully available, the axis for the entire day will still be drawn, where
+    # no data will appear near the end of the axis.
+    if ($resolution &lt; 86400) {
+        # Add extra points to the axis until it reaches the end of the day. The end
+        # of day is assumed to be 16:00 (it depends on the stock exchange).
+        my $lastTime = $timeStamps-&gt;[scalar(@$timeStamps) - 1];
+        my $extraTrailingPoints = int((16 * 3600 - fmod2($lastTime, 86400)) /
+            $resolution);
+        for(my $i = 0; $i &lt; $extraTrailingPoints; ++$i) {
+            push(@$timeStamps, $lastTime + $resolution * ($i + 1));
+        }
+    }
+
+    #
+    # At this stage, all data are available. We can draw the chart as according to
+    # user input.
+    #
+
+    #
+    # Determine the chart size. In this demo, user can select 4 different chart
+    # sizes. Default is the large chart size.
+    #
+    my $width = 780;
+    my $mainHeight = 255;
+    my $indicatorHeight = 80;
+
+    my $size = $query-&gt;param("ChartSize");
+    if ($size eq "S") {
+        # Small chart size
+        $width = 450;
+        $mainHeight = 160;
+        $indicatorHeight = 60;
+    } elsif ($size eq "M") {
+        # Medium chart size
+        $width = 620;
+        $mainHeight = 215;
+        $indicatorHeight = 70;
+    } elsif ($size eq "H") {
+        # Huge chart size
+        $width = 1000;
+        $mainHeight = 320;
+        $indicatorHeight = 90;
+    }
+
+    # Create the chart object using the selected size
+    my $m = new FinanceChart($width);
+
+    # Set the data into the chart object
+    $m-&gt;setData($timeStamps, $highData, $lowData, $openData, $closeData, $volData,
+        $extraPoints);
+
+    #
+    # We configure the title of the chart. In this demo chart design, we put the
+    # company name as the top line of the title with left alignment.
+    #
+    $m-&gt;addPlotAreaTitle($perlchartdir::TopLeft, $tickerKey);
+
+    # We displays the current date as well as the data resolution on the next line.
+    my $resolutionText = "";
+    if ($resolution == 30 * 86400) {
+        $resolutionText = "Monthly";
+    } elsif ($resolution == 7 * 86400) {
+        $resolutionText = "Weekly";
+    } elsif ($resolution == 86400) {
+        $resolutionText = "Daily";
+    } elsif ($resolution == 900) {
+        $resolutionText = "15-min";
+    }
+
+    $m-&gt;addPlotAreaTitle($perlchartdir::BottomLeft, sprintf(
+        "&lt;*font=arial.ttf,size=8*&gt;%s - %s chart", $m-&gt;formatValue(
+        perlchartdir::chartTime2(time()), "mmm dd, yyyy"), $resolutionText));
+
+    # A copyright message at the bottom left corner the title area
+    $m-&gt;addPlotAreaTitle($perlchartdir::BottomRight,
+        "&lt;*font=arial.ttf,size=8*&gt;(c) Advanced Software Engineering");
+
+    #
+    # Add the first techical indicator according. In this demo, we draw the first
+    # indicator on top of the main chart.
+    #
+    addIndicator($m, $query-&gt;param("Indicator1"), $indicatorHeight);
+
+    #
+    # Add the main chart
+    #
+    $m-&gt;addMainChart($mainHeight);
+
+    #
+    # Set log or linear scale according to user preference
+    #
+    if ($query-&gt;param("LogScale") eq "1") {
+        $m-&gt;setLogScale(1);
+    }
+
+    #
+    # Set axis labels to show data values or percentage change to user preference
+    #
+    if ($query-&gt;param("PercentageScale") eq "1") {
+        $m-&gt;setPercentageAxis();
+    }
+
+    #
+    # Draw any price line the user has selected
+    #
+    my $mainType = $query-&gt;param("ChartType");
+    if ($mainType eq "Close") {
+        $m-&gt;addCloseLine(0x000040);
+    } elsif ($mainType eq "TP") {
+        $m-&gt;addTypicalPrice(0x000040);
+    } elsif ($mainType eq "WC") {
+        $m-&gt;addWeightedClose(0x000040);
+    } elsif ($mainType eq "Median") {
+        $m-&gt;addMedianPrice(0x000040);
+    }
+
+    #
+    # Add comparison line if there is data for comparison
+    #
+    if (defined($compareData)) {
+        if (scalar(@$compareData) &gt; $extraPoints) {
+            $m-&gt;addComparison($compareData, 0x0000ff, $compareKey);
+        }
+    }
+
+    #
+    # Add moving average lines.
+    #
+    addMovingAvg($m, $query-&gt;param("avgType1"), $avgPeriod1, 0x663300);
+    addMovingAvg($m, $query-&gt;param("avgType2"), $avgPeriod2, 0x9900ff);
+
+    #
+    # Draw candlesticks or OHLC symbols if the user has selected them.
+    #
+    if ($mainType eq "CandleStick") {
+        $m-&gt;addCandleStick(0x33ff33, 0xff3333);
+    } elsif ($mainType eq "OHLC") {
+        $m-&gt;addHLOC(0x008800, 0xcc0000);
+    }
+
+    #
+    # Add parabolic SAR if necessary
+    #
+    if ($query-&gt;param("ParabolicSAR") eq "1") {
+        $m-&gt;addParabolicSAR(0.02, 0.02, 0.2, $perlchartdir::DiamondShape, 5,
+            0x008800, 0x000000);
+    }
+
+    #
+    # Add price band/channel/envelop to the chart according to user selection
+    #
+    my $bandType = $query-&gt;param("Band");
+    if ($bandType eq "BB") {
+        $m-&gt;addBollingerBand(20, 2, 0x9999ff, 0xc06666ff);
+    } elsif ($bandType eq "DC") {
+        $m-&gt;addDonchianChannel(20, 0x9999ff, 0xc06666ff);
+    } elsif ($bandType eq "Envelop") {
+        $m-&gt;addEnvelop(20, 0.1, 0x9999ff, 0xc06666ff);
+    }
+
+    #
+    # Add volume bars to the main chart if necessary
+    #
+    if ($query-&gt;param("Volume") eq "1") {
+        $m-&gt;addVolBars($indicatorHeight, 0x99ff99, 0xff9999, 0xc0c0c0);
+    }
+
+    #
+    # Add additional indicators as according to user selection.
+    #
+    addIndicator($m, $query-&gt;param("Indicator2"), $indicatorHeight);
+    addIndicator($m, $query-&gt;param("Indicator3"), $indicatorHeight);
+    addIndicator($m, $query-&gt;param("Indicator4"), $indicatorHeight);
+
+    return $m;
+}
+
+#/ &lt;summary&gt;
+#/ Add a moving average line to the FinanceChart object.
+#/ &lt;/summary&gt;
+#/ &lt;param name="m"&gt;The FinanceChart object to add the line to.&lt;/param&gt;
+#/ &lt;param name="avgType"&gt;The moving average type (SMA/EMA/TMA/WMA).&lt;/param&gt;
+#/ &lt;param name="avgPeriod"&gt;The moving average period.&lt;/param&gt;
+#/ &lt;param name="color"&gt;The color of the line.&lt;/param&gt;
+#/ &lt;returns&gt;The LineLayer object representing line layer created.&lt;/returns&gt;
+sub addMovingAvg
+{
+    my ($m, $avgType, $avgPeriod, $color) = @_;
+    if ($avgPeriod &gt; 1) {
+        if ($avgType eq "SMA") {
+            return $m-&gt;addSimpleMovingAvg($avgPeriod, $color);
+        } elsif ($avgType eq "EMA") {
+            return $m-&gt;addExpMovingAvg($avgPeriod, $color);
+        } elsif ($avgType eq "TMA") {
+            return $m-&gt;addTriMovingAvg($avgPeriod, $color);
+        } elsif ($avgType eq "WMA") {
+            return $m-&gt;addWeightedMovingAvg($avgPeriod, $color);
+        }
+    }
+    return undef;
+}
+
+#/ &lt;summary&gt;
+#/ Add an indicator chart to the FinanceChart object. In this demo example, the
+#/ indicator parameters (such as the period used to compute RSI, colors of the lines,
+#/ etc.) are hard coded to commonly used values. You are welcome to design a more
+#/ complex user interface to allow users to set the parameters.
+#/ &lt;/summary&gt;
+#/ &lt;param name="m"&gt;The FinanceChart object to add the line to.&lt;/param&gt;
+#/ &lt;param name="indicator"&gt;The selected indicator.&lt;/param&gt;
+#/ &lt;param name="height"&gt;Height of the chart in pixels&lt;/param&gt;
+#/ &lt;returns&gt;The XYChart object representing indicator chart.&lt;/returns&gt;
+sub addIndicator
+{
+    my ($m, $indicator, $height) = @_;
+    if ($indicator eq "RSI") {
+        return $m-&gt;addRSI($height, 14, 0x800080, 20, 0xff6666, 0x6666ff);
+    } elsif ($indicator eq "StochRSI") {
+        return $m-&gt;addStochRSI($height, 14, 0x800080, 30, 0xff6666, 0x6666ff);
+    } elsif ($indicator eq "MACD") {
+        return $m-&gt;addMACD($height, 26, 12, 9, 0x0000ff, 0xff00ff, 0x008000);
+    } elsif ($indicator eq "FStoch") {
+        return $m-&gt;addFastStochastic($height, 14, 3, 0x006060, 0x606000);
+    } elsif ($indicator eq "SStoch") {
+        return $m-&gt;addSlowStochastic($height, 14, 3, 0x006060, 0x606000);
+    } elsif ($indicator eq "ATR") {
+        return $m-&gt;addATR($height, 14, 0x808080, 0x0000ff);
+    } elsif ($indicator eq "ADX") {
+        return $m-&gt;addADX($height, 14, 0x008000, 0x800000, 0x000080);
+    } elsif ($indicator eq "DCW") {
+        return $m-&gt;addDonchianWidth($height, 20, 0x0000ff);
+    } elsif ($indicator eq "BBW") {
+        return $m-&gt;addBollingerWidth($height, 20, 2, 0x0000ff);
+    } elsif ($indicator eq "DPO") {
+        return $m-&gt;addDPO($height, 20, 0x0000ff);
+    } elsif ($indicator eq "PVT") {
+        return $m-&gt;addPVT($height, 0x0000ff);
+    } elsif ($indicator eq "Momentum") {
+        return $m-&gt;addMomentum($height, 12, 0x0000ff);
+    } elsif ($indicator eq "Performance") {
+        return $m-&gt;addPerformance($height, 0x0000ff);
+    } elsif ($indicator eq "ROC") {
+        return $m-&gt;addROC($height, 12, 0x0000ff);
+    } elsif ($indicator eq "OBV") {
+        return $m-&gt;addOBV($height, 0x0000ff);
+    } elsif ($indicator eq "AccDist") {
+        return $m-&gt;addAccDist($height, 0x0000ff);
+    } elsif ($indicator eq "CLV") {
+        return $m-&gt;addCLV($height, 0x0000ff);
+    } elsif ($indicator eq "WilliamR") {
+        return $m-&gt;addWilliamR($height, 14, 0x800080, 30, 0xff6666, 0x6666ff);
+    } elsif ($indicator eq "Aroon") {
+        return $m-&gt;addAroon($height, 14, 0x339933, 0x333399);
+    } elsif ($indicator eq "AroonOsc") {
+        return $m-&gt;addAroonOsc($height, 14, 0x0000ff);
+    } elsif ($indicator eq "CCI") {
+        return $m-&gt;addCCI($height, 20, 0x800080, 100, 0xff6666, 0x6666ff);
+    } elsif ($indicator eq "EMV") {
+        return $m-&gt;addEaseOfMovement($height, 9, 0x006060, 0x606000);
+    } elsif ($indicator eq "MDX") {
+        return $m-&gt;addMassIndex($height, 0x800080, 0xff6666, 0x6666ff);
+    } elsif ($indicator eq "CVolatility") {
+        return $m-&gt;addChaikinVolatility($height, 10, 10, 0x0000ff);
+    } elsif ($indicator eq "COscillator") {
+        return $m-&gt;addChaikinOscillator($height, 0x0000ff);
+    } elsif ($indicator eq "CMF") {
+        return $m-&gt;addChaikinMoneyFlow($height, 21, 0x008000);
+    } elsif ($indicator eq "NVI") {
+        return $m-&gt;addNVI($height, 255, 0x0000ff, 0x883333);
+    } elsif ($indicator eq "PVI") {
+        return $m-&gt;addPVI($height, 255, 0x0000ff, 0x883333);
+    } elsif ($indicator eq "MFI") {
+        return $m-&gt;addMFI($height, 14, 0x800080, 30, 0xff6666, 0x6666ff);
+    } elsif ($indicator eq "PVO") {
+        return $m-&gt;addPVO($height, 26, 12, 9, 0x0000ff, 0xff00ff, 0x008000);
+    } elsif ($indicator eq "PPO") {
+        return $m-&gt;addPPO($height, 26, 12, 9, 0x0000ff, 0xff00ff, 0x008000);
+    } elsif ($indicator eq "UO") {
+        return $m-&gt;addUltimateOscillator($height, 7, 14, 28, 0x800080, 20, 0xff6666,
+            0x6666ff);
+    } elsif ($indicator eq "Vol") {
+        return $m-&gt;addVolIndicator($height, 0x99ff99, 0xff9999, 0xc0c0c0);
+    } elsif ($indicator eq "TRIX") {
+        return $m-&gt;addTRIX($height, 12, 0x0000ff);
+    }
+    return undef;
+}
+
+#/ &lt;summary&gt;
+#/ Creates a dummy chart to show an error message.
+#/ &lt;/summary&gt;
+#/ &lt;param name="msg"&gt;The error message.
+#/ &lt;returns&gt;The BaseChart object containing the error message.&lt;/returns&gt;
+sub errMsg
+{
+    my ($msg) = @_;
+    my $m = new MultiChart(400, 200);
+    $m-&gt;addTitle2($perlchartdir::Center, $msg, "arial.ttf", 10)-&gt;setMaxWidth(
+        $m-&gt;getWidth());
+    return $m;
+}
+
+# create the finance chart
+my $c = drawChart();
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table></div><br>
+<hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div></body>
+</HTML>

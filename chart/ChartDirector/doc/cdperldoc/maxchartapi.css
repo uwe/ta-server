@@ -1,0 +1,18 @@
+body {font-size:100%; font-family:verdana;}
+p.heading0 {font-size:80%; font-family:verdana; margin:0; padding-left:5; font-style:italic; font-weight:bold; color:#000000; background:#ccccff}
+p.heading1 {font-size:160%; font-family:verdana; font-weight:bold; margin:0; padding-top:5; padding-left:5; color:#000000;}
+p.heading1a {font-size:110%; font-family:verdana; margin:0; margin-top:20; padding-left:5; font-weight:bold; color:#4040FF;}
+p.heading1aa {font-size:110%; font-family:verdana; margin:0; padding-left:5; font-weight:bold; color:#4040FF;}
+p.heading2a {font-size:90%; font-family:verdana; margin:0; padding-left:5; font-weight:bold; color:#000000;}
+p.heading2 {font-size:90%; font-family:verdana; margin:0; margin-top:20; padding-left:5; font-weight:bold; color:#000000;}
+div.content {font-size:80%; font-family:verdana; margin-top:5; margin-right:5; padding-left:5; color:#000000;}
+div.copyright {font-size:80%; font-family:verdana; padding-bottom:5; padding-left:5; color:#000000; page-break-after:always;}
+hr.separator {color:#9999ff; margin:0;}
+th { background:#c0c0c0; font-size:80%; font-family:verdana; color:#000000; text-align:left;}
+td { font-size:80%; font-family:verdana; color:#000000; text-align:left; vertical-align:top;}
+xmp { margin:0; font-family:courier new, courier; font-size:100%; }
+pre { margin:0; font-family:courier new, courier; font-size:100%; }
+code { font-family:courier new, courier; font-size:100%; }
+ul {margin-top:0; list-style:square;}
+ol {margin-top:0;}
+a:hover {background:#FFFF40;}

@@ -1,0 +1,153 @@
+<HTML>
+<HEAD>
+<Title>Glass Multi-Bar Chart</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Glass Multi-Bar Chart</p>
+<hr class="separator">
+<div class="content">
+<img src="images/glassmultibar.png">
+<br><br>
+This example demonstrates a multi-bar chart with glass shading effect for bars and gradient color for plot area background.<br><br>
+Glass lighting is a complex shading effect that gives a look and feel of tinted glass or semi-transparent plastic material. This effect involves glare and variation of lighting caused by reflection and refraction inside the material.<br><br>
+<ul><li> The gradient plot area background is configured by using <a href="BaseChart.linearGradientColor.htm">BaseChart.linearGradientColor</a> to define the gradient color, then use <a href="XYChart.setPlotArea.htm">XYChart.setPlotArea</a> to apply it to the plot area.<br><br>
+<li> The <a href="XYChart.setPlotArea.htm">XYChart.setPlotArea</a> also sets the plot area border and grid line colors to white.<br><br>
+<li> The glass shading effect of the bars is defined using <a href="perlchartdir.glassEffect.htm">perlchartdir::glassEffect</a>, then applied to the bars using <a href="Layer.setBorderColor.htm">Layer.setBorderColor</a>.</ul>
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\glassmultibar.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# The data for the bar chart
+my $data0 = [100, 125, 245, 147, 67];
+my $data1 = [85, 156, 179, 211, 123];
+my $data2 = [97, 87, 56, 267, 157];
+my $labels = ["Mon", "Tue", "Wed", "Thur", "Fri"];
+
+# Create a XYChart object of size 540 x 375 pixels
+my $c = new XYChart(540, 375);
+
+# Add a title to the chart using 18 pts Times Bold Italic font
+$c-&gt;addTitle("Average Weekly Network Load", "timesbi.ttf", 18);
+
+# Set the plotarea at (50, 55) and of 440 x 280 pixels in size. Use a vertical
+# gradient color from light blue (f9f9ff) to blue (6666ff) as background. Set border
+# and grid lines to white (ffffff).
+$c-&gt;setPlotArea(50, 55, 440, 280, $c-&gt;linearGradientColor(0, 55, 0, 335, 0xf9f9ff,
+    0x6666ff), -1, 0xffffff, 0xffffff);
+
+# Add a legend box at (50, 28) using horizontal layout. Use 10pts Arial Bold as font,
+# with transparent background.
+$c-&gt;addLegend(50, 28, 0, "arialbd.ttf", 10)-&gt;setBackground($perlchartdir::Transparent
+    );
+
+# Set the x axis labels
+$c-&gt;xAxis()-&gt;setLabels($labels);
+
+# Draw the ticks between label positions (instead of at label positions)
+$c-&gt;xAxis()-&gt;setTickOffset(0.5);
+
+# Set axis label style to 8pts Arial Bold
+$c-&gt;xAxis()-&gt;setLabelStyle("arialbd.ttf", 8);
+$c-&gt;yAxis()-&gt;setLabelStyle("arialbd.ttf", 8);
+
+# Set axis line width to 2 pixels
+$c-&gt;xAxis()-&gt;setWidth(2);
+$c-&gt;yAxis()-&gt;setWidth(2);
+
+# Add axis title
+$c-&gt;yAxis()-&gt;setTitle("Throughput (MBytes Per Hour)");
+
+# Add a multi-bar layer with 3 data sets
+my $layer = $c-&gt;addBarLayer2($perlchartdir::Side);
+$layer-&gt;addDataSet($data0, 0xff0000, "Server #1");
+$layer-&gt;addDataSet($data1, 0x00ff00, "Server #2");
+$layer-&gt;addDataSet($data2, 0xff8800, "Server #3");
+
+# Set bar border to transparent. Use glass lighting effect with light direction from
+# left.
+$layer-&gt;setBorderColor($perlchartdir::Transparent, perlchartdir::glassEffect(
+    $perlchartdir::NormalGlare, $perlchartdir::Left));
+
+# Configure the bars within a group to touch each others (no gap)
+$layer-&gt;setBarGap(0.2, $perlchartdir::TouchBar);
+
+# Output the chart
+$c-&gt;makeChart("glassmultibar.png")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\glassmultibar.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The data for the bar chart
+my $data0 = [100, 125, 245, 147, 67];
+my $data1 = [85, 156, 179, 211, 123];
+my $data2 = [97, 87, 56, 267, 157];
+my $labels = ["Mon", "Tue", "Wed", "Thur", "Fri"];
+
+# Create a XYChart object of size 540 x 375 pixels
+my $c = new XYChart(540, 375);
+
+# Add a title to the chart using 18 pts Times Bold Italic font
+$c-&gt;addTitle("Average Weekly Network Load", "timesbi.ttf", 18);
+
+# Set the plotarea at (50, 55) and of 440 x 280 pixels in size. Use a vertical
+# gradient color from light blue (f9f9ff) to blue (6666ff) as background. Set border
+# and grid lines to white (ffffff).
+$c-&gt;setPlotArea(50, 55, 440, 280, $c-&gt;linearGradientColor(0, 55, 0, 335, 0xf9f9ff,
+    0x6666ff), -1, 0xffffff, 0xffffff);
+
+# Add a legend box at (50, 28) using horizontal layout. Use 10pts Arial Bold as font,
+# with transparent background.
+$c-&gt;addLegend(50, 28, 0, "arialbd.ttf", 10)-&gt;setBackground($perlchartdir::Transparent
+    );
+
+# Set the x axis labels
+$c-&gt;xAxis()-&gt;setLabels($labels);
+
+# Draw the ticks between label positions (instead of at label positions)
+$c-&gt;xAxis()-&gt;setTickOffset(0.5);
+
+# Set axis label style to 8pts Arial Bold
+$c-&gt;xAxis()-&gt;setLabelStyle("arialbd.ttf", 8);
+$c-&gt;yAxis()-&gt;setLabelStyle("arialbd.ttf", 8);
+
+# Set axis line width to 2 pixels
+$c-&gt;xAxis()-&gt;setWidth(2);
+$c-&gt;yAxis()-&gt;setWidth(2);
+
+# Add axis title
+$c-&gt;yAxis()-&gt;setTitle("Throughput (MBytes Per Hour)");
+
+# Add a multi-bar layer with 3 data sets
+my $layer = $c-&gt;addBarLayer2($perlchartdir::Side);
+$layer-&gt;addDataSet($data0, 0xff0000, "Server #1");
+$layer-&gt;addDataSet($data1, 0x00ff00, "Server #2");
+$layer-&gt;addDataSet($data2, 0xff8800, "Server #3");
+
+# Set bar border to transparent. Use glass lighting effect with light direction from
+# left.
+$layer-&gt;setBorderColor($perlchartdir::Transparent, perlchartdir::glassEffect(
+    $perlchartdir::NormalGlare, $perlchartdir::Left));
+
+# Configure the bars within a group to touch each others (no gap)
+$layer-&gt;setBarGap(0.2, $perlchartdir::TouchBar);
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

@@ -1,0 +1,154 @@
+<HTML>
+<HEAD>
+<Title>Wide Angular Meters</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Wide Angular Meters</p>
+<hr class="separator">
+<div class="content">
+<img src="images/wideameter0.png">&nbsp;&nbsp;<img src="images/wideameter1.png">&nbsp;&nbsp;<img src="images/wideameter2.png">&nbsp;&nbsp;<img src="images/wideameter3.png">&nbsp;&nbsp;<img src="images/wideameter4.png">&nbsp;&nbsp;<img src="images/wideameter5.png">
+<br><br>
+This example demonstrates angular meters of which the width is large compared to the height. It also demonstrates various background effects.<br><br>
+The meters in this example are created by using large meter radii, but small angular spans. The center (pivot for the pointer) can then be put outside the meter region and the meters can be reduced in height.<br><br>
+This example also demonstrates metallic background effects and background patterns. The backgrounds are configured using <a href="BaseChart.setBackground.htm">BaseChart.setBackground</a>. The metallic colors are created using <a href="perlchartdir.goldColor.htm">perlchartdir::goldColor</a>, <a href="perlchartdir.silverColor.htm">perlchartdir::silverColor</a> and <a href="perlchartdir.metalColor.htm">perlchartdir::metalColor</a>. The background patterns are created by loading image files as pattern colors using <a href="BaseChart.patternColor2.htm">BaseChart.patternColor2</a>.<br><br>
+This example also shows the effect of the semi-transparent pointers, which can avoid blocking the labels on the meter.
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\wideameter.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+sub createChart
+{
+    my $img = shift;
+
+    # The value to display on the meter
+    my $value = 6.5;
+
+    # Create an AugularMeter object of size 200 x 100 pixels with rounded corners
+    my $m = new AngularMeter(200, 100);
+    $m-&gt;setRoundedFrame();
+
+    # Set meter background according to a parameter
+    if ($img eq "0") {
+        # Use gold background color
+        $m-&gt;setBackground(perlchartdir::goldColor(), 0x000000, -2);
+    } elsif ($img eq "1") {
+        # Use silver background color
+        $m-&gt;setBackground(perlchartdir::silverColor(), 0x000000, -2);
+    } elsif ($img eq "2") {
+        # Use metallic blue (9898E0) background color
+        $m-&gt;setBackground(perlchartdir::metalColor(0x9898e0), 0x000000, -2);
+    } elsif ($img eq "3") {
+        # Use a wood pattern as background color
+        $m-&gt;setBackground($m-&gt;patternColor2("wood.png"), 0x000000, -2);
+    } elsif ($img eq "4") {
+        # Use a marble pattern as background color
+        $m-&gt;setBackground($m-&gt;patternColor2("marble.png"), 0x000000, -2);
+    } else {
+        # Use a solid light purple (EEBBEE) background color
+        $m-&gt;setBackground(0xeebbee, 0x000000, -2);
+    }
+
+    # Set the meter center at (100, 235), with radius 210 pixels, and span from -24
+    # to +24 degress
+    $m-&gt;setMeter(100, 235, 210, -24, 24);
+
+    # Meter scale is 0 - 100, with a tick every 1 unit
+    $m-&gt;setScale(0, 10, 1);
+
+    # Set 0 - 6 as green (99ff99) zone, 6 - 8 as yellow (ffff00) zone, and 8 - 10 as
+    # red (ff3333) zone
+    $m-&gt;addZone(0, 6, 0x99ff99, 0x808080);
+    $m-&gt;addZone(6, 8, 0xffff00, 0x808080);
+    $m-&gt;addZone(8, 10, 0xff3333, 0x808080);
+
+    # Add a title at the bottom of the meter using 10 pts Arial Bold font
+    $m-&gt;addTitle2($perlchartdir::Bottom, "OUTPUT POWER LEVEL\n", "arialbd.ttf", 10);
+
+    # Add a semi-transparent black (80000000) pointer at the specified value
+    $m-&gt;addPointer($value, 0x80000000);
+
+    # Output the chart
+    $m-&gt;makeChart("wideameter$img.png")
+}
+
+createChart(0);
+createChart(1);
+createChart(2);
+createChart(3);
+createChart(4);
+createChart(5);</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\wideameter.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# Get HTTP query parameters
+use CGI;
+my $query = new CGI;
+
+# The value to display on the meter
+my $value = 6.5;
+
+# Create an AugularMeter object of size 200 x 100 pixels with rounded corners
+my $m = new AngularMeter(200, 100);
+$m-&gt;setRoundedFrame();
+
+# Set meter background according to a parameter
+if ($query-&gt;param("img") eq "0") {
+    # Use gold background color
+    $m-&gt;setBackground(perlchartdir::goldColor(), 0x000000, -2);
+} elsif ($query-&gt;param("img") eq "1") {
+    # Use silver background color
+    $m-&gt;setBackground(perlchartdir::silverColor(), 0x000000, -2);
+} elsif ($query-&gt;param("img") eq "2") {
+    # Use metallic blue (9898E0) background color
+    $m-&gt;setBackground(perlchartdir::metalColor(0x9898e0), 0x000000, -2);
+} elsif ($query-&gt;param("img") eq "3") {
+    # Use a wood pattern as background color
+    $m-&gt;setBackground($m-&gt;patternColor2(dirname($0)."/wood.png"), 0x000000, -2);
+} elsif ($query-&gt;param("img") eq "4") {
+    # Use a marble pattern as background color
+    $m-&gt;setBackground($m-&gt;patternColor2(dirname($0)."/marble.png"), 0x000000, -2);
+} else {
+    # Use a solid light purple (EEBBEE) background color
+    $m-&gt;setBackground(0xeebbee, 0x000000, -2);
+}
+
+# Set the meter center at (100, 235), with radius 210 pixels, and span from -24 to
+# +24 degress
+$m-&gt;setMeter(100, 235, 210, -24, 24);
+
+# Meter scale is 0 - 100, with a tick every 1 unit
+$m-&gt;setScale(0, 10, 1);
+
+# Set 0 - 6 as green (99ff99) zone, 6 - 8 as yellow (ffff00) zone, and 8 - 10 as red
+# (ff3333) zone
+$m-&gt;addZone(0, 6, 0x99ff99, 0x808080);
+$m-&gt;addZone(6, 8, 0xffff00, 0x808080);
+$m-&gt;addZone(8, 10, 0xff3333, 0x808080);
+
+# Add a title at the bottom of the meter using 10 pts Arial Bold font
+$m-&gt;addTitle2($perlchartdir::Bottom, "OUTPUT POWER LEVEL\n", "arialbd.ttf", 10);
+
+# Add a semi-transparent black (80000000) pointer at the specified value
+$m-&gt;addPointer($value, 0x80000000);
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $m-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

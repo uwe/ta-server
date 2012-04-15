@@ -1,0 +1,168 @@
+<HTML>
+<HEAD>
+<Title>Polar Bubble Chart</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Polar Bubble Chart</p>
+<hr class="separator">
+<div class="content">
+<img src="images/polarbubble.png">
+<br><br>
+This example demonstrates how to create polar bubble charts. It also demonstrates using alternating background colors along the radial direction.<br><br>
+A polar bubble chart can be created as a polar line chart with circles as data symbols. The line width is set to 0, so only the symbols can be seen. The symbol sizes are then controlled using another data series. This will create the effects of a bubble chart.<br><br>
+The detail steps are:<br><br>
+<ul><li> Create a polar line layer using <a href="PolarChart.addLineLayer.htm">PolarChart.addLineLayer</a>.<br><br>
+<li> Enable data symbols for the line using <a href="PolarLayer.setDataSymbol.htm">PolarLayer.setDataSymbol</a> (or <a href="PolarLayer.setDataSymbol2.htm">PolarLayer.setDataSymbol2</a> or <a href="PolarLayer.setDataSymbol3.htm">PolarLayer.setDataSymbol3</a> or <a href="PolarLayer.setDataSymbol4.htm">PolarLayer.setDataSymbol4</a>). ChartDirector supports using arbitrary shapes as bubbles, although traditionally, circles are used.<br><br>
+<li> Disable the line by setting its width to 0 using <a href="PolarLayer.setLineWidth.htm">PolarLayer.setLineWidth</a>.<br><br>
+<li> Control the size of the symbols by a data series using <a href="PolarLayer.setSymbolScale.htm">PolarLayer.setSymbolScale</a>.</ul>
+Note that in this example, the polar plot area uses two alternating background colors along the radial direction. This is by using <a href="PolarChart.setPlotAreaBg.htm">PolarChart.setPlotAreaBg</a>.
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\polarbubble.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# The data for the chart
+my $data0 = [6, 12.5, 18.2, 15];
+my $angles0 = [45, 96, 169, 258];
+my $size0 = [41, 105, 12, 20];
+
+my $data1 = [18, 16, 11, 14];
+my $angles1 = [30, 210, 240, 310];
+my $size1 = [30, 45, 12, 90];
+
+# Create a PolarChart object of size 460 x 460 pixels
+my $c = new PolarChart(460, 460);
+
+# Add a title to the chart at the top left corner using 15pts Arial Bold Italic font
+$c-&gt;addTitle2($perlchartdir::TopLeft, "&lt;*underline=2*&gt;EM Field Strength",
+    "arialbi.ttf", 15);
+
+# Set center of plot area at (230, 240) with radius 180 pixels
+$c-&gt;setPlotArea(230, 240, 180);
+
+# Use alternative light grey/dark grey circular background color
+$c-&gt;setPlotAreaBg(0xdddddd, 0xeeeeee);
+
+# Set the grid style to circular grid
+$c-&gt;setGridStyle(0);
+
+# Add a legend box at the top right corner of the chart using 9 pts Arial Bold font
+$c-&gt;addLegend(459, 0, 1, "arialbd.ttf", 9)-&gt;setAlignment($perlchartdir::TopRight);
+
+# Set angular axis as 0 - 360, with a spoke every 30 units
+$c-&gt;angularAxis()-&gt;setLinearScale(0, 360, 30);
+
+# Set the radial axis label format
+$c-&gt;radialAxis()-&gt;setLabelFormat("{value} km");
+
+# Add a blue (0x9999ff) line layer to the chart using (data0, angle0)
+my $layer0 = $c-&gt;addLineLayer($data0, 0x9999ff, "Cold Spot");
+$layer0-&gt;setAngles($angles0);
+
+# Disable the line by setting its width to 0, so only the symbols are visible
+$layer0-&gt;setLineWidth(0);
+
+# Use a circular data point symbol
+$layer0-&gt;setDataSymbol($perlchartdir::CircleSymbol, 11);
+
+# Modulate the symbol size by size0 to produce a bubble chart effect
+$layer0-&gt;setSymbolScale($size0);
+
+# Add a red (0xff9999) line layer to the chart using (data1, angle1)
+my $layer1 = $c-&gt;addLineLayer($data1, 0xff9999, "Hot Spot");
+$layer1-&gt;setAngles($angles1);
+
+# Disable the line by setting its width to 0, so only the symbols are visible
+$layer1-&gt;setLineWidth(0);
+
+# Use a circular data point symbol
+$layer1-&gt;setDataSymbol($perlchartdir::CircleSymbol, 11);
+
+# Modulate the symbol size by size1 to produce a bubble chart effect
+$layer1-&gt;setSymbolScale($size1);
+
+# Output the chart
+$c-&gt;makeChart("polarbubble.png")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\polarbubble.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The data for the chart
+my $data0 = [6, 12.5, 18.2, 15];
+my $angles0 = [45, 96, 169, 258];
+my $size0 = [41, 105, 12, 20];
+
+my $data1 = [18, 16, 11, 14];
+my $angles1 = [30, 210, 240, 310];
+my $size1 = [30, 45, 12, 90];
+
+# Create a PolarChart object of size 460 x 460 pixels
+my $c = new PolarChart(460, 460);
+
+# Add a title to the chart at the top left corner using 15pts Arial Bold Italic font
+$c-&gt;addTitle2($perlchartdir::TopLeft, "&lt;*underline=2*&gt;EM Field Strength",
+    "arialbi.ttf", 15);
+
+# Set center of plot area at (230, 240) with radius 180 pixels
+$c-&gt;setPlotArea(230, 240, 180);
+
+# Use alternative light grey/dark grey circular background color
+$c-&gt;setPlotAreaBg(0xdddddd, 0xeeeeee);
+
+# Set the grid style to circular grid
+$c-&gt;setGridStyle(0);
+
+# Add a legend box at the top right corner of the chart using 9 pts Arial Bold font
+$c-&gt;addLegend(459, 0, 1, "arialbd.ttf", 9)-&gt;setAlignment($perlchartdir::TopRight);
+
+# Set angular axis as 0 - 360, with a spoke every 30 units
+$c-&gt;angularAxis()-&gt;setLinearScale(0, 360, 30);
+
+# Set the radial axis label format
+$c-&gt;radialAxis()-&gt;setLabelFormat("{value} km");
+
+# Add a blue (0x9999ff) line layer to the chart using (data0, angle0)
+my $layer0 = $c-&gt;addLineLayer($data0, 0x9999ff, "Cold Spot");
+$layer0-&gt;setAngles($angles0);
+
+# Disable the line by setting its width to 0, so only the symbols are visible
+$layer0-&gt;setLineWidth(0);
+
+# Use a circular data point symbol
+$layer0-&gt;setDataSymbol($perlchartdir::CircleSymbol, 11);
+
+# Modulate the symbol size by size0 to produce a bubble chart effect
+$layer0-&gt;setSymbolScale($size0);
+
+# Add a red (0xff9999) line layer to the chart using (data1, angle1)
+my $layer1 = $c-&gt;addLineLayer($data1, 0xff9999, "Hot Spot");
+$layer1-&gt;setAngles($angles1);
+
+# Disable the line by setting its width to 0, so only the symbols are visible
+$layer1-&gt;setLineWidth(0);
+
+# Use a circular data point symbol
+$layer1-&gt;setDataSymbol($perlchartdir::CircleSymbol, 11);
+
+# Modulate the symbol size by size1 to produce a bubble chart effect
+$layer1-&gt;setSymbolScale($size1);
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

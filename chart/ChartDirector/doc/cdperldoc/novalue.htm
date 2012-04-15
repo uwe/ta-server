@@ -1,0 +1,15 @@
+<HTML>
+<HEAD>
+<Title>No Value Specification</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">No Value Specification</p>
+<hr class="separator">
+<div class="content">To draw charts, you need to supply data. In ChartDirector, data are supplied as an array of numbers.<br><br>
+In many cases, a data point will be missing. For example, suppose you are drawing a line chart with one data point per hour. It is possible that due to various reasons, some data points could be missing. However, if you are using an enumerated x-axis (see <a href="Axis.setLabels.htm">Axis.setLabels</a>), you cannot not simply remove that point, otherwise the remaining points will all be shifted.<br><br>
+To address this kind of issues, ChartDirector supports a special constant called <b><a href="perlchartdir.NoValue.htm">NoValue</a></b>, which is equal to <b>1.7E+308</b>. When ChartDirector sees that a data point is <b>NoValue</b>, it will jump over that point.<br><br>
+In a line chart, if a data point is <b>NoValue</b>, ChartDirector will jump over to the next data point. ChartDirector can use an alternative line color when jumping over a <b>NoValue</b> point to visually reflect that there is a missing point. The default alternative line color is <a href="perlchartdir.Transparent.htm">Transparent</a>, which means the <b>NoValue</b> point will result in a discontinuous line. You may use <a href="LineLayer.setGapColor.htm">LineLayer.setGapColor</a> to change it to other colors, such as using <a href="perlchartdir.SameAsMainColor.htm">SameAsMainColor</a> (same color as the normal line) or a dash line color.</div><br>
+<hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div></body>
+</HTML>

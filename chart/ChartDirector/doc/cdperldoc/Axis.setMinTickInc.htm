@@ -1,0 +1,40 @@
+<HTML>
+<HEAD>
+<Title>Axis.setMinTickInc</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="Axis.htm">Axis</a>.setMinTickInc</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setMinTickInc(inc)
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the minimum distance between two ticks on the axis for auto-scaled axis.<br><br>
+The most common use of this method is to ensure the ticks are of integer values (the minimum distance set to 1).<br><br>
+ChartDirector auto-scaling will automatically determine the optimal number of ticks and labels on the axis. However, in some cases, the nature of the data may be such that the ticks should assume only certain discrete values (such as must be integers). This method will inform ChartDirector for this constraint when performing auto-scaling.<br><br>
+For a log scale axis, because the axis ticks are unevenly spaced, the minimum distance will be treated as the minimum value allowed for the axis scale.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>inc</td><td>(Mandatory)</td><td>The minimum distance between two ticks on the axis as a data value.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

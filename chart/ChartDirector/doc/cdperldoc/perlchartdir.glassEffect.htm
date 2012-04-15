@@ -1,0 +1,46 @@
+<HTML>
+<HEAD>
+<Title>perlchartdir.glassEffect</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="perlchartdir.htm">perlchartdir</a>.glassEffect</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+glassEffect([ glareSize [, glareDirection [, raisedEffect ]]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+A complex shading effect that emulates tinted glass or semi-transparent plastic material.<br><br>
+This effect involves glare and variation of lighting caused by reflection and refraction inside the material. It is best explained by viewing the examples.<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="38%">Example<th width="60%">Description
+<tr><td><a href="errline.htm">Error Line Chart</a><td>The title is shaded using glass effect, with <a href="perlchartdir.NormalGlare.htm">NormalGlare</a>, lighting from <a href="perlchartdir.Top.htm">Top</a>, and raised effect of 5 pixels.
+<tr><td><a href="donut.htm">Donut Chart</a><td>Both the title and the sector labels are shaded using glass effect with <a href="perlchartdir.ReducedGlare.htm">ReducedGlare</a>, lighting from <a href="perlchartdir.Top.htm">Top</a>, and raised effect of 5 pixels.
+<tr><td><a href="glassmultibar.htm">Glass Multi-Bar Chart</a><td>The bars are shaded using glass effect, with <a href="perlchartdir.NormalGlare.htm">NormalGlare</a>, lighting from <a href="perlchartdir.Left.htm">Left</a>, and raised effect of 5 pixels.
+</table><br>
+Currently, this effect only works well for long, thin objects, such as title bars, text boxes and bars in bar charts.<br><br>
+The glassEffect method returns an integer representing this effect. The integer can be used as the third argument to <a href="Box.setBackground.htm">Box.setBackground</a> to apply the effect to <a href="Box.htm">Box</a> objects (including derived objects such as <a href="TextBox.htm">TextBox</a> objects). It may also be used as the second argument to <a href="Layer.setBorderColor.htm">Layer.setBorderColor</a> for <a href="BarLayer.htm">BarLayer</a> objects to apply the effect to bars.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>glareSize</td><td><a href="perlchartdir.NormalGlare.htm">NormalGlare</a></td><td>The amount of glare. Must be one of the predefined constants <a href="perlchartdir.NormalGlare.htm">NormalGlare</a>, <a href="perlchartdir.ReducedGlare.htm">ReducedGlare</a> or <a href="perlchartdir.NoGlare.htm">NoGlare</a>. With NormalGlare and ReducedGlare, the glare will cover around 50% and 35% of the object. If NoGlare is used, there will be no glare and the effect will not look like glass at all, but is equivalent to the <a href="perlchartdir.softLighting.htm">perlchartdir::softLighting</a> effect.<br><br>
+Usually, <a href="perlchartdir.NormalGlare.htm">NormalGlare</a> is best for thin objects with lightly colored background, while <a href="perlchartdir.ReducedGlare.htm">ReducedGlare</a> is best for dark background objects or not-so-thin objects (eg. text boxes using white text on a dark background, or with more than 1 line of text).</td></tr><tr><td>glareDirection</td><td><a href="perlchartdir.Top.htm">Top</a></td><td>The direction of the glare, which must be one of the predefined constants <a href="perlchartdir.Top.htm">Top</a>, <a href="perlchartdir.Right.htm">Right</a>, <a href="perlchartdir.Bottom.htm">Bottom</a>, <a href="perlchartdir.Left.htm">Left</a>.</td></tr><tr><td>raisedEffect</td><td>5</td><td>With glass shading effect, the object will appear to have some 3D depth. The raisedEffect argument controls the amount of 3D depth in pixels.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+An integer representing the glass effect.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

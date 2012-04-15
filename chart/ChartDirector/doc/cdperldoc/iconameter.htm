@@ -1,0 +1,104 @@
+<HTML>
+<HEAD>
+<Title>Icon Angular Meter</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Icon Angular Meter</p>
+<hr class="separator">
+<div class="content">
+<img src="images/iconameter.png">
+<br><br>
+This example demonstrates a fuel-tank like meters, in which the meter is labelled by an icon and the scale shows text abbreviations.<br><br>
+The scale labels on the meter is created by using <a href="BaseMeter.setScale2.htm">BaseMeter.setScale2</a>. The icon is created by adding a custom text box with <a href="BaseChart.addText.htm">BaseChart.addText</a> and using <a href="cdml.htm">CDML</a> to specify an icon.
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\iconameter.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# The value to display on the meter
+my $value = 85;
+
+# Create an AugularMeter object of size 70 x 90 pixels, using black background with a
+# 2 pixel 3D depressed border.
+my $m = new AngularMeter(70, 90, 0, 0, -2);
+
+# Use white on black color palette for default text and line colors
+$m-&gt;setColors($perlchartdir::whiteOnBlackPalette);
+
+# Set the meter center at (10, 45), with radius 50 pixels, and span from 135 to 45
+# degress
+$m-&gt;setMeter(10, 45, 50, 135, 45);
+
+# Set meter scale from 0 - 100, with the specified labels
+$m-&gt;setScale2(0, 100, ["E", " ", " ", " ", "F"]);
+
+# Set the angular arc and major tick width to 2 pixels
+$m-&gt;setLineWidth(2, 2);
+
+# Add a red zone at 0 - 15
+$m-&gt;addZone(0, 15, 0xff3333);
+
+# Add an icon at (25, 35)
+$m-&gt;addText(25, 35, "&lt;*img=gas.gif*&gt;");
+
+# Add a yellow (ffff00) pointer at the specified value
+$m-&gt;addPointer($value, 0xffff00);
+
+# Output the chart
+$m-&gt;makeChart("iconameter.png")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\iconameter.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The value to display on the meter
+my $value = 85;
+
+# Create an AugularMeter object of size 70 x 90 pixels, using black background with a
+# 2 pixel 3D depressed border.
+my $m = new AngularMeter(70, 90, 0, 0, -2);
+
+#Set directory for loading images to current script directory
+#Need when running under Microsoft IIS
+$m-&gt;setSearchPath(dirname($0));
+
+# Use white on black color palette for default text and line colors
+$m-&gt;setColors($perlchartdir::whiteOnBlackPalette);
+
+# Set the meter center at (10, 45), with radius 50 pixels, and span from 135 to 45
+# degress
+$m-&gt;setMeter(10, 45, 50, 135, 45);
+
+# Set meter scale from 0 - 100, with the specified labels
+$m-&gt;setScale2(0, 100, ["E", " ", " ", " ", "F"]);
+
+# Set the angular arc and major tick width to 2 pixels
+$m-&gt;setLineWidth(2, 2);
+
+# Add a red zone at 0 - 15
+$m-&gt;addZone(0, 15, 0xff3333);
+
+# Add an icon at (25, 35)
+$m-&gt;addText(25, 35, "&lt;*img=gas.gif*&gt;");
+
+# Add a yellow (ffff00) pointer at the specified value
+$m-&gt;addPointer($value, 0xffff00);
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $m-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

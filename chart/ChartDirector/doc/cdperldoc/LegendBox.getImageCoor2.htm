@@ -1,0 +1,41 @@
+<HTML>
+<HEAD>
+<Title>LegendBox.getImageCoor2</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="LegendBox.htm">LegendBox</a>.getImageCoor2</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+getImageCoor2(dataItem [, offsetX, offsetY ])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Gets the image map coordinates of an legend entry as HTML image map attributes.<br><br>
+The image map coordinates will be of the following format:<br><br>
+<div style="margin-left:25;font-family:courier new,courier"> shape="rect" cords="[x1],[y1],[x2],[y2]" </div><br>
+where (x1, y1) and (x2, y2) are opposite corners of the box that enclosed the legend entry. The format is specially designed so that it can easily be included into HTML image maps.<br><br>
+This method should be called only after creating the chart image (eg. using <a href="BaseChart.makeChart.htm">BaseChart.makeChart</a> or <a href="BaseChart.makeChart2.htm">BaseChart.makeChart2</a>). The image map cannot be determined without creating the chart image first.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>dataItem</td><td>(Mandatory)</td><td>The legend entry number, starting from 0. The first legend entry is 0. The nth legend entry is (n-1).</td></tr><tr><td>offsetX</td><td>0</td><td>An offset to be added to all x coordinates in the image map. This is useful if the current image will be shifted and inserted into another image. In this case, the image map will need to be shifted by the same offset.</td></tr><tr><td>offsetY</td><td>0</td><td>An offset to be added to all y coordinates in the image map. See offsetX above for description.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+A text string representing the coordinates of the legend entry in HTML image map attribute format.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

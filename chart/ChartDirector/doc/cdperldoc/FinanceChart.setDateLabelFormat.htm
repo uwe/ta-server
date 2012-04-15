@@ -1,0 +1,38 @@
+<HTML>
+<HEAD>
+<Title>FinanceChart.setDateLabelFormat</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="FinanceChart.htm">FinanceChart</a>.setDateLabelFormat</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setDateLabelFormat(yearFormat, firstMonthFormat, otherMonthFormat, firstDayFormat, otherDayFormat, firstHourFormat, otherHourFormat)
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the date/time formats to use for the x-axis labels under various cases.<br><br>
+See <a href="paramsub.htm">Parameter Substitution and Formatting</a> on the syntax of ChartDirector format strings.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>yearFormat</td><td>(Mandatory)</td><td>The format for displaying labels on an axis with yearly ticks. The default is "{value|yyyy}".</td></tr><tr><td>firstMonthFormat</td><td>(Mandatory)</td><td>The format for displaying labels on an axis with monthly ticks. This parameter applies to the first available month of a year (usually January) only, so it can be formatted differently from the other labels. The default is "&lt;*font=bold*&gt;{value|mmm yy}".</td></tr><tr><td>otherMonthFormat</td><td>(Mandatory)</td><td>The format for displaying labels on an axis with monthly ticks. This parameter applies to months other than the first available month of a year. The default is "{value|mmm}".</td></tr><tr><td>firstDayFormat</td><td>(Mandatory)</td><td>The format for displaying labels on an axis with daily ticks. This parameter applies to the first available day of a month only, so it can be formatted differently from the other labels. The default is "&lt;*font=bold*&gt;{value|d mmm}".</td></tr><tr><td>otherDayFormat</td><td>(Mandatory)</td><td>The format for displaying labels on an axis with daily ticks. This parameter applies to days other than the first available day of a month. The default is "{value|d}".</td></tr><tr><td>firstHourFormat</td><td>(Mandatory)</td><td>The format for displaying labels on an axis with hourly resolution. This parameter applies to the first tick of a day only, so it can be formatted differently from the other labels. The default is "&lt;*font=bold*&gt;{value|d mmm&lt;*br*&gt;h:nna}".</td></tr><tr><td>otherHourFormat</td><td>(Mandatory)</td><td>The format for displaying labels on an axis with hourly. resolution. This parameter applies to ticks at hourly boundaries, except the first tick of a day. The default is "{value|h:nna}".</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

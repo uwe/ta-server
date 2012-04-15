@@ -1,0 +1,26 @@
+<HTML>
+<HEAD>
+<Title>Database Sample Code Overview</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Database Sample Code Overview</p>
+<hr class="separator">
+<div class="content">All ChartDirector database sample scripts described in this documentation are based on a MySQL database. The sample scripts are provided for reference purposes. To actually run the sample scripts, you would need to set up your database system as follows:<br><br>
+<ul> <li>Set up a MySQL database server to run on the same machine as your web server. The MySQL database can be downloaded from http://www.mysql.com.<br><br>
+<li>Install the Perl DBI module and DBI Driver for MySQL (MySQL module). These modules allow your Perl to access MySQL. They are available from CPAN (http://www.cpan.org).<br><br>
+<li>Create a database called "sample" in your MySQL server.<br><br>
+<li>Create an account with username "test" and password "test" that can be used to access "sample".<br><br>
+<li>Import the table "sample.sql" (located in the "perldemo_cgi" subdirectory) into the "sample" database. </ul>
+All ChartDirector database sample scripts described in this documentation are based on  a MySQL database. The sample scripts are provided for reference purposes. To actually run the sample scripts, you would need to set up your database system as follows:<br><br>
+<ul> <li>Set up a MySQL database server to run on the same machine as your web server. The MySQL database can be downloaded from http://www.mysql.com.<br><br>
+<li>Install the Perl DBI module and DBI Driver for MySQL (MySQL module). These modules allow your Perl to access MySQL. They are available from CPAN (http://www.cpan.org).<br><br>
+<li>Create a database called "sample" in your MySQL server.<br><br>
+<li>Create an account with username "test" and password "test" that can be used to access "sample".<br><br>
+<li>Import the table "sample.sql" (located in the "perldemo_cgi" subdirectory) into the "sample" database. </ul>
+The sample database that contains only one table called "Revenue" . The table stores the monthly revenue data for three business units - Hardware, Software and Services. It contains four columns as follows:<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="200px">Column Name<th width="200px">Type <tr><td>TimeStamp<td>Date/Time <tr><td>Hardware<td>Number <tr><td>Software<td>Number <tr><td>Services<td>Number </table><br>
+Each row in the database table contains monthly revenues for the business units, where the date is stored in the "TimeStamp" column. The sample database contains rows from Jan 1990 to Dec 2001.</div><br>
+<hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div></body>
+</HTML>

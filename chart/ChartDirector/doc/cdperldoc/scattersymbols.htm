@@ -1,0 +1,113 @@
+<HTML>
+<HEAD>
+<Title>Custom Scatter Symbols</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Custom Scatter Symbols</p>
+<hr class="separator">
+<div class="content">
+<img src="images/scattersymbols.png">
+<br><br>
+This example demonstrates using external image files as scatter symbols.<br><br>
+The chart in this example is created as 5 scatter layers using <a href="XYChart.addScatterLayer.htm">XYChart.addScatterLayer</a>, with each layer containing one point.<br><br>
+The symbols for the scatter layers come from external image files. They are loaded using <a href="DataSet.setDataSymbol2.htm">DataSet.setDataSymbol2</a>.
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\scattersymbols.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# The XY points for the scatter chart
+my $dataX = [200, 400, 300, 250, 500];
+my $dataY = [40, 100, 50, 150, 250];
+
+# The custom symbols for the points
+my $symbols = ["robot1.png", "robot2.png", "robot3.png", "robot4.png", "robot5.png"];
+
+# Create a XYChart object of size 450 x 400 pixels
+my $c = new XYChart(450, 400);
+
+# Set the plotarea at (55, 40) and of size 350 x 300 pixels, with a light grey border
+# (0xc0c0c0). Turn on both horizontal and vertical grid lines with light grey color
+# (0xc0c0c0)
+$c-&gt;setPlotArea(55, 40, 350, 300, -1, -1, 0xc0c0c0, 0xc0c0c0, -1);
+
+# Add a title to the chart using 18 pts Times Bold Itatic font.
+$c-&gt;addTitle("Battle Robots", "timesbi.ttf", 18);
+
+# Add a title to the y axis using 12 pts Arial Bold Italic font
+$c-&gt;yAxis()-&gt;setTitle("Speed (km/s)", "arialbi.ttf", 12);
+
+# Add a title to the y axis using 12 pts Arial Bold Italic font
+$c-&gt;xAxis()-&gt;setTitle("Range (km)", "arialbi.ttf", 12);
+
+# Set the axes line width to 3 pixels
+$c-&gt;xAxis()-&gt;setWidth(3);
+$c-&gt;yAxis()-&gt;setWidth(3);
+
+# Add each point of the data as a separate scatter layer, so that they can have a
+# different symbol
+for(my $i = 0; $i &lt; scalar(@$dataX); ++$i) {
+    $c-&gt;addScatterLayer([$dataX-&gt;[$i]], [$dataY-&gt;[$i]])-&gt;getDataSet(0
+        )-&gt;setDataSymbol2($symbols-&gt;[$i]);
+}
+
+# Output the chart
+$c-&gt;makeChart("scattersymbols.png")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\scattersymbols.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The XY points for the scatter chart
+my $dataX = [200, 400, 300, 250, 500];
+my $dataY = [40, 100, 50, 150, 250];
+
+# The custom symbols for the points
+my $symbols = ["robot1.png", "robot2.png", "robot3.png", "robot4.png", "robot5.png"];
+
+# Create a XYChart object of size 450 x 400 pixels
+my $c = new XYChart(450, 400);
+
+# Set the plotarea at (55, 40) and of size 350 x 300 pixels, with a light grey border
+# (0xc0c0c0). Turn on both horizontal and vertical grid lines with light grey color
+# (0xc0c0c0)
+$c-&gt;setPlotArea(55, 40, 350, 300, -1, -1, 0xc0c0c0, 0xc0c0c0, -1);
+
+# Add a title to the chart using 18 pts Times Bold Itatic font.
+$c-&gt;addTitle("Battle Robots", "timesbi.ttf", 18);
+
+# Add a title to the y axis using 12 pts Arial Bold Italic font
+$c-&gt;yAxis()-&gt;setTitle("Speed (km/s)", "arialbi.ttf", 12);
+
+# Add a title to the y axis using 12 pts Arial Bold Italic font
+$c-&gt;xAxis()-&gt;setTitle("Range (km)", "arialbi.ttf", 12);
+
+# Set the axes line width to 3 pixels
+$c-&gt;xAxis()-&gt;setWidth(3);
+$c-&gt;yAxis()-&gt;setWidth(3);
+
+# Add each point of the data as a separate scatter layer, so that they can have a
+# different symbol
+for(my $i = 0; $i &lt; scalar(@$dataX); ++$i) {
+    $c-&gt;addScatterLayer([$dataX-&gt;[$i]], [$dataY-&gt;[$i]])-&gt;getDataSet(0
+        )-&gt;setDataSymbol2(dirname($0)."/".$symbols-&gt;[$i]);
+}
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

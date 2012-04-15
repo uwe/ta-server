@@ -1,0 +1,40 @@
+<HTML>
+<HEAD>
+<Title>XYChart.syncYAxis</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="XYChart.htm">XYChart</a>.syncYAxis</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+syncYAxis([ slope [, intercept ]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets a linear formula to synchronize the secondary y-axis scale to the primary y-axis scale.<br><br>
+The formula is in the format:<br><br>
+<div style="margin-left:25;font-family:courier new,courier"> y2 = y1 * slope + intercept </div><br>
+This method is usually used if the two y-axes represent the same measurement using different units. Examples including temperature in Celsius and in Fahrenheit, and length in meters and feet.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>slope</td><td>1</td><td>The slope parameter for the formula linking the secondary y-axis to the primary y-axis.</td></tr><tr><td>intercept</td><td>0</td><td>The intercept parameter for the formula linking the secondary y-axis to the primary y-axis.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

@@ -1,0 +1,39 @@
+<HTML>
+<HEAD>
+<Title>SurfaceChart.setPlotRegion</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="SurfaceChart.htm">SurfaceChart</a>.setPlotRegion</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setPlotRegion(cx, cy, xWidth, yDepth, zHeight)
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the position of the plot region.<br><br>
+The plot region is a 3D box, with x, y, and z axes along its border, using a right-hand cartesian coordinate system.<br><br>
+To create the chart image, you may imagine a camera taking a photograph of the box. The photograph can be taken at different angles, configurable with <a href="SurfaceChart.setViewAngle.htm">SurfaceChart.setViewAngle</a>. The position of the plot region in the photograph is such that the center of the plot region is at a given point (cx, cy) on the image.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>cx</td><td>(Mandatory)</td><td>The x pixel coordinate of the point on the image at which the center of the plot region is located.</td></tr><tr><td>cy</td><td>(Mandatory)</td><td>The y pixel coordinate of the point on the image at which the center of the plot region is located.</td></tr><tr><td>xWidth</td><td>(Mandatory)</td><td>The length of the x-dimension of the plot region in pixels.</td></tr><tr><td>yDepth</td><td>(Mandatory)</td><td>The length of the y-dimension of the plot region in pixels.</td></tr><tr><td>zHeight</td><td>(Mandatory)</td><td>The length of the z-dimension of the plot region in pixels.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

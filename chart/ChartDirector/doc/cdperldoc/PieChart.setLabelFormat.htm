@@ -1,0 +1,44 @@
+<HTML>
+<HEAD>
+<Title>PieChart.setLabelFormat</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="PieChart.htm">PieChart</a>.setLabelFormat</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setLabelFormat(formatString)
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the format of the all sector labels.<br><br>
+This method affects all sectors. To set the label format for one particular sector only, use <a href="Sector.setLabelFormat.htm">Sector.setLabelFormat</a>.<br><br>
+The default sector label format depends on the label layout method used (see <a href="PieChart.setLabelLayout.htm">PieChart.setLabelLayout</a>).<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="38%">Label Layout Method<th width="60%">Default Label Format <tr><td>Circular Layout<td><pre>{label}&lt;*br*&gt;{percent}%</pre><br>
+(The "&lt;*br*&gt;" above is the <a href="cdml.htm">CDML</a> syntax for a line break.)
+<tr><td>Side Layout<td><pre>{label} ({percent}%)</pre><br>
+</table><br>
+Please refer to <a href="paramsub.htm">Parameter Substitution and Formatting</a> on all available parameters and how to format them.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>formatString</td><td>(Mandatory)</td><td>The format string.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

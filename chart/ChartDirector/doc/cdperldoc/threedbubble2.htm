@@ -1,0 +1,125 @@
+<HTML>
+<HEAD>
+<Title>3D Bubble Chart (2)</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">3D Bubble Chart (2)</p>
+<hr class="separator">
+<div class="content">
+<img src="images/threedbubble2.png">
+<br><br>
+This examples demonstrates a bubble chart using brighter glass spheres as bubbles.
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\threedbubble2.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# The XYZ points for the bubble chart
+my $dataX0 = [170, 300, 1000, 1700];
+my $dataY0 = [16, 69, 16, 75];
+my $dataZ0 = [52, 105, 88, 140];
+
+my $dataX1 = [500, 1000, 1300];
+my $dataY1 = [40, 58, 85];
+my $dataZ1 = [140, 202, 84];
+
+# Create a XYChart object of size 540 x 480 pixels
+my $c = new XYChart(540, 480);
+
+# Set the plotarea at (70, 65) and of size 400 x 350 pixels. Turn on both horizontal
+# and vertical grid lines with light grey color (0xc0c0c0)
+$c-&gt;setPlotArea(70, 65, 400, 350, -1, -1, $perlchartdir::Transparent, 0xc0c0c0, -1);
+
+# Add a legend box at (70, 30) (top of the chart) with horizontal layout. Use 12 pts
+# Times Bold Italic font. Set the background and border color to Transparent.
+$c-&gt;addLegend(70, 30, 0, "timesbi.ttf", 12)-&gt;setBackground($perlchartdir::Transparent
+    );
+
+# Add a title to the chart using 18 pts Times Bold Itatic font.
+$c-&gt;addTitle("Product Comparison Chart", "timesbi.ttf", 18);
+
+# Add titles to the axes using 12 pts Arial Bold Italic font
+$c-&gt;yAxis()-&gt;setTitle("Capacity (tons)", "arialbi.ttf", 12);
+$c-&gt;xAxis()-&gt;setTitle("Range (miles)", "arialbi.ttf", 12);
+
+# Set the axes line width to 3 pixels
+$c-&gt;xAxis()-&gt;setWidth(3);
+$c-&gt;yAxis()-&gt;setWidth(3);
+
+# Add (dataX0, dataY0) as a scatter layer with red (ff3333) glass spheres, where the
+# sphere size is modulated by dataZ0. This creates a bubble effect.
+$c-&gt;addScatterLayer($dataX0, $dataY0, "Technology AAA",
+    $perlchartdir::GlassSphere2Shape, 15, 0xff3333)-&gt;setSymbolScale($dataZ0);
+
+# Add (dataX1, dataY1) as a scatter layer with blue (0000ff) glass spheres, where the
+# sphere size is modulated by dataZ1. This creates a bubble effect.
+$c-&gt;addScatterLayer($dataX1, $dataY1, "Technology BBB",
+    $perlchartdir::GlassSphere2Shape, 15, 0x0000ff)-&gt;setSymbolScale($dataZ1);
+
+# Output the chart
+$c-&gt;makeChart("threedbubble2.png")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\threedbubble2.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The XYZ points for the bubble chart
+my $dataX0 = [170, 300, 1000, 1700];
+my $dataY0 = [16, 69, 16, 75];
+my $dataZ0 = [52, 105, 88, 140];
+
+my $dataX1 = [500, 1000, 1300];
+my $dataY1 = [40, 58, 85];
+my $dataZ1 = [140, 202, 84];
+
+# Create a XYChart object of size 540 x 480 pixels
+my $c = new XYChart(540, 480);
+
+# Set the plotarea at (70, 65) and of size 400 x 350 pixels. Turn on both horizontal
+# and vertical grid lines with light grey color (0xc0c0c0)
+$c-&gt;setPlotArea(70, 65, 400, 350, -1, -1, $perlchartdir::Transparent, 0xc0c0c0, -1);
+
+# Add a legend box at (70, 30) (top of the chart) with horizontal layout. Use 12 pts
+# Times Bold Italic font. Set the background and border color to Transparent.
+$c-&gt;addLegend(70, 30, 0, "timesbi.ttf", 12)-&gt;setBackground($perlchartdir::Transparent
+    );
+
+# Add a title to the chart using 18 pts Times Bold Itatic font.
+$c-&gt;addTitle("Product Comparison Chart", "timesbi.ttf", 18);
+
+# Add titles to the axes using 12 pts Arial Bold Italic font
+$c-&gt;yAxis()-&gt;setTitle("Capacity (tons)", "arialbi.ttf", 12);
+$c-&gt;xAxis()-&gt;setTitle("Range (miles)", "arialbi.ttf", 12);
+
+# Set the axes line width to 3 pixels
+$c-&gt;xAxis()-&gt;setWidth(3);
+$c-&gt;yAxis()-&gt;setWidth(3);
+
+# Add (dataX0, dataY0) as a scatter layer with red (ff3333) glass spheres, where the
+# sphere size is modulated by dataZ0. This creates a bubble effect.
+$c-&gt;addScatterLayer($dataX0, $dataY0, "Technology AAA",
+    $perlchartdir::GlassSphere2Shape, 15, 0xff3333)-&gt;setSymbolScale($dataZ0);
+
+# Add (dataX1, dataY1) as a scatter layer with blue (0000ff) glass spheres, where the
+# sphere size is modulated by dataZ1. This creates a bubble effect.
+$c-&gt;addScatterLayer($dataX1, $dataY1, "Technology BBB",
+    $perlchartdir::GlassSphere2Shape, 15, 0x0000ff)-&gt;setSymbolScale($dataZ1);
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

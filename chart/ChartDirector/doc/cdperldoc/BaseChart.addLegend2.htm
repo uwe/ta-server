@@ -1,0 +1,40 @@
+<HTML>
+<HEAD>
+<Title>BaseChart.addLegend2</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="BaseChart.htm">BaseChart</a>.addLegend2</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+addLegend2(x, y, noOfCols [, font [, fontSize ]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Adds a legend box to the chart with grid layout.<br><br>
+In grid layout, the legend box will be divided into a table in which all cells are of of same width. The legend entries will fill the cells from left to right, top to bottom.<br><br>
+The number of columns can be specified using the <b>noOfCols</b> argument. If this argument is set to the special constant <a href="perlchartdir.AutoGrid.htm">AutoGrid</a> (= -2), the number of columns will be automatically determined based on the longest legend entry. If this argument is 0, the legend box will use a flow layout (from left to right and then top to bottom, in which the entries may not be vertically aligned).<br><br>
+In any case, the number of rows in the table is automatically determined so as to have enough cells for all legend entries.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>x</td><td>(Mandatory)</td><td>The x coordinate of the reference point of the legend box. By default, the reference point is the top-left corner of the box, but can be configured by using <a href="TextBox.setAlignment.htm">TextBox.setAlignment</a>.</td></tr><tr><td>y</td><td>(Mandatory)</td><td>The y coordinate of the reference point of the legend box. By default, the reference point is the top-left corner of the box, but can be configured by using <a href="TextBox.setAlignment.htm">TextBox.setAlignment</a>.</td></tr><tr><td>noOfCols</td><td>(Mandatory)</td><td>The number of columns in the legend box. The special value <a href="perlchartdir.AutoGrid.htm">AutoGrid</a> (= -2) means the number of columns is automatically determined. If this argument is 0, the legend box will use a flow layout (from left to right and then top to bottom, in which the entries may not be vertically aligned).</td></tr><tr><td>font</td><td>""</td><td>The font name of the font for drawing the legend text. The default is "normal". See <a href="fontspec.htm">Font Specification</a> for details on various font attributes.</td></tr><tr><td>fontSize</td><td>10</td><td>The font size of the legend text.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+A <a href="LegendBox.htm">LegendBox</a> object representing the legend box. You may use this object to fine-tune the appearance of the legend box.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

@@ -1,0 +1,238 @@
+<HTML>
+<HEAD>
+<Title>Concentric Donut Chart</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Concentric Donut Chart</p>
+<hr class="separator">
+<div class="content">
+<img src="images/concentric.png">
+<br><br>
+This example demonstrates creating concentric donut chart by merging two donuts of different radii.<br><br>
+The chart in this example is created as two separate <a href="PieChart.htm">PieChart</a> objects. The first PieChart represents the outer donut chart and the overall structure of the chart (such as the legend box, chart title, etc). The second PieChart has a <a href="perlchartdir.Transparent.htm">Transparent</a> background and represents the inner donut chart. The two charts are merged together by using the <a href="DrawArea.merge.htm">DrawArea.merge</a> method.
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\concentric.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# Data for outer ring
+my $data = [88, 124, 96];
+
+# Data for inner ring
+my $data2 = [77, 87, 45];
+
+# Labels for the sectors
+my $labels = ["Hardware", "Software", "Services"];
+
+# Colors for the sectors
+my $colors = [0xff9999, 0x9999ff, 0x66ff66];
+
+#
+# Create the main chart, which contains the chart title, the outer ring, and the
+# legend box
+#
+
+# Create a PieChart object of size 450 x 360 pixels, with transparent background
+my $c = new PieChart(450, 360);
+
+# Add a title to the chart with 18pts Times Bold Italic font
+$c-&gt;addTitle("Concentric Donut Chart", "timesbi.ttf", 18);
+
+# Set donut center at (160, 200), and outer/inner radii as 150/100 pixels
+$c-&gt;setDonutSize(160, 200, 150, 100);
+
+# Add a label at the bottom-right corner of the ring to label the outer ring Use
+# 12pts Arial Bold Italic font in white (ffffff) color, on a green (008800)
+# background, with soft lighting effect and 5 pixels rounded corners
+my $t = $c-&gt;addText(260, 300, " Year 2006 ", "arialbi.ttf", 12, 0xffffff);
+$t-&gt;setBackground(0x008800, $perlchartdir::Transparent, perlchartdir::softLighting())
+    ;
+$t-&gt;setRoundedCorners(5);
+
+# Set the legend box at (320, 50) with 12 pts Arial Bold Italic font, with no border
+$c-&gt;addLegend(320, 50, 1, "arialbi.ttf", 13)-&gt;setBackground(
+    $perlchartdir::Transparent, $perlchartdir::Transparent);
+
+# Set the pie data and the pie labels
+$c-&gt;setData($data, $labels);
+
+# Set the pie colors
+$c-&gt;setColors2($perlchartdir::DataColor, $colors);
+
+# Set pie border color to white (ffffff)
+$c-&gt;setLineColor(0xffffff);
+
+# Set pie label to value in $###M format, percentage in (##.#%) format, in two lines.
+$c-&gt;setLabelFormat("\${value}M&lt;*br*&gt;({percent|1}%)");
+
+# Use 10pts Airal Bold for the sector labels
+$c-&gt;setLabelStyle("arialbd.ttf", 10);
+
+# Set the label position to -25 pixels from the sector (which would be internal to
+# the sector)
+$c-&gt;setLabelPos(-25);
+
+#
+# Create the inner ring.
+#
+
+# Create a PieChart object of size 280 x 320 pixels, with transparent background
+my $c2 = new PieChart(280, 320, $perlchartdir::Transparent);
+
+# Set donut center at (110, 110), and outer/inner radii as 100/50 pixels
+$c2-&gt;setDonutSize(110, 110, 100, 50);
+
+# Add a label at the center of the ring to label the inner ring. Use 12pts Arial Bold
+# Italic font in white (ffffff) color, on a deep blue (0000cc) background, with soft
+# lighting effect and 5 pixels rounded corners
+my $t2 = $c2-&gt;addText(110, 110, " Year 2005 ", "arialbi.ttf", 12, 0xffffff,
+    $perlchartdir::Center);
+$t2-&gt;setBackground(0x0000cc, $perlchartdir::Transparent, perlchartdir::softLighting()
+    );
+$t2-&gt;setRoundedCorners(5);
+
+# Set the pie data and the pie labels
+$c2-&gt;setData($data2, $labels);
+
+# Set the pie colors
+$c2-&gt;setColors2($perlchartdir::DataColor, $colors);
+
+# Set pie border color to white (ffffff)
+$c2-&gt;setLineColor(0xffffff);
+
+# Set pie label to value in $###M format, percentage in (##.#%) format, in two lines.
+$c2-&gt;setLabelFormat("\${value}M&lt;*br*&gt;({percent|1}%)");
+
+# Use 10pts Airal Bold for the sector labels
+$c2-&gt;setLabelStyle("arialbd.ttf", 10);
+
+# Set the label position to -25 pixels from the sector (which would be internal to
+# the sector)
+$c2-&gt;setLabelPos(-25);
+
+# merge the inner ring into the outer ring at (50, 90)
+$c-&gt;makeChart3()-&gt;merge($c2-&gt;makeChart3(), 50, 90, $perlchartdir::TopLeft, 0);
+
+# Output the chart
+$c-&gt;makeChart("concentric.png")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\concentric.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# Data for outer ring
+my $data = [88, 124, 96];
+
+# Data for inner ring
+my $data2 = [77, 87, 45];
+
+# Labels for the sectors
+my $labels = ["Hardware", "Software", "Services"];
+
+# Colors for the sectors
+my $colors = [0xff9999, 0x9999ff, 0x66ff66];
+
+#
+# Create the main chart, which contains the chart title, the outer ring, and the
+# legend box
+#
+
+# Create a PieChart object of size 450 x 360 pixels, with transparent background
+my $c = new PieChart(450, 360);
+
+# Add a title to the chart with 18pts Times Bold Italic font
+$c-&gt;addTitle("Concentric Donut Chart", "timesbi.ttf", 18);
+
+# Set donut center at (160, 200), and outer/inner radii as 150/100 pixels
+$c-&gt;setDonutSize(160, 200, 150, 100);
+
+# Add a label at the bottom-right corner of the ring to label the outer ring Use
+# 12pts Arial Bold Italic font in white (ffffff) color, on a green (008800)
+# background, with soft lighting effect and 5 pixels rounded corners
+my $t = $c-&gt;addText(260, 300, " Year 2006 ", "arialbi.ttf", 12, 0xffffff);
+$t-&gt;setBackground(0x008800, $perlchartdir::Transparent, perlchartdir::softLighting())
+    ;
+$t-&gt;setRoundedCorners(5);
+
+# Set the legend box at (320, 50) with 12 pts Arial Bold Italic font, with no border
+$c-&gt;addLegend(320, 50, 1, "arialbi.ttf", 13)-&gt;setBackground(
+    $perlchartdir::Transparent, $perlchartdir::Transparent);
+
+# Set the pie data and the pie labels
+$c-&gt;setData($data, $labels);
+
+# Set the pie colors
+$c-&gt;setColors2($perlchartdir::DataColor, $colors);
+
+# Set pie border color to white (ffffff)
+$c-&gt;setLineColor(0xffffff);
+
+# Set pie label to value in $###M format, percentage in (##.#%) format, in two lines.
+$c-&gt;setLabelFormat("\${value}M&lt;*br*&gt;({percent|1}%)");
+
+# Use 10pts Airal Bold for the sector labels
+$c-&gt;setLabelStyle("arialbd.ttf", 10);
+
+# Set the label position to -25 pixels from the sector (which would be internal to
+# the sector)
+$c-&gt;setLabelPos(-25);
+
+#
+# Create the inner ring.
+#
+
+# Create a PieChart object of size 280 x 320 pixels, with transparent background
+my $c2 = new PieChart(280, 320, $perlchartdir::Transparent);
+
+# Set donut center at (110, 110), and outer/inner radii as 100/50 pixels
+$c2-&gt;setDonutSize(110, 110, 100, 50);
+
+# Add a label at the center of the ring to label the inner ring. Use 12pts Arial Bold
+# Italic font in white (ffffff) color, on a deep blue (0000cc) background, with soft
+# lighting effect and 5 pixels rounded corners
+my $t2 = $c2-&gt;addText(110, 110, " Year 2005 ", "arialbi.ttf", 12, 0xffffff,
+    $perlchartdir::Center);
+$t2-&gt;setBackground(0x0000cc, $perlchartdir::Transparent, perlchartdir::softLighting()
+    );
+$t2-&gt;setRoundedCorners(5);
+
+# Set the pie data and the pie labels
+$c2-&gt;setData($data2, $labels);
+
+# Set the pie colors
+$c2-&gt;setColors2($perlchartdir::DataColor, $colors);
+
+# Set pie border color to white (ffffff)
+$c2-&gt;setLineColor(0xffffff);
+
+# Set pie label to value in $###M format, percentage in (##.#%) format, in two lines.
+$c2-&gt;setLabelFormat("\${value}M&lt;*br*&gt;({percent|1}%)");
+
+# Use 10pts Airal Bold for the sector labels
+$c2-&gt;setLabelStyle("arialbd.ttf", 10);
+
+# Set the label position to -25 pixels from the sector (which would be internal to
+# the sector)
+$c2-&gt;setLabelPos(-25);
+
+# merge the inner ring into the outer ring at (50, 90)
+$c-&gt;makeChart3()-&gt;merge($c2-&gt;makeChart3(), 50, 90, $perlchartdir::TopLeft, 0);
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

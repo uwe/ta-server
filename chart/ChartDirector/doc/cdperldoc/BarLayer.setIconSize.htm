@@ -1,0 +1,40 @@
+<HTML>
+<HEAD>
+<Title>BarLayer.setIconSize</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="BarLayer.htm">BarLayer</a>.setIconSize</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setIconSize(height [, width ])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the size of the icon(s) to be used in legend box.<br><br>
+By default, if a legend box is available on the chart, ChartDirector will insert an legend entry for any named data sets in the legend box. The icons for the data sets will be the shape of the bars. The size of the icons will be determined using the key size settings of the legend box (see <a href="LegendBox.setKeySize.htm">LegendBox.setKeySize</a>).<br><br>
+This method can be used to override the legend box settings to specify a custom width/height for the icons of the current BarLayer.<br><br>
+If the icon size is set to 0, a square color box will be used as the icon regardless of the shape of the bar.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>height</td><td>(Mandatory)</td><td>The height of the icon in pixels.</td></tr><tr><td>width</td><td>-1</td><td>The width of the icon in pixels. -1 means the width is the same as the height.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

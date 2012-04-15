@@ -1,0 +1,45 @@
+<HTML>
+<HEAD>
+<Title>BaseChart.linearGradientColor2</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="BaseChart.htm">BaseChart</a>.linearGradientColor2</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+linearGradientColor2(startX, startY, endX, endY, colorArray [, periodic ])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Creates a multi-point linear gradient color.<br><br>
+In this method, the color points are defined as an array of positions and colors along a reference line segment, in the following format:<br><br>
+<div style="margin-left:25;font-family:courier new,courier"> position0, color0, position1, color1, .... positionN, colorN </div><br>
+The positions are specified as a number from 0 - 256 (0 - 100 in hex), in which 0 represents the starting point of the reference line segment, and 256 (100 in hex) represents the ending point of the reference line segment.<br><br>
+For example, the array (in hex):<br><br>
+<div style="margin-left:25;font-family:courier new,courier"> 000000, FF0000, 000080, FFFF00, 000100, 00FF00 </div><br>
+means the starting point (000000) is red (FF0000), the mid-point (000080 in hex) is yellow (FFFF00), and the ending point (000100 in hex) is green (00FF00).<br><br>
+One common usage of multi-point gradient colors is to define colors that have metallic look and feel. ChartDirector comes from several predefined gradient color arrays as follows.<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="19%">Name<th width="79%">Value (in Hex) <tr><td><a href="perlchartdir.goldGradient.htm">goldGradient</a><td> 000000, FFE743, 000060, FFFFE0, 0000B0, FFF0B0, 000100, FFE743 <tr><td><a href="perlchartdir.silverGradient.htm">silverGradient</a><td> 000000, C8C8C8, 000060, F8F8F8, 0000B0, E0E0E0, 000100, C8C8C8 <tr><td><a href="perlchartdir.redMetalGradient.htm">redMetalGradient</a><td> 000000, E09898, 000060, FFF0F0, 0000B0, F0D8D8, 000100, E09898 <tr><td><a href="perlchartdir.greenMetalGradient.htm">greenMetalGradient</a><td> 000000, 98E098, 000060, F0FFF0, 0000B0, D8F0D8, 000100, 98E098 <tr><td><a href="perlchartdir.blueMetalGradient.htm">blueMetalGradient</a><td> 000000, 9898E0, 000060, F0F0FF, 0000B0, D8D8F0, 000100, 9898E0 </table>
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>startX</td><td>(Mandatory)</td><td>The x coordinate of the starting point of the reference gradient line segment.</td></tr><tr><td>startY</td><td>(Mandatory)</td><td>The y coordinate of the starting point of the reference gradient line segment.</td></tr><tr><td>endX</td><td>(Mandatory)</td><td>The x coordinate of the ending point of the reference gradient line segment.</td></tr><tr><td>endY</td><td>(Mandatory)</td><td>The y coordinate of the ending point of the reference gradient line segment.</td></tr><tr><td>colorArray</td><td>(Mandatory)</td><td>An array defining the positions and colors of the pixels along the reference gradient line segment.</td></tr><tr><td>periodic</td><td>false</td><td>Specifies whether the gradient will repeat itself periodically. If the gradient does not repeat itself, the points that lie beyond the end points of the gradient line segment will assume the colors of the end points.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+A 32-bit integer representing the linear gradient color.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

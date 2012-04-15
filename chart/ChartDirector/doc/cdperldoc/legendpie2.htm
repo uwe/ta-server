@@ -1,0 +1,198 @@
+<HTML>
+<HEAD>
+<Title>Pie Chart with Legend (2)</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Pie Chart with Legend (2)</p>
+<hr class="separator">
+<div class="content">
+<img src="images/legendpie2.png">
+<br><br>
+This example demonstrates a pie chart with a legend box, together with many effects, such as gradient color background, rounded frame, soft drop shadow, custom sector colors, sector gradient shading, customized sector labels and using <a href="cdml.htm">CDML</a> and <a href="paramsub.htm">Parameter Substitution and Formatting</a> to format legend text.<br><br>
+<ul><li> The gradient background is achieved by using <a href="BaseChart.linearGradientColor.htm">BaseChart.linearGradientColor</a> to define the gradient color, then use <a href="BaseChart.setBackground.htm">BaseChart.setBackground</a> to set it as the chart background color.<br><br>
+<li> The rounded frame is configured using <a href="BaseChart.setRoundedFrame.htm">BaseChart.setRoundedFrame</a>.<br><br>
+<li> The soft drop shadow is configured using <a href="BaseChart.setDropShadow.htm">BaseChart.setDropShadow</a>.<br><br>
+<li> The sector colors are set using <a href="BaseChart.setColors.htm">BaseChart.setColors</a>. The sector gradient shading is configured using <a href="PieChart.setSectorStyle.htm">PieChart.setSectorStyle</a>.<br><br>
+<li> The sector labels are configured using <a href="PieChart.setLabelFormat.htm">PieChart.setLabelFormat</a> to show the sector number. <a href="PieChart.setLabelStyle.htm">PieChart.setLabelStyle</a> is used to set the label style. It returns a <a href="TextBox.htm">TextBox</a> object representing the sector label prototype. The <a href="Box.setBackground.htm">Box.setBackground</a> method of the label prototype is then used to add black borders around the labels.<br><br>
+<li> The legend text is configured by calling the <a href="TextBox.setText.htm">TextBox.setText</a> method of the <a href="LegendBox.htm">LegendBox</a> object. The legend text template is specified using <a href="cdml.htm">CDML</a> and <a href="paramsub.htm">Parameter Substitution and Formatting</a> as follows:<br><br>
+<div style="margin-left:25;font-family:courier new,courier"> &lt;*block,valign=top*&gt;{={sector}+1}.&lt;*advanceTo=22*&gt;&lt;*block,width=120*&gt;{label}&lt;*/*&gt;&lt;*block,width=40,halign=right*&gt;{percent}&lt;*/*&gt;% </div><br>
+The starting "&lt;*block,valign=top*&gt;" means the different parts in the legend entry should be aligned to the top. This is necessarily because the second part of the legend entry (described below) can have multiple lines.<br><br>
+The first part of the legend entry is "{={sector}+1}.&lt;*advanceTo=22*&gt;", which means the show the sector number, then "tab" to the 22th pixel position. (In ChartDirector, the sector number starts from 0. So we add 1 to {sector} to make the displayed sector number to start from 1.)<br><br>
+The second part "&lt;*block,width=120*&gt;{label}&lt;*/*&gt;" which means to show the sector label in a 120 pixels block. If the label is wider than 120 pixels, it will be wrapped into multiple lines within the block.<br><br>
+The last part "&lt;*block,width=40,halign=right*&gt;{percent}&lt;*/*&gt;%" means to show the percentage in a 40 pixels block, with the contents right aligned.</ul>
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\legendpie2.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# The data for the pie chart
+my $data = [21, 18, 15, 12, 8, 24];
+
+# The labels for the pie chart
+my $labels = ["Labor", "Licenses", "Taxes", "Legal", "Facilities", "Production"];
+
+# The colors to use for the sectors
+my $colors = [0x66aaee, 0xeebb22, 0xbbbbbb, 0x8844ff, 0xdd2222, 0x009900];
+
+# Create a PieChart object of size 600 x 320 pixels. Use a vertical gradient color
+# from light blue (99ccff) to white (ffffff) spanning the top 100 pixels as
+# background. Set border to grey (888888). Use rounded corners. Enable soft drop
+# shadow.
+my $c = new PieChart(600, 320);
+$c-&gt;setBackground($c-&gt;linearGradientColor(0, 0, 0, 100, 0x99ccff, 0xffffff), 0x888888
+    );
+$c-&gt;setRoundedFrame();
+$c-&gt;setDropShadow();
+
+# Add a title using 18 pts Times New Roman Bold Italic font. Add 16 pixels top margin
+# to the title.
+$c-&gt;addTitle("Pie Chart With Legend Demonstration", "timesbi.ttf", 18)-&gt;setMargin2(0,
+    0, 16, 0);
+
+# Set the center of the pie at (160, 165) and the radius to 110 pixels
+$c-&gt;setPieSize(160, 165, 110);
+
+# Draw the pie in 3D with a pie thickness of 25 pixels
+$c-&gt;set3D(25);
+
+# Set the pie data and the pie labels
+$c-&gt;setData($data, $labels);
+
+# Set the sector colors
+$c-&gt;setColors2($perlchartdir::DataColor, $colors);
+
+# Use local gradient shading for the sectors
+$c-&gt;setSectorStyle($perlchartdir::LocalGradientShading);
+
+# Use the side label layout method, with the labels positioned 16 pixels from the pie
+# bounding box
+$c-&gt;setLabelLayout($perlchartdir::SideLayout, 16);
+
+# Show only the sector number as the sector label
+$c-&gt;setLabelFormat("{={sector}+1}");
+
+# Set the sector label style to Arial Bold 10pt, with a dark grey (444444) border
+$c-&gt;setLabelStyle("arialbd.ttf", 10)-&gt;setBackground($perlchartdir::Transparent,
+    0x444444);
+
+# Add a legend box, with the center of the left side anchored at (330, 175), and
+# using 10 pts Arial Bold Italic font
+my $b = $c-&gt;addLegend(330, 175, 1, "arialbi.ttf", 10);
+$b-&gt;setAlignment($perlchartdir::Left);
+
+# Set the legend box border to dark grey (444444), and with rounded conerns
+$b-&gt;setBackground($perlchartdir::Transparent, 0x444444);
+$b-&gt;setRoundedCorners();
+
+# Set the legend box margin to 16 pixels, and the extra line spacing between the
+# legend entries as 5 pixels
+$b-&gt;setMargin(16);
+$b-&gt;setKeySpacing(0, 5);
+
+# Set the legend box icon to have no border (border color same as fill color)
+$b-&gt;setKeyBorder($perlchartdir::SameAsMainColor);
+
+# Set the legend text to show the sector number, followed by a 120 pixels wide block
+# showing the sector label, and a 40 pixels wide block showing the percentage
+$b-&gt;setText(
+    "&lt;*block,valign=top*&gt;{={sector}+1}.&lt;*advanceTo=22*&gt;&lt;*block,width=120*&gt;{label}".
+    "&lt;*/*&gt;&lt;*block,width=40,halign=right*&gt;{percent}&lt;*/*&gt;%");
+
+# Output the chart
+$c-&gt;makeChart("legendpie2.png")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\legendpie2.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The data for the pie chart
+my $data = [21, 18, 15, 12, 8, 24];
+
+# The labels for the pie chart
+my $labels = ["Labor", "Licenses", "Taxes", "Legal", "Facilities", "Production"];
+
+# The colors to use for the sectors
+my $colors = [0x66aaee, 0xeebb22, 0xbbbbbb, 0x8844ff, 0xdd2222, 0x009900];
+
+# Create a PieChart object of size 600 x 320 pixels. Use a vertical gradient color
+# from light blue (99ccff) to white (ffffff) spanning the top 100 pixels as
+# background. Set border to grey (888888). Use rounded corners. Enable soft drop
+# shadow.
+my $c = new PieChart(600, 320);
+$c-&gt;setBackground($c-&gt;linearGradientColor(0, 0, 0, 100, 0x99ccff, 0xffffff), 0x888888
+    );
+$c-&gt;setRoundedFrame();
+$c-&gt;setDropShadow();
+
+# Add a title using 18 pts Times New Roman Bold Italic font. Add 16 pixels top margin
+# to the title.
+$c-&gt;addTitle("Pie Chart With Legend Demonstration", "timesbi.ttf", 18)-&gt;setMargin2(0,
+    0, 16, 0);
+
+# Set the center of the pie at (160, 165) and the radius to 110 pixels
+$c-&gt;setPieSize(160, 165, 110);
+
+# Draw the pie in 3D with a pie thickness of 25 pixels
+$c-&gt;set3D(25);
+
+# Set the pie data and the pie labels
+$c-&gt;setData($data, $labels);
+
+# Set the sector colors
+$c-&gt;setColors2($perlchartdir::DataColor, $colors);
+
+# Use local gradient shading for the sectors
+$c-&gt;setSectorStyle($perlchartdir::LocalGradientShading);
+
+# Use the side label layout method, with the labels positioned 16 pixels from the pie
+# bounding box
+$c-&gt;setLabelLayout($perlchartdir::SideLayout, 16);
+
+# Show only the sector number as the sector label
+$c-&gt;setLabelFormat("{={sector}+1}");
+
+# Set the sector label style to Arial Bold 10pt, with a dark grey (444444) border
+$c-&gt;setLabelStyle("arialbd.ttf", 10)-&gt;setBackground($perlchartdir::Transparent,
+    0x444444);
+
+# Add a legend box, with the center of the left side anchored at (330, 175), and
+# using 10 pts Arial Bold Italic font
+my $b = $c-&gt;addLegend(330, 175, 1, "arialbi.ttf", 10);
+$b-&gt;setAlignment($perlchartdir::Left);
+
+# Set the legend box border to dark grey (444444), and with rounded conerns
+$b-&gt;setBackground($perlchartdir::Transparent, 0x444444);
+$b-&gt;setRoundedCorners();
+
+# Set the legend box margin to 16 pixels, and the extra line spacing between the
+# legend entries as 5 pixels
+$b-&gt;setMargin(16);
+$b-&gt;setKeySpacing(0, 5);
+
+# Set the legend box icon to have no border (border color same as fill color)
+$b-&gt;setKeyBorder($perlchartdir::SameAsMainColor);
+
+# Set the legend text to show the sector number, followed by a 120 pixels wide block
+# showing the sector label, and a 40 pixels wide block showing the percentage
+$b-&gt;setText(
+    "&lt;*block,valign=top*&gt;{={sector}+1}.&lt;*advanceTo=22*&gt;&lt;*block,width=120*&gt;{label}".
+    "&lt;*/*&gt;&lt;*block,width=40,halign=right*&gt;{percent}&lt;*/*&gt;%");
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

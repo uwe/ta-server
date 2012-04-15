@@ -1,0 +1,44 @@
+<HTML>
+<HEAD>
+<Title>XYChart.addBarLayer2</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="XYChart.htm">XYChart</a>.addBarLayer2</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+addBarLayer2([ dataCombineMethod [, depth ]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Adds an empty bar layer to the XYChart.<br><br>
+This method is typically used to add multiple data sets to a single bar layer. First an empty bar layer is created, then the data sets can be added using <a href="Layer.addDataSet.htm">Layer.addDataSet</a>.<br><br>
+The <b>dataCombineMethod</b> parameter specifies how to combine the data sets together in the bar layer. The followings methods are supported:<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="19%">Constant<th width="19%%">Value<th width="60%">Description <tr><td><a href="perlchartdir.Side.htm">Side</a><td>3<td>The data sets are combined by plotting the bars side by side.
+<tr><td><a href="perlchartdir.Stack.htm">Stack</a><td>1<td>The data sets are combined by stacking up the bar segments.
+<tr><td><a href="perlchartdir.Overlay.htm">Overlay</a><td>0<td>The data sets are combined similar to stacked bars. However, in Overlay, one data set is assumed to already include the other data set. For example, if the data sets are "average" and "peak", the "peak" cannot be stacked on top of "average", because the "peak" already contains "average". In the Overlay style, only "peak - average" is stacked on top of "average", and so the total bar length will be "peak".
+<tr><td><a href="perlchartdir.Percentage.htm">Percentage</a><td>4<td>The data sets are combined similar to stacked bars, except that the data in a bar are scaled so that they summed to 100. In other words, all stacked bars will be of the same length. A bar segment within a bar represents the percentage of the data item relative to sum of all the data items in the stacked bar.
+</table>
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>dataCombineMethod</td><td><a href="perlchartdir.Side.htm">Side</a></td><td>The method to combine the data sets together in the bar layer.</td></tr><tr><td>depth</td><td>0</td><td>The 3D depth of the bar layer.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+A <a href="BarLayer.htm">BarLayer</a> object representing the bar layer created.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

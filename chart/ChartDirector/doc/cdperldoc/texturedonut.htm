@@ -1,0 +1,118 @@
+<HTML>
+<HEAD>
+<Title>Texture Donut Chart</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Texture Donut Chart</p>
+<hr class="separator">
+<div class="content">
+<img src="images/texturedonut.png">
+<br><br>
+This example demonstrates wooden, rocky and marble texture effects by using pattern colors to load image patterns.<br><br>
+In ChartDirector, metallic and pattern colors are just like normal ARGB colors, and are represented as a 32-bit integer. They can be applied to anything that can be colored. In this example, metallic colors are applied to the background, while pattern colors are applied to the donut slices to create texture effects.<br><br>
+<ul><li> <a href="BaseChart.patternColor2.htm">BaseChart.patternColor2</a> is used to load the texture images. It returns an array of integers representing the pattern colors created from the images.<br><br>
+<li> The pattern colors are then set into the <a href="perlchartdir.DataColor.htm">DataColor</a> positions of the default palette using <a href="BaseChart.setColor.htm">BaseChart.setColor</a>. These colors will be used for the sectors.</ul>
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\texturedonut.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# The data for the pie chart
+my $data = [18, 45, 28];
+
+# The labels for the pie chart
+my $labels = ["Marble", "Wood", "Granite"];
+
+# The icons for the sectors
+my $texture = ["marble3.png", "wood.png", "rock.png"];
+
+# Create a PieChart object of size 400 x 330 pixels, with a metallic green (88EE88)
+# background, black border and 1 pixel 3D border effect
+my $c = new PieChart(400, 330, perlchartdir::metalColor(0x88ee88), 0x000000, 1);
+
+# Set donut center at (200, 160), and outer/inner radii as 120/60 pixels
+$c-&gt;setDonutSize(200, 160, 120, 60);
+
+# Add a title box using 15 pts Times Bold Italic font and metallic deep green
+# (008000) background color
+$c-&gt;addTitle("Material Composition", "timesbi.ttf", 15)-&gt;setBackground(
+    perlchartdir::metalColor(0x008000));
+
+# Set the pie data and the pie labels
+$c-&gt;setData($data, $labels);
+
+# Set the colors of the sectors to the 3 texture patterns
+$c-&gt;setColor($perlchartdir::DataColor + 0, $c-&gt;patternColor2($texture-&gt;[0]));
+$c-&gt;setColor($perlchartdir::DataColor + 1, $c-&gt;patternColor2($texture-&gt;[1]));
+$c-&gt;setColor($perlchartdir::DataColor + 2, $c-&gt;patternColor2($texture-&gt;[2]));
+
+# Draw the pie in 3D with a 3D depth of 30 pixels
+$c-&gt;set3D(30);
+
+# Use 12 pts Arial Bold Italic as the sector label font
+$c-&gt;setLabelStyle("arialbi.ttf", 12);
+
+# Output the chart
+$c-&gt;makeChart("texturedonut.png")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\texturedonut.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The data for the pie chart
+my $data = [18, 45, 28];
+
+# The labels for the pie chart
+my $labels = ["Marble", "Wood", "Granite"];
+
+# The icons for the sectors
+my $texture = ["marble3.png", "wood.png", "rock.png"];
+
+# Create a PieChart object of size 400 x 330 pixels, with a metallic green (88EE88)
+# background, black border and 1 pixel 3D border effect
+my $c = new PieChart(400, 330, perlchartdir::metalColor(0x88ee88), 0x000000, 1);
+
+#Set directory for loading images to current script directory
+#Need when running under Microsoft IIS
+$c-&gt;setSearchPath(dirname($0));
+
+# Set donut center at (200, 160), and outer/inner radii as 120/60 pixels
+$c-&gt;setDonutSize(200, 160, 120, 60);
+
+# Add a title box using 15 pts Times Bold Italic font and metallic deep green
+# (008000) background color
+$c-&gt;addTitle("Material Composition", "timesbi.ttf", 15)-&gt;setBackground(
+    perlchartdir::metalColor(0x008000));
+
+# Set the pie data and the pie labels
+$c-&gt;setData($data, $labels);
+
+# Set the colors of the sectors to the 3 texture patterns
+$c-&gt;setColor($perlchartdir::DataColor + 0, $c-&gt;patternColor2($texture-&gt;[0]));
+$c-&gt;setColor($perlchartdir::DataColor + 1, $c-&gt;patternColor2($texture-&gt;[1]));
+$c-&gt;setColor($perlchartdir::DataColor + 2, $c-&gt;patternColor2($texture-&gt;[2]));
+
+# Draw the pie in 3D with a 3D depth of 30 pixels
+$c-&gt;set3D(30);
+
+# Use 12 pts Arial Bold Italic as the sector label font
+$c-&gt;setLabelStyle("arialbi.ttf", 12);
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

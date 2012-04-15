@@ -1,0 +1,39 @@
+<HTML>
+<HEAD>
+<Title>SurfaceChart.setPerspective</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="SurfaceChart.htm">SurfaceChart</a>.setPerspective</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setPerspective(perspective)
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the strength of the perspective effect.<br><br>
+When taking the photograph of a scene, things closer to the camera are larger in the photograph, while things farther from the camera are smaller. For example, two trees of exactly the same height but at different distances from the camera will have different heights as measured in the photograph. This is known as the perspective effect.<br><br>
+This method configures the strength of the perspective effect for a surface chart. The nearer part of the plot region will be magnified, while the farther part will be reduced. The average size of the plot region will be approximately unchanged.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>perspective</td><td>(Mandatory)</td><td>The strength of the perspective effect. It approximately represents the maximum percentage magnification of the plot region, which is the same as the maximum percentage reduction. A value of 0 means no perspective effect. This value is usually between 0 to 100. If this method is never called, the default is 12.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

@@ -1,0 +1,43 @@
+<HTML>
+<HEAD>
+<Title>PolarLayer.setSymbolScale</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="PolarLayer.htm">PolarLayer</a>.setSymbolScale</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setSymbolScale(zData [, scaleType ])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the size of the symbol for each data point (for creating bubble charts).<br><br>
+One common usage for this method is to draw circle symbols of different sizes at each data points, creating a bubble chart.<br><br>
+This method supports any valid data symbols. You can create bubble charts with square bubbles, or even custom data symbols.<br><br>
+ChartDirector supports specifying sizes as pixels or in axis scale. The unit is specified by using the following predefined constants.<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="19%">Constant<th width="19%%">Value<th width="60%">Description <tr><td><a href="perlchartdir.PixelScale.htm">PixelScale</a><td>0<td>The unit is measured in pixels.
+<tr><td><a href="perlchartdir.RadialAxisScale.htm">RadialAxisScale</a><td>2<td>The unit is measured in the radial axis scale.
+</table>
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>zData</td><td>(Mandatory)</td><td>The sizes of the symbols, expressed using the unit defined by the scaleType argument.</td></tr><tr><td>scaleType</td><td><a href="perlchartdir.PixelScale.htm">PixelScale</a></td><td>The unit for zData, which must be one of the predefined constants in the table above.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

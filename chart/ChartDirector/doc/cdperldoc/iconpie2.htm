@@ -1,0 +1,177 @@
+<HTML>
+<HEAD>
+<Title>Icon Pie Chart (2)</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Icon Pie Chart (2)</p>
+<hr class="separator">
+<div class="content">
+<img src="images/iconpie2.png">
+<br><br>
+This example extends the <a href="iconpie.htm">Icon Pie Chart</a> example to demonstrate using <a href="cdml.htm">CDML</a> to include multiple fonts and colors in chart title, sector labels and to draw logo. It also demonstrates silver background color, rounded corners, and glass shading effect for title.<br><br>
+<ul><li> The silver background is achieved by using <a href="perlchartdir.silverColor.htm">perlchartdir::silverColor</a> to create the silver color, then use it in <a href="PieChart.PieChart.htm">PieChart.PieChart</a> as the chart background color.<br><br>
+<li> The rounded frame is configured using <a href="BaseChart.setRoundedFrame.htm">BaseChart.setRoundedFrame</a>.<br><br>
+<li> The title containing multiple fonts and colors is written in <a href="cdml.htm">CDML</a> and added to the chart using <a href="BaseChart.addTitle.htm">BaseChart.addTitle</a>.<br><br>
+<li> The glass shading effect of the title is defined using <a href="perlchartdir.glassEffect.htm">perlchartdir::glassEffect</a>, then applied to the title using <a href="Box.setBackground.htm">Box.setBackground</a> of the title <a href="TextBox.htm">TextBox</a> object.<br><br>
+<li> The logo designed using <a href="cdml.htm">CDML</a> is added to the chart as another title using <a href="BaseChart.addTitle2.htm">BaseChart.addTitle2</a> with <a href="perlchartdir.BottomRight.htm">BottomRight</a> alignment.<br><br>
+<li> The icons file names for sector labels are added to the chart as an extra field using <a href="BaseChart.addExtraField.htm">BaseChart.addExtraField</a>.<br><br>
+<li> The sector label format string is specified using <a href="cdml.htm">CDML</a> and <a href="paramsub.htm">Parameter Substitution and Formatting</a> as:<br><br>
+<div style="margin-left:25;font-family:courier new,courier"> &lt;*block,valign=absmiddle*&gt;&lt;*img={field0}*&gt; {label} ({percent|0}%) </div><br>
+This means that the sector label is a block, which contains an image, followed by the sector name and percentage. The image file is taken from the extra field.<br><br>
+<li> The format string is applied to the chart using <a href="PieChart.setLabelFormat.htm">PieChart.setLabelFormat</a>.</ul>
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\iconpie2.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# The data for the pie chart
+my $data = [28, 45, 5, 1, 12];
+
+# The labels for the pie chart
+my $labels = ["Excellent", "Good", "Bad", "Very Bad", "Neutral"];
+
+# The icons for the sectors
+my $icons = ["laugh.png", "smile.png", "sad.png", "angry.png", "nocomment.png"];
+
+# Create a PieChart object of size 560 x 300 pixels, with a silver background, black
+# border, 1 pxiel 3D border effect and rounded corners
+my $c = new PieChart(560, 300, perlchartdir::silverColor(), 0x000000, 1);
+$c-&gt;setRoundedFrame();
+
+# Set the center of the pie at (280, 150) and the radius to 120 pixels
+$c-&gt;setPieSize(280, 150, 120);
+
+# Add a title box with title written in CDML, on a sky blue (A0C8FF) background with
+# glass effect
+$c-&gt;addTitle(
+    "&lt;*block,valign=absmiddle*&gt;&lt;*img=doc.png*&gt; Customer Survey: ".
+    "&lt;*font=timesi.ttf,color=000000*&gt;Do you like our &lt;*font,color=dd0000*&gt;Hyper".
+    "&lt;*super*&gt;TM&lt;*/font*&gt; molecules?", "timesbi.ttf", 15, 0x000080)-&gt;setBackground(
+    0xa0c8ff, 0x000000, perlchartdir::glassEffect());
+
+# Add a logo to the chart written in CDML as the bottom title aligned to the bottom
+# right
+$c-&gt;addTitle2($perlchartdir::BottomRight,
+    "&lt;*block,valign=absmiddle*&gt;&lt;*img=molecule.png*&gt; &lt;*block*&gt;&lt;*color=FF*&gt;".
+    "&lt;*font=timesbi.ttf,size=12*&gt;Molecular Engineering\n&lt;*font=arial.ttf,size=10*&gt;".
+    "Creating better molecules");
+
+# Set the pie data and the pie labels
+$c-&gt;setData($data, $labels);
+
+# Set 3D style
+$c-&gt;set3D();
+
+# Use the side label layout method
+$c-&gt;setLabelLayout($perlchartdir::SideLayout);
+
+# Set the label background color to transparent
+$c-&gt;setLabelStyle()-&gt;setBackground($perlchartdir::Transparent);
+
+# Add icons to the chart as a custom field
+$c-&gt;addExtraField($icons);
+
+# Configure the sector labels using CDML to include the icon images
+$c-&gt;setLabelFormat(
+    "&lt;*block,valign=absmiddle*&gt;&lt;*img={field0}*&gt; {label} ({percent|0}%)");
+
+# Explode the 3rd and 4th sectors as a group (index = 2 and 3)
+$c-&gt;setExplodeGroup(2, 3);
+
+# Set the start angle to 135 degrees may improve layout when there are many small
+# sectors at the end of the data array (that is, data sorted in descending order). It
+# is because this makes the small sectors position near the horizontal axis, where
+# the text label has the least tendency to overlap. For data sorted in ascending
+# order, a start angle of 45 degrees can be used instead.
+$c-&gt;setStartAngle(135);
+
+# Output the chart
+$c-&gt;makeChart("iconpie2.png")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\iconpie2.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The data for the pie chart
+my $data = [28, 45, 5, 1, 12];
+
+# The labels for the pie chart
+my $labels = ["Excellent", "Good", "Bad", "Very Bad", "Neutral"];
+
+# The icons for the sectors
+my $icons = ["laugh.png", "smile.png", "sad.png", "angry.png", "nocomment.png"];
+
+# Create a PieChart object of size 560 x 300 pixels, with a silver background, black
+# border, 1 pxiel 3D border effect and rounded corners
+my $c = new PieChart(560, 300, perlchartdir::silverColor(), 0x000000, 1);
+$c-&gt;setRoundedFrame();
+
+#Set directory for loading images to current script directory
+#Need when running under Microsoft IIS
+$c-&gt;setSearchPath(dirname($0));
+
+# Set the center of the pie at (280, 150) and the radius to 120 pixels
+$c-&gt;setPieSize(280, 150, 120);
+
+# Add a title box with title written in CDML, on a sky blue (A0C8FF) background with
+# glass effect
+$c-&gt;addTitle(
+    "&lt;*block,valign=absmiddle*&gt;&lt;*img=doc.png*&gt; Customer Survey: ".
+    "&lt;*font=timesi.ttf,color=000000*&gt;Do you like our &lt;*font,color=dd0000*&gt;Hyper".
+    "&lt;*super*&gt;TM&lt;*/font*&gt; molecules?", "timesbi.ttf", 15, 0x000080)-&gt;setBackground(
+    0xa0c8ff, 0x000000, perlchartdir::glassEffect());
+
+# Add a logo to the chart written in CDML as the bottom title aligned to the bottom
+# right
+$c-&gt;addTitle2($perlchartdir::BottomRight,
+    "&lt;*block,valign=absmiddle*&gt;&lt;*img=molecule.png*&gt; &lt;*block*&gt;&lt;*color=FF*&gt;".
+    "&lt;*font=timesbi.ttf,size=12*&gt;Molecular Engineering\n&lt;*font=arial.ttf,size=10*&gt;".
+    "Creating better molecules");
+
+# Set the pie data and the pie labels
+$c-&gt;setData($data, $labels);
+
+# Set 3D style
+$c-&gt;set3D();
+
+# Use the side label layout method
+$c-&gt;setLabelLayout($perlchartdir::SideLayout);
+
+# Set the label background color to transparent
+$c-&gt;setLabelStyle()-&gt;setBackground($perlchartdir::Transparent);
+
+# Add icons to the chart as a custom field
+$c-&gt;addExtraField($icons);
+
+# Configure the sector labels using CDML to include the icon images
+$c-&gt;setLabelFormat(
+    "&lt;*block,valign=absmiddle*&gt;&lt;*img={field0}*&gt; {label} ({percent|0}%)");
+
+# Explode the 3rd and 4th sectors as a group (index = 2 and 3)
+$c-&gt;setExplodeGroup(2, 3);
+
+# Set the start angle to 135 degrees may improve layout when there are many small
+# sectors at the end of the data array (that is, data sorted in descending order). It
+# is because this makes the small sectors position near the horizontal axis, where
+# the text label has the least tendency to overlap. For data sorted in ascending
+# order, a start angle of 45 degrees can be used instead.
+$c-&gt;setStartAngle(135);
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

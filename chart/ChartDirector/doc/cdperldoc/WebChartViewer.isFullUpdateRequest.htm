@@ -1,0 +1,30 @@
+<HTML>
+<HEAD>
+<Title>WebChartViewer.isFullUpdateRequest</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="WebChartViewer.htm">WebChartViewer</a>.isFullUpdateRequest</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+isFullUpdateRequest()
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Checks if the current HTTP request is a full update request containing information from a <a href="JsChartViewer.htm">JsChartViewer</a>.<br><br>
+A full update request does not necessarily come from a JsChartViewer. For example, a submit button in an HTML FORM can trigger an HTTP request. These kind of requests may contain information from JsChartViewer objects, which are stored as hidden fields in the FORM.<br><br>
+Any HTTP request that is not a partial update request (see <a href="WebChartViewer.isPartialUpdateRequest.htm">WebChartViewer.isPartialUpdateRequest</a>) but contains information from a JsChartViewer will meet the criteria of this method.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">None</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+True if the current HTTP request is a full update request containing information from a <a href="JsChartViewer.htm">JsChartViewer</a>, otherwise false.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

@@ -1,0 +1,123 @@
+<HTML>
+<HEAD>
+<Title>Scatter Chart</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Scatter Chart</p>
+<hr class="separator">
+<div class="content">
+<img src="images/scatter.png">
+<br><br>
+This example demonstrates a scatter chart created using <a href="XYChart.addScatterLayer.htm">XYChart.addScatterLayer</a>.
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\scatter.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# The XY points for the scatter chart
+my $dataX0 = [10, 15, 6, 12, 14, 8, 13, 13, 16, 12, 10.5];
+my $dataY0 = [130, 150, 80, 110, 110, 105, 130, 115, 170, 125, 125];
+
+my $dataX1 = [6, 12, 4, 3.5, 7, 8, 9, 10, 12, 11, 8];
+my $dataY1 = [65, 80, 40, 45, 70, 80, 80, 90, 100, 105, 60];
+
+# Create a XYChart object of size 450 x 420 pixels
+my $c = new XYChart(450, 420);
+
+# Set the plotarea at (55, 65) and of size 350 x 300 pixels, with a light grey border
+# (0xc0c0c0). Turn on both horizontal and vertical grid lines with light grey color
+# (0xc0c0c0)
+$c-&gt;setPlotArea(55, 65, 350, 300, -1, -1, 0xc0c0c0, 0xc0c0c0, -1);
+
+# Add a legend box at (50, 30) (top of the chart) with horizontal layout. Use 12 pts
+# Times Bold Italic font. Set the background and border color to Transparent.
+$c-&gt;addLegend(50, 30, 0, "timesbi.ttf", 12)-&gt;setBackground($perlchartdir::Transparent
+    );
+
+# Add a title to the chart using 18 pts Times Bold Itatic font.
+$c-&gt;addTitle("Genetically Modified Predator", "timesbi.ttf", 18);
+
+# Add a title to the y axis using 12 pts Arial Bold Italic font
+$c-&gt;yAxis()-&gt;setTitle("Length (cm)", "arialbi.ttf", 12);
+
+# Add a title to the x axis using 12 pts Arial Bold Italic font
+$c-&gt;xAxis()-&gt;setTitle("Weight (kg)", "arialbi.ttf", 12);
+
+# Set the axes line width to 3 pixels
+$c-&gt;xAxis()-&gt;setWidth(3);
+$c-&gt;yAxis()-&gt;setWidth(3);
+
+# Add an orange (0xff9933) scatter chart layer, using 13 pixel diamonds as symbols
+$c-&gt;addScatterLayer($dataX0, $dataY0, "Genetically Engineered",
+    $perlchartdir::DiamondSymbol, 13, 0xff9933);
+
+# Add a green (0x33ff33) scatter chart layer, using 11 pixel triangles as symbols
+$c-&gt;addScatterLayer($dataX1, $dataY1, "Natural", $perlchartdir::TriangleSymbol, 11,
+    0x33ff33);
+
+# Output the chart
+$c-&gt;makeChart("scatter.png")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\scatter.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The XY points for the scatter chart
+my $dataX0 = [10, 15, 6, 12, 14, 8, 13, 13, 16, 12, 10.5];
+my $dataY0 = [130, 150, 80, 110, 110, 105, 130, 115, 170, 125, 125];
+
+my $dataX1 = [6, 12, 4, 3.5, 7, 8, 9, 10, 12, 11, 8];
+my $dataY1 = [65, 80, 40, 45, 70, 80, 80, 90, 100, 105, 60];
+
+# Create a XYChart object of size 450 x 420 pixels
+my $c = new XYChart(450, 420);
+
+# Set the plotarea at (55, 65) and of size 350 x 300 pixels, with a light grey border
+# (0xc0c0c0). Turn on both horizontal and vertical grid lines with light grey color
+# (0xc0c0c0)
+$c-&gt;setPlotArea(55, 65, 350, 300, -1, -1, 0xc0c0c0, 0xc0c0c0, -1);
+
+# Add a legend box at (50, 30) (top of the chart) with horizontal layout. Use 12 pts
+# Times Bold Italic font. Set the background and border color to Transparent.
+$c-&gt;addLegend(50, 30, 0, "timesbi.ttf", 12)-&gt;setBackground($perlchartdir::Transparent
+    );
+
+# Add a title to the chart using 18 pts Times Bold Itatic font.
+$c-&gt;addTitle("Genetically Modified Predator", "timesbi.ttf", 18);
+
+# Add a title to the y axis using 12 pts Arial Bold Italic font
+$c-&gt;yAxis()-&gt;setTitle("Length (cm)", "arialbi.ttf", 12);
+
+# Add a title to the x axis using 12 pts Arial Bold Italic font
+$c-&gt;xAxis()-&gt;setTitle("Weight (kg)", "arialbi.ttf", 12);
+
+# Set the axes line width to 3 pixels
+$c-&gt;xAxis()-&gt;setWidth(3);
+$c-&gt;yAxis()-&gt;setWidth(3);
+
+# Add an orange (0xff9933) scatter chart layer, using 13 pixel diamonds as symbols
+$c-&gt;addScatterLayer($dataX0, $dataY0, "Genetically Engineered",
+    $perlchartdir::DiamondSymbol, 13, 0xff9933);
+
+# Add a green (0x33ff33) scatter chart layer, using 11 pixel triangles as symbols
+$c-&gt;addScatterLayer($dataX1, $dataY1, "Natural", $perlchartdir::TriangleSymbol, 11,
+    0x33ff33);
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

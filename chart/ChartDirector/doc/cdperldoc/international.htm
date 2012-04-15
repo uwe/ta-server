@@ -1,0 +1,34 @@
+<HTML>
+<HEAD>
+<Title>Internationalization</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Internationalization</p>
+<hr class="separator">
+<div class="content">Internally, ChartDirector uses Unicode to handle text. It fully supports international characters (that is, non-English and non-ASCII characters).<br><br>
+Externally, ChartDirector accepts Unicode characters as input using UTF8 encoding. UTF8 is an ASCII compatible standard for encoding Unicode characters.
+</div><p class="heading1a">What is Unicode and What is UTF8?</p><div class="content">
+Whereas ASCII is a standard of representing common alphanumeric character as a number in the range 0 - 127, Unicode is a standard of representing characters from all known languages as a number. Because there are many known languages in the world, a lot of numbers are needed.<br><br>
+One common way of encoding Unicode is to use two bytes (16 bits) for a single Unicode character.  However, this scheme is incompatible with ASCII.<br><br>
+On the other hand, the UTF8 standard employs a variable number of bytes to represent one Unicode character. If the character is in the range 0 - 191, it just employs one byte. Since an ASCII string consists of one byte character in the range 0 - 127, it is also a valid UTF8 string. Thus UTF8 is compatible to ASCII.
+</div><p class="heading1a">Writing Code in UTF8</p><div class="content">
+If your code contains international characters (non-ASCII characters) that you would like to pass to ChartDirector, you should save your source code in UTF8 format.<br><br>
+As UTF8 is a very popular format, many text editors support saving in UTF8 format. For example, the Notepad from Windows 2000 supports saving file as UTF8.<br><br>
+If your code contains only ASCII characters, you can save it just as an ASCII file. It is because UTF8 is compatible with ASCII.<br><br>
+If your code does not contain international characters, but your data source (eg. data from a database) contains non-ASCII text strings, please convert them to UTF8 (if they are not already in UTF8) before passing them to ChartDirector.
+</div><p class="heading1a">ISO-8859-1 (Latin1) Western European Character Set</p><div class="content">
+ChartDirector by default will assume text strings are of UTF8 format. However, if a string contains invalid UTF8 characters, ChartDirector will assume it is not UTF8, and will try to interpret it in ISO-8859-1 format.<br><br>
+ISO-8859-1 (also called Latin1 or Western European Character Set) is an extension of ASCII to include many Western European Characters in the range 128 - 255. This is the default encoding used in the English version of Windows.<br><br>
+Thus if you write some code that contains Latin1 characters, and you just save it as ASCII (or ANSI), it is quite probable ChartDirector can read it correctly. It is because a Latin1 string will probably contains invalid UTF8 characters, so ChartDirector will use the ISO-8859-1 interpretation for the string.
+</div><p class="heading1a">International Fonts</p><div class="content">
+For ChartDirector to draw an international character in an image, it must use the proper fonts. By default, ChartDirector uses the <i>Arial</i> font. If the <i>Arial</i> font does not contain characters you want to display, you may need to specify an alternative font that contains the characters you need.<br><br>
+For example, if you want to display traditional Chinese characters, which are not supported in the Arial font, you will need to specify an alternative font, such as "mingliu.ttc".<br><br>
+You may change the default font by using <a href="BaseChart.setDefaultFonts.htm">BaseChart.setDefaultFonts</a> or <a href="DrawArea.setDefaultFonts.htm">DrawArea.setDefaultFonts</a>. ChartDirector API also allows changing the fonts in some particular text labels in the chart. For example, you may use the <a href="BaseChart.addTitle.htm">BaseChart.addTitle</a> to specify the font for the chart title. Finally, you may use the <a href="cdml.htm">ChartDirector Mark Up Language</a> to specify the font used for any text.
+</div><p class="heading1a">Number and Date/Time Formats</p><div class="content">
+In ChartDirector, the decimal point, thousand separator and the names used for months, weekdays, etc., are all configurable.<br><br>
+For example, instead of using "." as the decimal point, you may configure ChartDirector to use "," as the decimal point using <a href="BaseChart.setNumberFormat.htm">BaseChart.setNumberFormat</a>, or by using <a href="paramsub.htm">Parameter Substitution and Formatting</a>.<br><br>
+Similarly, instead of using "Sun", "Mon", "Tue", ... etc, for the weekday names in date formatting, you may use <a href="BaseChart.setWeekDayNames.htm">BaseChart.setWeekDayNames</a> to supply another set of names. The same applies to month names using <a href="BaseChart.setMonthNames.htm">BaseChart.setMonthNames</a>, and to AM/PM representation using <a href="BaseChart.setAMPM.htm">BaseChart.setAMPM</a>.</div><br>
+<hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div></body>
+</HTML>

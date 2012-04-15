@@ -1,0 +1,266 @@
+<HTML>
+<HEAD>
+<Title>Pass Data as HTTP Query Parameters</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Pass Data as HTTP Query Parameters</p>
+<hr class="separator">
+<div class="content"><img src="images/dbdemo2_doc.png"><br><br>
+In this example, we will introduce a technique where the database query is performed in the containing HTML page, and the data is passed to the ChartDirector script as HTTP GET query parameters. Using this method, it is possible to perform one database query and feed the data to multiple charts.<br><br>
+The user will select a year from a HTML form and press OK. The web server will query a database to obtain the necessary data, and return a web page containing the bar chart and the line chart for the selected year.<br><br>
+The code for producing the HTML form is listed below.<br><br>
+The code outputs a drop down select list to allow the user to select a year. Based on the selected year, it queries the database and read the data into arrays. The data are then serialized into comma delimited strings using the "join" function. Two &lt;IMG&gt; tags are used to invoke two scripts for charts generation, where the data are passed in as HTTP GET query parameters using the comma delimited strings.<br><br>
+<b>[CGI Version]</b> perldemo_cgi\dbdemo2.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# Get HTTP query parameters
+use CGI;
+my $query = new CGI;
+
+
+# The currently selected year
+my $selectedYear = ($query-&gt;param("year") or 2001);
+
+# SQL statement to get the monthly revenues for the selected year.
+my $SQL =
+    "Select Software, Hardware, Services From revenue Where Year(TimeStamp) = ".
+    "$selectedYear Order By TimeStamp";
+
+#
+# Connect to database and read the query result into arrays
+#
+
+use DBI;
+my $dbh = DBI-&gt;connect('dbi:mysql:sample', 'test', 'test');
+my $sth = $dbh-&gt;prepare($SQL);
+$sth-&gt;execute();
+
+my $software = [];
+my $hardware = [];
+my $services = [];
+while (my @row = $sth-&gt;fetchrow_array) {
+    push @$software, $row[0];
+    push @$hardware, $row[1];
+    push @$services, $row[2];
+}
+$dbh-&gt;disconnect;
+
+# Serialize the data into a string to be used as HTTP query parameters
+my $httpParam = sprintf("year=%s&software=%s&hardware=%s&services=%s", $selectedYear,
+    join(",", @$software), join(",", @$hardware), join(",", @$services));
+
+#
+# The following code generates the &lt;option&gt; tags for the HTML select box, with the
+# &lt;option&gt; tag representing the currently selected year marked as selected.
+#
+
+my $optionTags = [(undef) x (2001 - 1990 + 1)];
+for(my $i = 1990; $i &lt; 2001 + 1; ++$i) {
+    if ($i == $selectedYear) {
+        $optionTags-&gt;[$i - 1990] = "&lt;option value='$i' selected&gt;$i&lt;/option&gt;";
+    } else {
+        $optionTags-&gt;[$i - 1990] = "&lt;option value='$i'&gt;$i&lt;/option&gt;";
+    }
+}
+my $selectYearOptions = join("", @$optionTags);
+
+print "Content-type: text/html\n\n";
+print &lt;&lt;EndOfHTML
+&lt;html&gt;
+&lt;body style="margin:5px 0px 0px 5px"&gt;
+&lt;div style="font-size:18pt; font-family:verdana; font-weight:bold"&gt;
+    Database Integration Demo (2)
+&lt;/div&gt;
+&lt;hr style="border:solid 1px #000080" /&gt;
+&lt;div style="font-size:10pt; font-family:verdana; width:600px"&gt;
+This example demonstrates creating a chart using data from a database. The database
+query is performed in the containing HTML page. The data are then passed to the chart
+generation pages as HTTP GET parameters.
+&lt;ul&gt;
+    &lt;li&gt;&lt;a href="viewsource.pl?file=$ENV{"SCRIPT_NAME"}"&gt;
+        View containing HTML page source code
+    &lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="viewsource.pl?file=dbdemo2a.pl"&gt;
+        View chart generation page source code for upper chart
+    &lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="viewsource.pl?file=dbdemo2b.pl"&gt;
+        View chart generation page source code for lower chart
+    &lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;form&gt;
+    I want to obtain the revenue data for the year
+    &lt;select name="year"&gt;
+        $selectYearOptions
+    &lt;/select&gt;
+    &lt;input type="submit" value="OK"&gt;
+&lt;/form&gt;
+&lt;/div&gt;
+
+&lt;img src="dbdemo2a.pl?$httpParam"&gt;
+&lt;br&gt;&lt;br&gt;
+&lt;img src="dbdemo2b.pl?$httpParam"&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+EndOfHTML
+;</pre></tr></td></table><br>
+The &lt;IMG&gt; tags in the above code invoke "dbdemo2a.pl" and "dbdemo2b.pl" for charts generation. In "dbdemo2a.pl" and "dbdemo2b.pl", the data is retrieved from the HTTP GET query parameters and deserialized back into arrays by using the "split" function. The data are then used to generate the charts.<br><br>
+<b>[CGI Version]</b> perldemo_cgi\dbdemo2a.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# Get HTTP query parameters
+use CGI;
+my $query = new CGI;
+
+#
+# Retrieve the data from the query parameters
+#
+
+my $selectedYear = $query-&gt;param("year");
+
+my $software = [split(",", $query-&gt;param("software"))];
+my $hardware = [split(",", $query-&gt;param("hardware"))];
+my $services = [split(",", $query-&gt;param("services"))];
+
+#
+# Now we obtained the data into arrays, we can draw the chart using ChartDirector
+#
+
+# Create a XYChart object of size 600 x 300 pixels, with a light grey (eeeeee)
+# background, black border, 1 pixel 3D border effect and rounded corners.
+my $c = new XYChart(600, 300, 0xeeeeee, 0x000000, 1);
+$c-&gt;setRoundedFrame();
+
+# Set the plotarea at (60, 60) and of size 520 x 200 pixels. Set background color to
+# white (ffffff) and border and grid colors to grey (cccccc)
+$c-&gt;setPlotArea(60, 60, 520, 200, 0xffffff, -1, 0xcccccc, 0xccccccc);
+
+# Add a title to the chart using 15pts Times Bold Italic font, with a light blue
+# (ccccff) background and with glass lighting effects.
+$c-&gt;addTitle("Global Revenue for Year $selectedYear", "timesbi.ttf", 15
+    )-&gt;setBackground(0xccccff, 0x000000, perlchartdir::glassEffect());
+
+# Add a legend box at (70, 32) (top of the plotarea) with 9pts Arial Bold font
+$c-&gt;addLegend(70, 32, 0, "arialbd.ttf", 9)-&gt;setBackground($perlchartdir::Transparent)
+    ;
+
+# Add a line chart layer using the supplied data
+my $layer = $c-&gt;addLineLayer2();
+$layer-&gt;addDataSet($software, 0xff0000, "Software")-&gt;setDataSymbol(
+    $perlchartdir::CircleShape, 9);
+$layer-&gt;addDataSet($hardware, 0x00ff00, "Hardware")-&gt;setDataSymbol(
+    $perlchartdir::DiamondShape, 11);
+$layer-&gt;addDataSet($services, 0xffaa00, "Services")-&gt;setDataSymbol(
+    perlchartdir::Cross2Shape(), 11);
+
+# Set the line width to 3 pixels
+$layer-&gt;setLineWidth(3);
+
+# Set the x axis labels. In this example, the labels must be Jan - Dec.
+my $labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct",
+    "Nov", "Dec"];
+$c-&gt;xAxis()-&gt;setLabels($labels);
+
+# Set the y axis title
+$c-&gt;yAxis()-&gt;setTitle("USD (Millions)");
+
+# Set axes width to 2 pixels
+$c-&gt;xAxis()-&gt;setWidth(2);
+$c-&gt;yAxis()-&gt;setWidth(2);
+
+# Output the chart in PNG format
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table><br>
+<b>[CGI Version]</b> perldemo_cgi\dbdemo2b.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# Get HTTP query parameters
+use CGI;
+my $query = new CGI;
+
+#
+# Retrieve the data from the query parameters
+#
+
+my $selectedYear = $query-&gt;param("year");
+
+my $software = [split(",", $query-&gt;param("software"))];
+my $hardware = [split(",", $query-&gt;param("hardware"))];
+my $services = [split(",", $query-&gt;param("services"))];
+
+#
+# Now we obtained the data into arrays, we can draw the chart using ChartDirector
+#
+
+# Create a XYChart object of size 600 x 300 pixels, with a light grey (eeeeee)
+# background, black border, 1 pixel 3D border effect and rounded corners.
+my $c = new XYChart(600, 300, 0xeeeeee, 0x000000, 1);
+$c-&gt;setRoundedFrame();
+
+# Set the plotarea at (60, 60) and of size 520 x 200 pixels. Set background color to
+# white (ffffff) and border and grid colors to grey (cccccc)
+$c-&gt;setPlotArea(60, 60, 520, 200, 0xffffff, -1, 0xcccccc, 0xccccccc);
+
+# Add a title to the chart using 15pts Times Bold Italic font, with a dark green
+# (006600) background and with glass lighting effects.
+$c-&gt;addTitle("Global Revenue for Year $selectedYear", "timesbi.ttf", 15, 0xffffff
+    )-&gt;setBackground(0x006600, 0x000000, perlchartdir::glassEffect(
+    $perlchartdir::ReducedGlare));
+
+# Add a legend box at (70, 32) (top of the plotarea) with 9pts Arial Bold font
+$c-&gt;addLegend(70, 32, 0, "arialbd.ttf", 9)-&gt;setBackground($perlchartdir::Transparent)
+    ;
+
+# Add a stacked area chart layer using the supplied data
+my $layer = $c-&gt;addAreaLayer2($perlchartdir::Stack);
+$layer-&gt;addDataSet($software, 0x40ff0000, "Software");
+$layer-&gt;addDataSet($hardware, 0x4000ff00, "Hardware");
+$layer-&gt;addDataSet($services, 0x40ffaa00, "Services");
+
+# Set the area border color to the same as the fill color
+$layer-&gt;setBorderColor($perlchartdir::SameAsMainColor);
+
+# Set the x axis labels. In this example, the labels must be Jan - Dec.
+my $labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct",
+    "Nov", "Dec"];
+$c-&gt;xAxis()-&gt;setLabels($labels);
+
+# Set the y axis title
+$c-&gt;yAxis()-&gt;setTitle("USD (Millions)");
+
+# Set axes width to 2 pixels
+$c-&gt;xAxis()-&gt;setWidth(2);
+$c-&gt;yAxis()-&gt;setWidth(2);
+
+# Output the chart in PNG format
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table></div><br>
+<hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div></body>
+</HTML>

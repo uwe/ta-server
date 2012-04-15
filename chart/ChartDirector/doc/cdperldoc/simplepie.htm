@@ -1,0 +1,77 @@
+<HTML>
+<HEAD>
+<Title>Simple Pie Chart</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Simple Pie Chart</p>
+<hr class="separator">
+<div class="content">
+<img src="images/simplepie.png">
+<br><br>
+This example demonstrates the basic steps in creating pie charts.<br><br>
+<ul><li> Create a pie chart object using <a href="PieChart.PieChart.htm">PieChart.PieChart</a>.<br><br>
+<li> Specify the center and size of the pyramid using <a href="PieChart.setPieSize.htm">PieChart.setPieSize</a>.<br><br>
+<li> Specify the data used to draw the pie using <a href="PieChart.setData.htm">PieChart.setData</a>.<br><br>
+<li> Generate the chart using <a href="BaseChart.makeChart.htm">BaseChart.makeChart</a>.</ul>
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\simplepie.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# The data for the pie chart
+my $data = [25, 18, 15, 12, 8, 30, 35];
+
+# The labels for the pie chart
+my $labels = ["Labor", "Licenses", "Taxes", "Legal", "Insurance", "Facilities",
+    "Production"];
+
+# Create a PieChart object of size 360 x 300 pixels
+my $c = new PieChart(360, 300);
+
+# Set the center of the pie at (180, 140) and the radius to 100 pixels
+$c-&gt;setPieSize(180, 140, 100);
+
+# Set the pie data and the pie labels
+$c-&gt;setData($data, $labels);
+
+# Output the chart
+$c-&gt;makeChart("simplepie.png")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\simplepie.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The data for the pie chart
+my $data = [25, 18, 15, 12, 8, 30, 35];
+
+# The labels for the pie chart
+my $labels = ["Labor", "Licenses", "Taxes", "Legal", "Insurance", "Facilities",
+    "Production"];
+
+# Create a PieChart object of size 360 x 300 pixels
+my $c = new PieChart(360, 300);
+
+# Set the center of the pie at (180, 140) and the radius to 100 pixels
+$c-&gt;setPieSize(180, 140, 100);
+
+# Set the pie data and the pie labels
+$c-&gt;setData($data, $labels);
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

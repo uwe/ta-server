@@ -1,0 +1,161 @@
+<HTML>
+<HEAD>
+<Title>Surface Chart (3)</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Surface Chart (3)</p>
+<hr class="separator">
+<div class="content">
+<img src="images/surface3.jpg">
+<br><br>
+This example demonstrates using deep perspective. It also demonstrates surface grid lines of different line styles.<br><br>
+<ul><li> The deep perspective in this example is configured using <a href="SurfaceChart.setPerspective.htm">SurfaceChart.setPerspective</a>.<br><br>
+<li> Like all other lines in ChartDirector, "dash line colors" can be applied to surface grid lines to cause them to draw in dash line styles. In this example, <a href="BaseChart.dashLineColor.htm">BaseChart.dashLineColor</a> is used to create a dash line color, which is used as the minor surface grid line color in <a href="SurfaceChart.setSurfaceAxisGrid.htm">SurfaceChart.setSurfaceAxisGrid</a>.</ul>
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\surface3.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# The x and y coordinates of the grid
+my $dataX = [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+    10];
+my $dataY = [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+    10];
+
+# The values at the grid points. In this example, we will compute the values using
+# the formula z = Sin(x * x / 128 - y * y / 256 + 3) * Cos(x / 4 + 1 - Exp(y / 8))
+my $dataZ = [(0) x (scalar(@$dataX) * scalar(@$dataY))];
+for(my $yIndex = 0; $yIndex &lt; scalar(@$dataY); ++$yIndex) {
+    my $y = $dataY-&gt;[$yIndex];
+    for(my $xIndex = 0; $xIndex &lt; scalar(@$dataX); ++$xIndex) {
+        my $x = $dataX-&gt;[$xIndex];
+        $dataZ-&gt;[$yIndex * scalar(@$dataX) + $xIndex] = sin($x * $x / 128.0 - $y * $y
+             / 256.0 + 3) * cos($x / 4.0 + 1 - exp($y / 8.0));
+    }
+}
+
+# Create a SurfaceChart object of size 750 x 600 pixels
+my $c = new SurfaceChart(750, 600);
+
+# Add a title to the chart using 20 points Times New Roman Italic font
+$c-&gt;addTitle("Surface Energy Density       ", "timesi.ttf", 20);
+
+# Set the center of the plot region at (380, 260), and set width x depth x height to
+# 360 x 360 x 270 pixels
+$c-&gt;setPlotRegion(380, 260, 360, 360, 270);
+
+# Set the elevation and rotation angles to 30 and 210 degrees
+$c-&gt;setViewAngle(30, 210);
+
+# Set the perspective level to 60
+$c-&gt;setPerspective(60);
+
+# Set the data to use to plot the chart
+$c-&gt;setData($dataX, $dataY, $dataZ);
+
+# Spline interpolate data to a 80 x 80 grid for a smooth surface
+$c-&gt;setInterpolation(80, 80);
+
+# Use semi-transparent black (c0000000) for x and y major surface grid lines. Use
+# dotted style for x and y minor surface grid lines.
+my $majorGridColor = 0xc0000000;
+my $minorGridColor = $c-&gt;dashLineColor($majorGridColor, $perlchartdir::DotLine);
+$c-&gt;setSurfaceAxisGrid($majorGridColor, $majorGridColor, $minorGridColor,
+    $minorGridColor);
+
+# Set contour lines to semi-transparent white (80ffffff)
+$c-&gt;setContourColor(0x80ffffff);
+
+# Add a color axis (the legend) in which the left center is anchored at (665, 280).
+# Set the length to 200 pixels and the labels on the right side.
+$c-&gt;setColorAxis(665, 280, $perlchartdir::Left, 200, $perlchartdir::Right);
+
+# Set the x, y and z axis titles using 12 points Arial Bold font
+$c-&gt;xAxis()-&gt;setTitle("X Title\nPlaceholder", "arialbd.ttf", 12);
+$c-&gt;yAxis()-&gt;setTitle("Y Title\nPlaceholder", "arialbd.ttf", 12);
+$c-&gt;zAxis()-&gt;setTitle("Z Title Placeholder", "arialbd.ttf", 12);
+
+# Output the chart
+$c-&gt;makeChart("surface3.jpg")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\surface3.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The x and y coordinates of the grid
+my $dataX = [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+    10];
+my $dataY = [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+    10];
+
+# The values at the grid points. In this example, we will compute the values using
+# the formula z = Sin(x * x / 128 - y * y / 256 + 3) * Cos(x / 4 + 1 - Exp(y / 8))
+my $dataZ = [(0) x (scalar(@$dataX) * scalar(@$dataY))];
+for(my $yIndex = 0; $yIndex &lt; scalar(@$dataY); ++$yIndex) {
+    my $y = $dataY-&gt;[$yIndex];
+    for(my $xIndex = 0; $xIndex &lt; scalar(@$dataX); ++$xIndex) {
+        my $x = $dataX-&gt;[$xIndex];
+        $dataZ-&gt;[$yIndex * scalar(@$dataX) + $xIndex] = sin($x * $x / 128.0 - $y * $y
+             / 256.0 + 3) * cos($x / 4.0 + 1 - exp($y / 8.0));
+    }
+}
+
+# Create a SurfaceChart object of size 750 x 600 pixels
+my $c = new SurfaceChart(750, 600);
+
+# Add a title to the chart using 20 points Times New Roman Italic font
+$c-&gt;addTitle("Surface Energy Density       ", "timesi.ttf", 20);
+
+# Set the center of the plot region at (380, 260), and set width x depth x height to
+# 360 x 360 x 270 pixels
+$c-&gt;setPlotRegion(380, 260, 360, 360, 270);
+
+# Set the elevation and rotation angles to 30 and 210 degrees
+$c-&gt;setViewAngle(30, 210);
+
+# Set the perspective level to 60
+$c-&gt;setPerspective(60);
+
+# Set the data to use to plot the chart
+$c-&gt;setData($dataX, $dataY, $dataZ);
+
+# Spline interpolate data to a 80 x 80 grid for a smooth surface
+$c-&gt;setInterpolation(80, 80);
+
+# Use semi-transparent black (c0000000) for x and y major surface grid lines. Use
+# dotted style for x and y minor surface grid lines.
+my $majorGridColor = 0xc0000000;
+my $minorGridColor = $c-&gt;dashLineColor($majorGridColor, $perlchartdir::DotLine);
+$c-&gt;setSurfaceAxisGrid($majorGridColor, $majorGridColor, $minorGridColor,
+    $minorGridColor);
+
+# Set contour lines to semi-transparent white (80ffffff)
+$c-&gt;setContourColor(0x80ffffff);
+
+# Add a color axis (the legend) in which the left center is anchored at (665, 280).
+# Set the length to 200 pixels and the labels on the right side.
+$c-&gt;setColorAxis(665, 280, $perlchartdir::Left, 200, $perlchartdir::Right);
+
+# Set the x, y and z axis titles using 12 points Arial Bold font
+$c-&gt;xAxis()-&gt;setTitle("X Title\nPlaceholder", "arialbd.ttf", 12);
+$c-&gt;yAxis()-&gt;setTitle("Y Title\nPlaceholder", "arialbd.ttf", 12);
+$c-&gt;zAxis()-&gt;setTitle("Z Title Placeholder", "arialbd.ttf", 12);
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/jpeg\n\n";
+print $c-&gt;makeChart2($perlchartdir::JPG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

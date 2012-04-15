@@ -1,0 +1,32 @@
+<HTML>
+<HEAD>
+<Title>Axis.getThickness</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="Axis.htm">Axis</a>.getThickness</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+getThickness()
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Gets the thickness of the axis.<br><br>
+The axis can be considered as a line, with one side facing the internal of the plot area, and the other side not facing the plot area. By default, the latter side includes the axis labels and axis title (although ChartDirector allows the axis to be configured so that the labels and titles are internal to the plot area).<br><br>
+The thickness of an axis only refers to the thickness of the side not facing the plot area. For a vertical axis, it is the width of the bounding box of that side, including the axis ticks, labels and title if they are on that side. For a horizontal axis, it is the height of the bounding box.<br><br>
+The intention of this method is to allow the chart to be adjusted to leave enough space for the axis labels and title.<br><br>
+This method should be called only after axis layout (after calling <a href="XYChart.layoutAxes.htm">XYChart.layoutAxes</a>, <a href="BaseChart.layout.htm">BaseChart.layout</a> or <a href="XYChart.packPlotArea.htm">XYChart.packPlotArea</a>).
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">None</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+The thickness of the axis in pixels.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

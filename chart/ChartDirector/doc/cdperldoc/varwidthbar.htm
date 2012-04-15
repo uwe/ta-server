@@ -1,0 +1,155 @@
+<HTML>
+<HEAD>
+<Title>Variable Width Bar Chart</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Variable Width Bar Chart</p>
+<hr class="separator">
+<div class="content">
+<img src="images/varwidthbar.png">
+<br><br>
+This example demonstrates a bar chart with variable bar widths.<br><br>
+ChartDirector does not really have a bar layer for variable width bars. However, an area layer can be used to create the same effect.<br><br>
+The variable width bars in this example are actually 4 areas, created by 4 area layers. The data set for each area layer consists of 4 points for the 4 corners of a bar.
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\varwidthbar.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# The data for the chart
+my $data = [800, 600, 1000, 1400];
+my $widths = [250, 500, 960, 460];
+my $labels = ["Wind", "Hydro", "Coal", "Natural Gas"];
+
+# The colors to use
+my $colors = [0x00aa00, 0x66aaee, 0xee6622, 0xffbb00];
+
+# Create a XYChart object of size 500 x 350 pixels
+my $c = new XYChart(500, 350);
+
+# Add a title to the chart using 15 pts Arial Italic font
+$c-&gt;addTitle("Energy Generation Breakdown", "ariali.ttf", 15);
+
+# Set the plotarea at (60, 60) and of (chart_width - 90) x (chart_height - 100) in
+# size. Use a vertical gradient color from light blue (f9f9ff) to sky blue (aaccff)
+# as background. Set grid lines to white (ffffff).
+my $plotAreaBgColor = $c-&gt;linearGradientColor(0, 60, 0, $c-&gt;getHeight() - 40,
+    0xaaccff, 0xf9fcff);
+$c-&gt;setPlotArea(60, 60, $c-&gt;getWidth() - 90, $c-&gt;getHeight() - 100, $plotAreaBgColor,
+    -1, -1, 0xffffff);
+
+# Add a legend box at (50, 30) using horizontal layout and transparent background.
+$c-&gt;addLegend(55, 30, 0)-&gt;setBackground($perlchartdir::Transparent);
+
+# Add titles to x/y axes with 10 points Arial Bold font
+$c-&gt;xAxis()-&gt;setTitle("Mega Watts", "arialbd.ttf", 10);
+$c-&gt;yAxis()-&gt;setTitle("Cost per MWh (dollars)", "arialbd.ttf", 10);
+
+# Set the x axis rounding to false, so that the x-axis will fit the data exactly
+$c-&gt;xAxis()-&gt;setRounding(0, 0);
+
+# In ChartDirector, there is no bar layer that can have variable bar widths, but you
+# may create a bar using an area layer. (A bar can be considered as the area under a
+# rectangular outline.) So by using a loop to create one bar per area layer, we can
+# achieve a variable width bar chart.
+
+# starting position of current bar
+my $currentX = 0;
+
+for(my $i = 0; $i &lt; scalar(@$data); ++$i) {
+    # ending position of current bar
+    my $nextX = $currentX + $widths-&gt;[$i];
+
+    # outline of the bar
+    my $dataX = [$currentX, $currentX, $nextX, $nextX];
+    my $dataY = [0, $data-&gt;[$i], $data-&gt;[$i], 0];
+
+    # create the area layer to fill the bar
+    my $layer = $c-&gt;addAreaLayer($dataY, $colors-&gt;[$i], $labels-&gt;[$i]);
+    $layer-&gt;setXData($dataX);
+
+    # the ending position becomes the starting position of the next bar
+    $currentX = $nextX;
+}
+
+# Output the chart
+$c-&gt;makeChart("varwidthbar.png")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\varwidthbar.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The data for the chart
+my $data = [800, 600, 1000, 1400];
+my $widths = [250, 500, 960, 460];
+my $labels = ["Wind", "Hydro", "Coal", "Natural Gas"];
+
+# The colors to use
+my $colors = [0x00aa00, 0x66aaee, 0xee6622, 0xffbb00];
+
+# Create a XYChart object of size 500 x 350 pixels
+my $c = new XYChart(500, 350);
+
+# Add a title to the chart using 15 pts Arial Italic font
+$c-&gt;addTitle("Energy Generation Breakdown", "ariali.ttf", 15);
+
+# Set the plotarea at (60, 60) and of (chart_width - 90) x (chart_height - 100) in
+# size. Use a vertical gradient color from light blue (f9f9ff) to sky blue (aaccff)
+# as background. Set grid lines to white (ffffff).
+my $plotAreaBgColor = $c-&gt;linearGradientColor(0, 60, 0, $c-&gt;getHeight() - 40,
+    0xaaccff, 0xf9fcff);
+$c-&gt;setPlotArea(60, 60, $c-&gt;getWidth() - 90, $c-&gt;getHeight() - 100, $plotAreaBgColor,
+    -1, -1, 0xffffff);
+
+# Add a legend box at (50, 30) using horizontal layout and transparent background.
+$c-&gt;addLegend(55, 30, 0)-&gt;setBackground($perlchartdir::Transparent);
+
+# Add titles to x/y axes with 10 points Arial Bold font
+$c-&gt;xAxis()-&gt;setTitle("Mega Watts", "arialbd.ttf", 10);
+$c-&gt;yAxis()-&gt;setTitle("Cost per MWh (dollars)", "arialbd.ttf", 10);
+
+# Set the x axis rounding to false, so that the x-axis will fit the data exactly
+$c-&gt;xAxis()-&gt;setRounding(0, 0);
+
+# In ChartDirector, there is no bar layer that can have variable bar widths, but you
+# may create a bar using an area layer. (A bar can be considered as the area under a
+# rectangular outline.) So by using a loop to create one bar per area layer, we can
+# achieve a variable width bar chart.
+
+# starting position of current bar
+my $currentX = 0;
+
+for(my $i = 0; $i &lt; scalar(@$data); ++$i) {
+    # ending position of current bar
+    my $nextX = $currentX + $widths-&gt;[$i];
+
+    # outline of the bar
+    my $dataX = [$currentX, $currentX, $nextX, $nextX];
+    my $dataY = [0, $data-&gt;[$i], $data-&gt;[$i], 0];
+
+    # create the area layer to fill the bar
+    my $layer = $c-&gt;addAreaLayer($dataY, $colors-&gt;[$i], $labels-&gt;[$i]);
+    $layer-&gt;setXData($dataX);
+
+    # the ending position becomes the starting position of the next bar
+    $currentX = $nextX;
+}
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

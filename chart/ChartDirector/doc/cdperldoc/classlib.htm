@@ -1,0 +1,62 @@
+<HTML>
+<HEAD>
+<Title>Class Library</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Class Library</p>
+<hr class="separator">
+<div class="content">This section describes the core ChartDirector classes.
+</div><p class="heading2">Important Notes to Perl Developers</p><div class="content">
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"> Many ChartDirector APIs accept array of numbers or strings as arguments. However, in Perl, it is impossible to use arrays as function call arguments without losing their structure. So in this documentation, all functions or methods that accept arrays actually means "array references" in Perl.<br><br>
+Similarly, functions or methods that return arrays actually means "array references" in Perl. </td></tr></table><br>
+</div><p class="heading2">perlchartdir</p><div class="content">
+<a href="perlchartdir.htm">perlchartdir</a> is the Perl module for interface with ChartDirector. It includes all ChartDirector classes, general informational functions and predefined constants.
+</div><p class="heading2">Fundamental Classes</p><div class="content">
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="28%">Class<th width="70%">Description <tr><td><a href="Box.htm">Box</a><td>The Box class represents boxes. It is used as the base class for more complex classes (such as the <a href="TextBox.htm">TextBox</a> class).
+<tr><td><a href="TextBox.htm">TextBox</a><td>The TextBox class represents text boxes. It is a subclass of <a href="Box.htm">Box</a>.
+<tr><td><a href="Line.htm">Line</a><td>The Line class represents straight lines.
+</table><br>
+</div><p class="heading2">General Charts</p><div class="content">
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="28%">Class<th width="70%">Description <tr><td><a href="BaseChart.htm">BaseChart</a><td>The BaseChart class is an abstract class containing methods that are common to all chart types.
+<tr><td><a href="MultiChart.htm">MultiChart</a><td>The MultiChart class represents multi-charts. A multi-chart is a container to contain multiple charts. MultiChart is a subclass of <a href="BaseChart.htm">BaseChart</a>.
+<tr><td><a href="LegendBox.htm">LegendBox</a><td>The class LegendBox represents legend boxes. It is a subclass of <a href="TextBox.htm">TextBox</a>.
+</table><br>
+</div><p class="heading2">Pie Charts Related</p><div class="content">
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="28%">Class<th width="70%">Description <tr><td><a href="PieChart.htm">PieChart</a><td>The PieChart class represents pie charts. It is a subclass of <a href="BaseChart.htm">BaseChart</a>. <tr><td><a href="Sector.htm">Sector</a><td>The Sector class represents sectors. </table><br>
+</div><p class="heading2">XY Charts Related</p><div class="content">
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="28%">Class<th width="70%">Description <tr><td><a href="XYChart.htm">XYChart</a><td>The XYChart class represents XY charts. The XYChart class is a subclass of <a href="BaseChart.htm">BaseChart</a>.
+<tr><td><a href="PlotArea.htm">PlotArea</a><td>The PlotArea class represents plot areas in XY charts. <tr><td><a href="Axis.htm">Axis</a><td>The Axis class represents x and y axes in XY charts <tr><td><a href="ColorAxis.htm">ColorAxis</a><td>The ColorAxis class represents the color axis in contour layers and surface charts. ColorAxis is a subclass of <a href="Axis.htm">Axis</a>. <tr><td><a href="Mark.htm">Mark</a><td>The Mark class represents mark lines. It is a subclass of <a href="TextBox.htm">TextBox</a>. <tr><td><a href="Layer.htm">Layer</a><td>The Layer class is the base class for all <a href="XYChart.htm">XYChart</a> layer classes. <tr><td><a href="BarLayer.htm">BarLayer</a><td>The BarLayer class represents bar layers. BarLayer is a subclass of <a href="Layer.htm">Layer</a>. <tr><td><a href="LineLayer.htm">LineLayer</a><td>The LineLayer class represents line layers. LineLayer is a subclass of <a href="Layer.htm">Layer</a>. <tr><td><a href="SplineLayer.htm">SplineLayer</a><td>The SplineLayer class represents spline layers. SplineLayer is a subclass of <a href="LineLayer.htm">LineLayer</a>. <tr><td><a href="StepLineLayer.htm">StepLineLayer</a><td>The StepLineLayer class represents step line layers. StepLineLayer is a subclass of <a href="LineLayer.htm">LineLayer</a>. <tr><td><a href="TrendLayer.htm">TrendLayer</a><td>The TrendLayer class represents trend layers. TrendLayer is a subclass <a href="Layer.htm">Layer</a>. <tr><td><a href="InterLineLayer.htm">InterLineLayer</a><td>The InterLineLayer class represents interline layers. InterLineLayer is a subclass of <a href="Layer.htm">Layer</a>. <tr><td><a href="ScatterLayer.htm">ScatterLayer</a><td>The ScatterLayer class represents scatter layers. ScatterLayer is a subclass of <a href="Layer.htm">Layer</a>. <tr><td><a href="AreaLayer.htm">AreaLayer</a><td>The AreaLayer class represents area layers. AreaLayer is a subclass of <a href="Layer.htm">Layer</a>. <tr><td><a href="BaseBoxLayer.htm">BaseBoxLayer</a><td>The BaseBoxLayer class is the base class for layers that uses isolated symbols to represent multiple data sets. These include <a href="BoxWhiskerLayer.htm">BoxWhiskerLayer</a>, <a href="HLOCLayer.htm">HLOCLayer</a> and <a href="CandleStickLayer.htm">CandleStickLayer</a>. BaseBoxLayer is a subclass of <a href="Layer.htm">Layer</a>.
+<tr><td><a href="HLOCLayer.htm">HLOCLayer</a><td>The HLOCLayer class represents high-low-open-close layers. HLOCLayer is a subclass of <a href="BaseBoxLayer.htm">BaseBoxLayer</a>. <tr><td><a href="CandleStickLayer.htm">CandleStickLayer</a><td>The CandleStickLayer class represents candlestick layers. CandleStickLayer is a subclass of <a href="BaseBoxLayer.htm">BaseBoxLayer</a>. <tr><td><a href="BoxWhiskerLayer.htm">BoxWhiskerLayer</a><td>The BoxWhiskerLayer class represents box-whisker layers. BoxWhiskerLayer is a subclass of <a href="BaseBoxLayer.htm">BaseBoxLayer</a>. <tr><td><a href="VectorLayer.htm">VectorLayer</a><td>The VectorLayer class represents vector layers. VectorLayer is a subclass of <a href="Layer.htm">Layer</a>. <tr><td><a href="ContourLayer.htm">ContourLayer</a><td>The ContourLayer class represents contour layers. ContourLayer is a subclass of <a href="Layer.htm">Layer</a>. <tr><td><a href="DataSet.htm">DataSet</a><td>The DataSet class represents data sets. </table><br>
+</div><p class="heading2">Surface Charts Related</p><div class="content">
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="28%">Class<th width="70%">Description <tr><td><a href="SurfaceChart.htm">SurfaceChart</a><td>The SurfaceChart represents surface charts. The SurfaceChart class is a subclass of <a href="BaseChart.htm">BaseChart</a>.
+<tr><td><a href="Axis.htm">Axis</a><td>The Axis class represents x and y axes in XY charts <tr><td><a href="ColorAxis.htm">ColorAxis</a><td>The ColorAxis class represents the color axis in contour layers and surface charts. ColorAxis is a subclass of <a href="Axis.htm">Axis</a>.
+</table><br>
+</div><p class="heading2">Polar Charts Related</p><div class="content">
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="28%">Class<th width="70%">Description <tr><td><a href="PolarChart.htm">PolarChart</a><td>The PolarChart class represents polar charts (including radar charts). The PolarChart class is a subclass of <a href="BaseChart.htm">BaseChart</a>.
+<tr><td><a href="RadialAxis.htm">RadialAxis</a><td>The RadialAxis class represents radial axes in polar charts. The radial axis is the axis representing the radius component of a polar coordinate.
+<tr><td><a href="AngularAxis.htm">AngularAxis</a><td>The AngularAxis class represents angular axes in polar charts. The angular axis is the axis representing the angular component of a polar coordinate.
+<tr><td><a href="PolarLayer.htm">PolarLayer</a><td>The PolarLayer class is the base class for all <a href="PolarChart.htm">PolarChart</a> layer classes. <tr><td><a href="PolarLineLayer.htm">PolarLineLayer</a><td>The PolarLineLayer class represents polar area layers. PolarLineLayer is a subclass of <a href="PolarLayer.htm">PolarLayer</a>. <tr><td><a href="PolarAreaLayer.htm">PolarAreaLayer</a><td>The PolarAreaLayer class represents polar area layers. PolarAreaLayer is a subclass of <a href="PolarLayer.htm">PolarLayer</a>. <tr><td><a href="PolarSplineLineLayer.htm">PolarSplineLineLayer</a><td>The PolarSplineLineLayer class represents polar spline line layers. PolarSplineLineLayer is a subclass of <a href="PolarLineLayer.htm">PolarLineLayer</a>. <tr><td><a href="PolarSplineAreaLayer.htm">PolarSplineAreaLayer</a><td>The PolarSplineAreaLayer class represents polar spline area layers. PolarSplineAreaLayer is a subclass of <a href="PolarAreaLayer.htm">PolarAreaLayer</a>. <tr><td><a href="PolarVectorLayer.htm">PolarVectorLayer</a><td>The PolarVectorLayer class represents polar vector layers. PolarVectorLayer is a subclass of <a href="PolarLayer.htm">PolarLayer</a>.
+</table><br>
+</div><p class="heading2">Pyramid Charts Related</p><div class="content">
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="28%">Class<th width="70%">Description <tr><td><a href="PyramidChart.htm">PyramidChart</a><td>The PyramidChart class represents pyramid charts (including cone charts and funnel charts). The PyramidChart class is a subclass of <a href="BaseChart.htm">BaseChart</a>.
+<tr><td><a href="PyramidLayer.htm">PyramidLayer</a><td>The PyramidLayer class represents a layer in a pyramid
+</table><br>
+</div><p class="heading2">Meters and Gauges</p><div class="content">
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="28%">Class<th width="70%">Description <tr><td><a href="BaseMeter.htm">BaseMeter</a><td>The BaseMeter class is the base class of all meters in ChartDirector. <tr><td><a href="AngularMeter.htm">AngularMeter</a><td>The AngularMeter class represents angular meters. AngularMeter is a subclass of <a href="BaseMeter.htm">BaseMeter</a>. <tr><td><a href="LinearMeter.htm">LinearMeter</a><td>The LinearMeter class represents linear meters. LinearMeter is a subclass of <a href="BaseMeter.htm">BaseMeter</a>. <tr><td><a href="MeterPointer.htm">MeterPointer</a><td>The MeterPointer class represent meter pointers in both angular and linear meters. </table><br>
+</div><p class="heading2">Finance Charts Related</p><div class="content">
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="28%">Class<th width="70%">Description <tr><td><a href="FinanceChart.htm">FinanceChart</a><td>FinanceChart is a powerful financial charting library built on top of the main ChartDirector library. It extends <a href="MultiChart.htm">MultiChart</a> by implementing many financial indicators, and allowing complex financial charts to be composed easily.
+</table><br>
+</div><p class="heading2">Graphics Primitives</p><div class="content">
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="28%">Class<th width="70%">Description <tr><td><a href="DrawArea.htm">DrawArea</a><td>The DrawArea class represents drawing surfaces, with methods for performing graphics primitives (such as drawing lines, shapes and texts) and the surfaces.
+<tr><td><a href="TTFText.htm">TTFText</a><td>The TTFText class represents text blocks.
+</table><br>
+</div><p class="heading2">Utility Classes</p><div class="content">
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="28%">Class<th width="70%">Description
+<tr><td><a href="ArrayMath.htm">ArrayMath</a><td>The ArrayMath class is a utility class used to perform array computations.
+<tr><td><a href="RanTable.htm">RanTable</a><td>RanTable is a utility class to produce tables with random numbers.
+<tr><td><a href="FinanceSimulator.htm">FinanceSimulator</a><td>FinanceSimulator is a utility class to produce random data that looks like financial data series.
+</table></div><br>
+<hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div></body>
+</HTML>

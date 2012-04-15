@@ -1,0 +1,32 @@
+<HTML>
+<HEAD>
+<Title>DrawArea.enableVectorOutput</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="DrawArea.htm">DrawArea</a>.enableVectorOutput</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+enableVectorOutput()
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Enables true vector graphics output.<br><br>
+By default, when creating the output image, ChartDirector draws directly onto an output buffer representing the bitmap of the image. For example, for a chart 800 x 600 pixels in size, the output buffer may represent a 800 x 600 bitmap. The output buffer size is unchanged no matter how many items are drawn onto it. Even if the output contains 1 million elements (eg. 1 million symbols), the size of the output buffer is still the same.<br><br>
+On the other hand, a true vector output is indefinitely scalable and can be considered as having infinite resolution. To produce a true vector output, it is necessary to remember the graphics operations for every element in the output buffer. The output buffer size is therefore proportional to the number of elements to draw.<br><br>
+This method tells ChartDirector that it needs to remember the graphics operations to prepare for true vector output. If true vector output is needed, this method should be called immediately after creating the DrawArea object.<br><br>
+If this method is not called, and a vector graphics output format is used (such as SVG), instead of a true vector output, ChartDirector will output a raster image using the vector graphics format. (Most vector graphics formats support embedded raster images.)
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">None</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

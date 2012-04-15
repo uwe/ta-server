@@ -1,0 +1,44 @@
+<HTML>
+<HEAD>
+<Title>Axis.setLabels</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="Axis.htm">Axis</a>.setLabels</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setLabels(text)
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the text labels to be used on the axis.<br><br>
+This method is typically used to set the x-axis to enumerated scale. In enumerated scale, the data points are associated with the x-axis by position. The first data point will be plotted at the first label position on the x-axis, the second data point at the second label position, and so on.<br><br>
+Enumerated axis is a very flexible axis type. It is most suitable for chart types where the data points are evenly spaced on the x-axis. The axis labels can be any text. They do not need to be numbers or dates. If they are numbers or dates, you can format them in any way you like before calling this method.<br><br>
+Internally, ChartDirector will assign a value of 0 to the first axis label, 1 to the second axis label, and so on. These values are not visible. Only the axis labels are visible. However, these values may be useful for some ChartDirector features that need to reference the axis position by value, such as adding mark lines using <a href="Axis.addMark.htm">Axis.addMark</a>.<br><br>
+By default, all axis labels will be associated major ticks. To associate a label with a minor tick, use '-' as the first character of the label. To draw a label without any tick at all, use '~' as the first character of the label.<br><br>
+Leading '-' or '~' characters are tick specification characters and will not appear on the labels. They just specify the the tick style to be associated with the labels. If you want have a label that actually begins these characters, add '\' as the first character as the escape character.<br><br>
+One common issue is that there may be too many labels on the axis. In this case, the <a href="Axis.setLabelStep.htm">Axis.setLabelStep</a> method may be used show only a regularly spaced subset of labels on the axis.<br><br>
+Another method is to remove some labels is to replace them with empty strings before passing them to ChartDirector. If you want to remove the label text but leave a major tick, use a space character " " as the label text. If you want to remove the label text but leave a major tick, use "-" as the label text.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>text</td><td>(Mandatory)</td><td>An array of strings containing the text of the labels.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+A <a href="TextBox.htm">TextBox</a> object representing the prototype of the axis labels. This may be used to fine-tune the appearance of the axis labels.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

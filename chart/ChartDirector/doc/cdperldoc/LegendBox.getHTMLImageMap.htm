@@ -1,0 +1,53 @@
+<HTML>
+<HEAD>
+<Title>LegendBox.getHTMLImageMap</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="LegendBox.htm">LegendBox</a>.getHTMLImageMap</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+getHTMLImageMap(url [, queryFormat [, extraAttr [, offsetX, offsetY ]]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Generates an HTML image map for the legend box.<br><br>
+This method should be called only after creating the chart image (eg. using <a href="BaseChart.makeChart.htm">BaseChart.makeChart</a> or <a href="BaseChart.makeChart2.htm">BaseChart.makeChart2</a>). The image map cannot be determined without creating the chart image first.<br><br>
+This method accepts a URL as its argument. When generating an image map, it appends query parameters to the URL to indicate which legend entry the user has clicked.<br><br>
+The following is an example image map generated for a legend box with 3 entries.<br><br>
+<div style="margin-left:25;font-family:courier new,courier"> &lt;area shape="rect" coords="310,20,375,33" href='test.asp?dataSet=0&dataSetName=Web'&gt;<br> &lt;area shape="rect" coords="310,36,377,49" href='test.asp?dataSet=1&dataSetName=Email'&gt;<br> &lt;area shape="rect" coords="310,52,377,65" href='test.asp?dataSet=2&dataSetName=FTP'&gt; </div><br>
+The image map consists of multiple &lt;area&gt; tags, one for each legend entry. In the "href" attributes, query parameters are appended to the URL to provide information on the entry clicked.<br><br>
+The image map produces by ChartDirector does not include the &lt;map&gt; and &lt;/map&gt; tag. This is intentional so that you can add additional custom &lt;area&gt; tags to the image map, or append multiple image maps together.<br><br>
+The format of the appended URL parameters is determined using the <b>queryFormat</b> argument, which by default is:<br><br>
+<div style="margin-left:25;font-family:courier new,courier"> dataSet={dataSet}&dataSetName={dataSetName} </div><br>
+The texts in curly brackets (i.e. {dataSet}, {dataSetName}) will be replaced by the actual values when generating the image map. For example, {dataSetName} will be replaced by the name of the data set.<br><br>
+Please refer to <a href="paramsub.htm">Parameter Substitution and Formatting</a> on all available parameters and how to format them.<br><br>
+In addition to customizing the query parameters, ChartDirector supports additional HTML attributes in the &lt;area&gt; tags using the <b>extraAttr</b> argument.<br><br>
+For example, the following <b>extraAttr</b> will add an "title" HTML attribute to every &lt;area&gt; tag. The "title" attribute will be displayed as "tool tip" when the mouse moves over the image map.<br><br>
+<div style="margin-left:25;font-family:courier new,courier"> title='Click me for details on {dataSetName}' </div><br>
+Another common usage of the extraAttr argument is to add "onmouseover" and "onmouseout" HTML attributes to handle user interaction using Javascript on the browser.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>url</td><td>(Mandatory)</td><td>The URL to be used in the "href" attribute of the image map. <a href="paramsub.htm">Parameter Substitution and Formatting</a> is supported. Use an empty string if no href attribute is needed.</td></tr><tr><td>queryFormat</td><td>""</td><td>A text string representing the template of the query parameters to be appended to the URL. <a href="paramsub.htm">Parameter Substitution and Formatting</a> is supported.<br><br>
+The special keyword "{default}" represents the default query parameters. This is useful for specifying appending to the default.<br><br>
+Note that an empty string means to use the default query query parameters. To specify no query parameter, use a space character.</td></tr><tr><td>extraAttr</td><td>""</td><td>A text string to specify additional attributes to add to the &lt;area&gt; tag. <a href="paramsub.htm">Parameter Substitution and Formatting</a> is supported.</td></tr><tr><td>offsetX</td><td>0</td><td>An offset to be added to all x coordinates in the image map. This is useful if the current image will be shifted and inserted into another image. In this case, the image map will need to be shifted by the same offset.</td></tr><tr><td>offsetY</td><td>0</td><td>An offset to be added to all y coordinates in the image map. See offsetX above for description.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+A text string containing the image map generated.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

@@ -1,0 +1,45 @@
+<HTML>
+<HEAD>
+<Title>BaseChart.setTransparentColor</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="BaseChart.htm">BaseChart</a>.setTransparentColor</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setTransparentColor(c)
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Specifies a certain color to mean transparent when creating a raster image output, or to include alpha transparency channel in the output.<br><br>
+There are two types of transparency:<br><br>
+<ul> <li> Alpha transparency: In addition to red, green and blue levels, there is a transparency level associated with each pixel, which can range from completely transparent to completely opaque. The data associated with the transparency information is called the alpha channel.<br><br>
+<li> Single color transparency: The image itself has no alpha channel, but a certain color is used to mean completely transparent. </ul>
+For internal drawing, ChartDirector always use alpha transparency. However, when outputting the image as an image file, ChartDirector by default will remove the alpha channel to reduce image size. It is because many image displaying software do not support alpha transparency. For example, the IE browser only supports single color transparency but not alpha transparency.<br><br>
+If you want to use single color transparency in the output, you may specify the transparent color as the argument to the setTransparentColor method. Note that only GIF and PNG can support single color transparency. JPEG, BMP and WBMP cannot support transparency at all.<br><br>
+If you do want to keep the alpha channel in final output, you may pass -1 as the argument to setTransparentColor. Note that the only image format that can support alpha transparency is PNG.<br><br>
+One important thing to note is that the IE browser (and possibly many image displaying software) only supports single color transparency for palette based images with up to 256 colors, but not for true color images. For this reason, if single color transparency is used, ChartDirector will automatically reduce the image to 256 colors if it has more than 256 colors. This may result in lost of image quality, especially if the image contains gradient colors.<br><br>
+Therefore, due to the limitations of the current generations of image displaying software, for highest image quality, sometimes it may be beneficial to not using transparency in image output, but to set the image background color to the same color as the container background.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>c</td><td>(Mandatory)</td><td>The color that is designated as the transparent color. If -1 is used, the full alpha transparency channel will be included in the final output.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

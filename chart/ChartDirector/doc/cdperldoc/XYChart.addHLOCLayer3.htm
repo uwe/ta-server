@@ -1,0 +1,42 @@
+<HTML>
+<HEAD>
+<Title>XYChart.addHLOCLayer3</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="XYChart.htm">XYChart</a>.addHLOCLayer3</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+addHLOCLayer3(highData, lowData, openData, closeData, upColor, downColor [, colorMode [, leadValue ]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Adds a multi-color high-low-open-close (HLOC) layer to the XYChart, and specify the data sets to use for drawing the layer.<br><br>
+ChartDirector supports drawing the HLOC symbol using different colors depending on whether the data represents an "up" day or "down" day. ChartDirector supports different definitions of what is an "up" day and "down" day, denoted using the following constants.<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="19%">Constant<th width="19%%">Value<th width="60%">Description <tr><td><a href="perlchartdir.HLOCDefault.htm">HLOCDefault</a><td>0<td>Do not distinguish between "up" and "down" days and use the same color for all HLOC symbols.
+<tr><td><a href="perlchartdir.HLOCOpenClose.htm">HLOCOpenClose</a><td>1<td>An up day is a day of which the closing value is on or above the opening value. This is the same definition commonly used in candlestick charts.
+<tr><td><a href="perlchartdir.HLOCUpDown.htm">HLOCUpDown</a><td>2<td>An up day is a day of which the closing value is on or above the closing value of the previous day.
+</table>
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>highData</td><td>(Mandatory)</td><td>An array of numbers representing the high values. An empty array means there is no high value data available.</td></tr><tr><td>lowData</td><td>(Mandatory)</td><td>An array of numbers representing the low values. An empty array means there is no low value data available.</td></tr><tr><td>openData</td><td>(Mandatory)</td><td>An array of numbers representing the opening values. An empty array means there is no opening value data available.</td></tr><tr><td>closeData</td><td>(Mandatory)</td><td>An array of numbers representing the closing values. An empty array means there is no closing value data available.</td></tr><tr><td>upColor</td><td>(Mandatory)</td><td>The color to be used on an "up" day.</td></tr><tr><td>downColor</td><td>(Mandatory)</td><td>The color to be used on a "down" day.</td></tr><tr><td>colorMode</td><td>-1</td><td>The method used to determine if a day is an "up" or "down". Must be one of the constants in the above table. -1 means the colorMode is automatically determine to be either <a href="perlchartdir.HLOCDefault.htm">HLOCDefault</a> or <a href="perlchartdir.HLOCUpDown.htm">HLOCUpDown</a>, depending on whether upColor and downColor are the same or different.</td></tr><tr><td>leadValue</td><td>[-Infinity]</td><td>The lead value to act as the closing pricing before the first day, so as to determine if the first day is an "up" or "down" day.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+A <a href="HLOCLayer.htm">HLOCLayer</a> object representing the HLOC layer created.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

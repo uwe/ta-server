@@ -1,0 +1,32 @@
+<HTML>
+<HEAD>
+<Title>XYChart.layoutAxes</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="XYChart.htm">XYChart</a>.layoutAxes</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+layoutAxes()
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Performs axis auto-scaling and sets the axis positions and lengths.<br><br>
+ChartDirector automatically calls this method when creating the chart output (eg. using <a href="BaseChart.makeChart.htm">BaseChart.makeChart</a> or <a href="BaseChart.makeChart2.htm">BaseChart.makeChart2</a>). There is usually no need to call this method explicitly.<br><br>
+However, if you would like to draw custom objects whose positions or contents depend on the axis scales, you may call this method to auto-scaling the axes before creating the chart output.<br><br>
+The axes will auto-scale based on the data at the time of calling this method. New data added afterwards will not affect the axis scale.<br><br>
+You should not modify the axis scale (eg. using <a href="Axis.setLinearScale.htm">Axis.setLinearScale</a>, <a href="Axis.setLabels.htm">Axis.setLabels</a>, etc) after calling this method.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">None</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

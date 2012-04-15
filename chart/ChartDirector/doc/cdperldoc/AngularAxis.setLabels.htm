@@ -1,0 +1,41 @@
+<HTML>
+<HEAD>
+<Title>AngularAxis.setLabels</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="AngularAxis.htm">AngularAxis</a>.setLabels</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setLabels(text)
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the text labels to be used on the axis.<br><br>
+This method is typically used in radar charts to set the angular axis to enumerated scale.<br><br>
+In enumerated scale, the labels are laid out evenly on the perimeter of the polar plot area. It is like the labels are at on the vertices of an n-side polygon, where n is the number of labels. Radial grid lines are drawn from the center to the vertices.<br><br>
+The angular coordinates of the data points are determined based on their position in the data array. The first data point will be at the same angular coordinate as the first vertex, the second data point at the second vertex, and so on.<br><br>
+Internally, ChartDirector will assign a value of 0 to the first axis label, 1 to the second axis label, and so on. These values are not visible. Only the axis labels are visible. However, these values may be useful for some ChartDirector features that need to reference the axis position by value, such as adding extra labels using <a href="AngularAxis.addLabel.htm">AngularAxis.addLabel</a>.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>text</td><td>(Mandatory)</td><td>An array of strings containing the text of the labels.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+A <a href="TextBox.htm">TextBox</a> object representing the prototype of the axis labels. This may be used to fine-tune the appearance of the axis labels.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

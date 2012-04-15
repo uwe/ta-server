@@ -1,0 +1,356 @@
+<HTML>
+<HEAD>
+<Title>Data Table (2)</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Data Table (2)</p>
+<hr class="separator">
+<div class="content">
+<img src="images/datatable2.png">
+<br><br>
+This example demonstrates putting a data table under the x-axis and extend it with additional computed values.<br><br>
+Similar to the previous example <a href="datatable.htm">Data Table (1)</a>, in this example, <a href="Axis.makeLabelTable.htm">Axis.makeLabelTable</a> is used to convert the axis labels to a table. The returned <a href="CDMLTable.htm">CDMLTable</a> object is used to add more content to the table and to configure the appearance of the table.<br><br>
+<ul><li> 3 rows are added to the table using <a href="CDMLTable.appendRow.htm">CDMLTable.appendRow</a>. The first 2 rows are used to display the data values of the two data series. The last row is used to display the percentage differences between the data values. <a href="cdml.htm">CDML</a> is used in the last row to format the texts, so that they are green for positive values, and red for negative values.<br><br>
+<li> A column is added to the left of the table using <a href="CDMLTable.insertCol.htm">CDMLTable.insertCol</a>, showing the title for the rows.<br><br>
+<li> The icons for the data sets are obtained using <a href="Layer.getLegendIcon.htm">Layer.getLegendIcon</a>. Note that the icons are represented as <a href="cdml.htm">CDML</a>, so they can be mixed with other text. In this example, the icons are appended with the names of the data sets.<br><br>
+<li> A column is added to the right of the table using <a href="CDMLTable.appendCol.htm">CDMLTable.appendCol</a> to show the total values and their percentage difference.</ul>
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\datatable2.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# The data for the line chart
+my $data0 = [410, 420, 500, 590];
+my $data1 = [500, 370, 680, 850];
+my $labels = ["Q1", "Q2", "Q3", "Q4"];
+
+# Create a XYChart object of size 600 x 400 pixels
+my $c = new XYChart(600, 400);
+
+# Add a title to the chart using 18 pts Times Bold Italic font
+my $title = $c-&gt;addTitle("Product Line Global Revenue", "timesbi.ttf", 18);
+
+# Tentatively set the plotarea at (50, 55) and of (chart_width - 100) x (chart_height
+# - 150) pixels in size. Use a vertical gradient color from sky blue (aaccff) t0
+# light blue (f9f9ff) as background. Set both horizontal and vertical grid lines to
+# dotted semi-transprent black (aa000000).
+my $plotArea = $c-&gt;setPlotArea(50, 55, $c-&gt;getWidth() - 100, $c-&gt;getHeight() - 150,
+    $c-&gt;linearGradientColor(0, 55, 0, 55 + $c-&gt;getHeight() - 150, 0xaaccff, 0xf9fcff
+    ), -1, -1, $c-&gt;dashLineColor(0xaa000000, $perlchartdir::DotLine), -1);
+
+# Set y-axis title using 12 points Arial Bold Italic font, and set its position 10
+# pixels from the axis.
+$c-&gt;yAxis()-&gt;setTitle("Revenue (USD millions)", "arialbi.ttf", 12);
+$c-&gt;yAxis()-&gt;setTitlePos($perlchartdir::Left, 10);
+
+# Set y-axis label style to 10 points Arial Bold and axis color to transparent
+$c-&gt;yAxis()-&gt;setLabelStyle("arialbd.ttf", 10);
+$c-&gt;yAxis()-&gt;setColors($perlchartdir::Transparent);
+
+# Set y-axis tick density to 30 pixels. ChartDirector auto-scaling will use this as
+# the guideline when putting ticks on the y-axis.
+$c-&gt;yAxis()-&gt;setTickDensity(30);
+
+# Add a bar layer to the chart with side layout
+my $layer = $c-&gt;addBarLayer2($perlchartdir::Side);
+
+# Add two data sets to the bar layer
+$layer-&gt;addDataSet($data0, 0xff6600, "FY 2007");
+$layer-&gt;addDataSet($data1, 0x0088ff, "FY 2008");
+
+# Use soft lighting effect with light direction from the left
+$layer-&gt;setBorderColor($perlchartdir::Transparent, perlchartdir::softLighting(
+    $perlchartdir::Left));
+
+# Set the x axis labels
+$c-&gt;xAxis()-&gt;setLabels($labels);
+
+# Convert the labels on the x-axis to a CDMLTable
+my $table = $c-&gt;xAxis()-&gt;makeLabelTable();
+
+# Set the default left/right margins to 5 pixels and top/bottom margins to 3 pixels.
+# Set the default font size to 10 points
+my $cellStyle = $table-&gt;getStyle();
+$cellStyle-&gt;setMargin2(5, 5, 4, 3);
+$cellStyle-&gt;setFontSize(10);
+
+# Set the first row to use Arial Bold font, with a light grey (eeeeee) background.
+my $firstRowStyle = $table-&gt;getRowStyle(0);
+$firstRowStyle-&gt;setFontStyle("arialbd.ttf");
+$firstRowStyle-&gt;setBackground(0xeeeeee, $perlchartdir::LineColor);
+
+#
+# We can add more information to the table. In this sample code, we add the data
+# series and the legend icons to the table.
+#
+
+# Add 3 more rows to the table. Set the background of the 2nd row to light grey
+# (eeeeee).
+$table-&gt;appendRow();
+$table-&gt;appendRow()-&gt;setBackground(0xeeeeee, $perlchartdir::LineColor);
+$table-&gt;appendRow();
+
+# Put the values of the 2 data series in the first 2 rows. Put the percentage
+# differences in the 3rd row.
+for(my $i = 0; $i &lt; scalar(@$data0); ++$i) {
+    $table-&gt;setText($i, 1, $data0-&gt;[$i]);
+    $table-&gt;setText($i, 2, $data1-&gt;[$i]);
+
+    my $percentageDiff = 100.0 * ($data1-&gt;[$i] - $data0-&gt;[$i]) / $data0-&gt;[$i];
+
+    # Use red or green color depending on whether the difference is positive or
+    # negative
+    my $formatString = "&lt;*color=008800*&gt;+{value|1}%";
+    if ($percentageDiff &lt; 0) {
+        $formatString = "&lt;*color=cc0000*&gt;{value|1}%";
+    }
+    $table-&gt;setText($i, 3, $c-&gt;formatValue($percentageDiff, $formatString));
+}
+
+# Insert a column on the left for the legend icons using Arial Bold font.
+$table-&gt;insertCol(0)-&gt;setFontStyle("arialbd.ttf");
+
+# The top cell is set to transparent, so it is invisible
+$table-&gt;getCell(0, 0)-&gt;setBackground($perlchartdir::Transparent,
+    $perlchartdir::Transparent);
+
+# The next 2 cells are set to the legend icons and names of the 2 data series
+$table-&gt;setText(0, 1, sprintf("%s  FY 2007", $layer-&gt;getLegendIcon(0)));
+$table-&gt;setText(0, 2, sprintf("%s  FY 2008", $layer-&gt;getLegendIcon(1)));
+
+# The last cell is set to "Change"
+$table-&gt;setText(0, 3, "Change");
+
+# Append a column on the right for the total values.
+$table-&gt;appendCol();
+
+# Put "Total" in the top cell as the heading of this column
+$table-&gt;setText($table-&gt;getColCount() - 1, 0, "Total");
+
+# The next two cells are the total of the data series
+my $total0 = new ArrayMath($data0)-&gt;sum();
+my $total1 = new ArrayMath($data1)-&gt;sum();
+$table-&gt;setText($table-&gt;getColCount() - 1, 1, $total0);
+$table-&gt;setText($table-&gt;getColCount() - 1, 2, $total1);
+
+# The last cell is the percentage differences of the total
+my $totalPercentageDiff = ($total1 - $total0) / $total0 * 100;
+
+# Use red or green color depending on whether the difference is positive or negative
+my $totalFormatString = "&lt;*color=008800*&gt;+{value|1}%";
+if ($totalPercentageDiff &lt; 0) {
+    $totalFormatString = "&lt;*color=cc0000*&gt;{value|1}%";
+}
+$table-&gt;setText($table-&gt;getColCount() - 1, 3, $c-&gt;formatValue($totalPercentageDiff,
+    $totalFormatString));
+
+#
+# We now demonstrate how to adjust the plot area positions, to allow space for the
+# newly inserted left and right columns in the table.
+#
+
+# We layout the axis first in order to get the axis metrics (including table metrics)
+$c-&gt;layoutAxes();
+
+# If the first column is wider than the left y-axis, we need to reserve for some left
+# margin to ensure the first column stays within the chart.
+my $leftMargin = 0;
+if ($table-&gt;getColWidth(0) &gt; $c-&gt;yAxis()-&gt;getThickness()) {
+    $leftMargin = $table-&gt;getColWidth(0) - $c-&gt;yAxis()-&gt;getThickness();
+}
+
+# Similarly, we need to reserve some right margin for the last column
+my $rightMargin = $table-&gt;getColWidth($table-&gt;getColCount() - 1);
+
+# Adjust the plot area size, such that the bounding box (inclusive of axes) using the
+# given left and right margin, plus 2 more pixels. Put the plot area 10 pixels below
+# the title and use 2 pixels as the bottom margin. from the left, right and bottom
+# edge, and is just under the legend box.
+$c-&gt;packPlotArea($leftMargin + 2, $title-&gt;getHeight() + 10, $c-&gt;getWidth() - 3 -
+    $rightMargin, $c-&gt;getHeight() - 3);
+
+# After determining the exact plot area position, we may adjust title position so
+# that it is centered relative to the plot area (instead of the chart)
+$title-&gt;setPos($plotArea-&gt;getLeftX() + ($plotArea-&gt;getWidth() - $title-&gt;getWidth()) /
+    2, $title-&gt;getTopY());
+
+# Output the chart
+$c-&gt;makeChart("datatable2.png")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\datatable2.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The data for the line chart
+my $data0 = [410, 420, 500, 590];
+my $data1 = [500, 370, 680, 850];
+my $labels = ["Q1", "Q2", "Q3", "Q4"];
+
+# Create a XYChart object of size 600 x 400 pixels
+my $c = new XYChart(600, 400);
+
+# Add a title to the chart using 18 pts Times Bold Italic font
+my $title = $c-&gt;addTitle("Product Line Global Revenue", "timesbi.ttf", 18);
+
+# Tentatively set the plotarea at (50, 55) and of (chart_width - 100) x (chart_height
+# - 150) pixels in size. Use a vertical gradient color from sky blue (aaccff) t0
+# light blue (f9f9ff) as background. Set both horizontal and vertical grid lines to
+# dotted semi-transprent black (aa000000).
+my $plotArea = $c-&gt;setPlotArea(50, 55, $c-&gt;getWidth() - 100, $c-&gt;getHeight() - 150,
+    $c-&gt;linearGradientColor(0, 55, 0, 55 + $c-&gt;getHeight() - 150, 0xaaccff, 0xf9fcff
+    ), -1, -1, $c-&gt;dashLineColor(0xaa000000, $perlchartdir::DotLine), -1);
+
+# Set y-axis title using 12 points Arial Bold Italic font, and set its position 10
+# pixels from the axis.
+$c-&gt;yAxis()-&gt;setTitle("Revenue (USD millions)", "arialbi.ttf", 12);
+$c-&gt;yAxis()-&gt;setTitlePos($perlchartdir::Left, 10);
+
+# Set y-axis label style to 10 points Arial Bold and axis color to transparent
+$c-&gt;yAxis()-&gt;setLabelStyle("arialbd.ttf", 10);
+$c-&gt;yAxis()-&gt;setColors($perlchartdir::Transparent);
+
+# Set y-axis tick density to 30 pixels. ChartDirector auto-scaling will use this as
+# the guideline when putting ticks on the y-axis.
+$c-&gt;yAxis()-&gt;setTickDensity(30);
+
+# Add a bar layer to the chart with side layout
+my $layer = $c-&gt;addBarLayer2($perlchartdir::Side);
+
+# Add two data sets to the bar layer
+$layer-&gt;addDataSet($data0, 0xff6600, "FY 2007");
+$layer-&gt;addDataSet($data1, 0x0088ff, "FY 2008");
+
+# Use soft lighting effect with light direction from the left
+$layer-&gt;setBorderColor($perlchartdir::Transparent, perlchartdir::softLighting(
+    $perlchartdir::Left));
+
+# Set the x axis labels
+$c-&gt;xAxis()-&gt;setLabels($labels);
+
+# Convert the labels on the x-axis to a CDMLTable
+my $table = $c-&gt;xAxis()-&gt;makeLabelTable();
+
+# Set the default left/right margins to 5 pixels and top/bottom margins to 3 pixels.
+# Set the default font size to 10 points
+my $cellStyle = $table-&gt;getStyle();
+$cellStyle-&gt;setMargin2(5, 5, 4, 3);
+$cellStyle-&gt;setFontSize(10);
+
+# Set the first row to use Arial Bold font, with a light grey (eeeeee) background.
+my $firstRowStyle = $table-&gt;getRowStyle(0);
+$firstRowStyle-&gt;setFontStyle("arialbd.ttf");
+$firstRowStyle-&gt;setBackground(0xeeeeee, $perlchartdir::LineColor);
+
+#
+# We can add more information to the table. In this sample code, we add the data
+# series and the legend icons to the table.
+#
+
+# Add 3 more rows to the table. Set the background of the 2nd row to light grey
+# (eeeeee).
+$table-&gt;appendRow();
+$table-&gt;appendRow()-&gt;setBackground(0xeeeeee, $perlchartdir::LineColor);
+$table-&gt;appendRow();
+
+# Put the values of the 2 data series in the first 2 rows. Put the percentage
+# differences in the 3rd row.
+for(my $i = 0; $i &lt; scalar(@$data0); ++$i) {
+    $table-&gt;setText($i, 1, $data0-&gt;[$i]);
+    $table-&gt;setText($i, 2, $data1-&gt;[$i]);
+
+    my $percentageDiff = 100.0 * ($data1-&gt;[$i] - $data0-&gt;[$i]) / $data0-&gt;[$i];
+
+    # Use red or green color depending on whether the difference is positive or
+    # negative
+    my $formatString = "&lt;*color=008800*&gt;+{value|1}%";
+    if ($percentageDiff &lt; 0) {
+        $formatString = "&lt;*color=cc0000*&gt;{value|1}%";
+    }
+    $table-&gt;setText($i, 3, $c-&gt;formatValue($percentageDiff, $formatString));
+}
+
+# Insert a column on the left for the legend icons using Arial Bold font.
+$table-&gt;insertCol(0)-&gt;setFontStyle("arialbd.ttf");
+
+# The top cell is set to transparent, so it is invisible
+$table-&gt;getCell(0, 0)-&gt;setBackground($perlchartdir::Transparent,
+    $perlchartdir::Transparent);
+
+# The next 2 cells are set to the legend icons and names of the 2 data series
+$table-&gt;setText(0, 1, sprintf("%s  FY 2007", $layer-&gt;getLegendIcon(0)));
+$table-&gt;setText(0, 2, sprintf("%s  FY 2008", $layer-&gt;getLegendIcon(1)));
+
+# The last cell is set to "Change"
+$table-&gt;setText(0, 3, "Change");
+
+# Append a column on the right for the total values.
+$table-&gt;appendCol();
+
+# Put "Total" in the top cell as the heading of this column
+$table-&gt;setText($table-&gt;getColCount() - 1, 0, "Total");
+
+# The next two cells are the total of the data series
+my $total0 = new ArrayMath($data0)-&gt;sum();
+my $total1 = new ArrayMath($data1)-&gt;sum();
+$table-&gt;setText($table-&gt;getColCount() - 1, 1, $total0);
+$table-&gt;setText($table-&gt;getColCount() - 1, 2, $total1);
+
+# The last cell is the percentage differences of the total
+my $totalPercentageDiff = ($total1 - $total0) / $total0 * 100;
+
+# Use red or green color depending on whether the difference is positive or negative
+my $totalFormatString = "&lt;*color=008800*&gt;+{value|1}%";
+if ($totalPercentageDiff &lt; 0) {
+    $totalFormatString = "&lt;*color=cc0000*&gt;{value|1}%";
+}
+$table-&gt;setText($table-&gt;getColCount() - 1, 3, $c-&gt;formatValue($totalPercentageDiff,
+    $totalFormatString));
+
+#
+# We now demonstrate how to adjust the plot area positions, to allow space for the
+# newly inserted left and right columns in the table.
+#
+
+# We layout the axis first in order to get the axis metrics (including table metrics)
+$c-&gt;layoutAxes();
+
+# If the first column is wider than the left y-axis, we need to reserve for some left
+# margin to ensure the first column stays within the chart.
+my $leftMargin = 0;
+if ($table-&gt;getColWidth(0) &gt; $c-&gt;yAxis()-&gt;getThickness()) {
+    $leftMargin = $table-&gt;getColWidth(0) - $c-&gt;yAxis()-&gt;getThickness();
+}
+
+# Similarly, we need to reserve some right margin for the last column
+my $rightMargin = $table-&gt;getColWidth($table-&gt;getColCount() - 1);
+
+# Adjust the plot area size, such that the bounding box (inclusive of axes) using the
+# given left and right margin, plus 2 more pixels. Put the plot area 10 pixels below
+# the title and use 2 pixels as the bottom margin. from the left, right and bottom
+# edge, and is just under the legend box.
+$c-&gt;packPlotArea($leftMargin + 2, $title-&gt;getHeight() + 10, $c-&gt;getWidth() - 3 -
+    $rightMargin, $c-&gt;getHeight() - 3);
+
+# After determining the exact plot area position, we may adjust title position so
+# that it is centered relative to the plot area (instead of the chart)
+$title-&gt;setPos($plotArea-&gt;getLeftX() + ($plotArea-&gt;getWidth() - $title-&gt;getWidth()) /
+    2, $title-&gt;getTopY());
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

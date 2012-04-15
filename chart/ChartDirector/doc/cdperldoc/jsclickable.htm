@@ -1,0 +1,229 @@
+<HTML>
+<HEAD>
+<Title>Javascript Clickable Charts</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Javascript Clickable Charts</p>
+<hr class="separator">
+<div class="content"><img src="images/jsclick_doc.png"><br><br>
+This example demonstrates using ChartDirector image maps to invoke client side Javascript functions.<br><br>
+In this example, a clickable area chart will be produced. Apart from responding to mouse clicks, detail information about the data points will be displayed in a dynamic HTML block when the mouse pointer moves over the chart. This is accomplished using "onMouseOver" and "onMouseOut" event handlers with client side Javascript.<br><br>
+The code for this example is listed below.<br><br>
+<b>[CGI Version]</b> perldemo_cgi\jsclick.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+#
+# For demo purpose, we use hard coded data. In real life, the following data could
+# come from a database.
+#
+my $revenue = [4500, 5600, 6300, 8000, 12000, 14000, 16000, 20000, 24000, 28000];
+my $grossMargin = [62, 65, 63, 60, 55, 56, 57, 53, 52, 50];
+my $backLog = [563, 683, 788, 941, 1334, 1522, 1644, 1905, 2222, 2544];
+my $labels = ["1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004",
+    "2005"];
+
+# Create a XYChart object of size 600 x 360 pixels
+my $c = new XYChart(600, 360);
+
+# Add a title to the chart using 18pts Times Bold Italic font
+$c-&gt;addTitle("Annual Revenue for Star Tech", "timesbi.ttf", 18);
+
+# Set the plotarea at (60, 40) and of size 480 x 280 pixels. Use a vertical gradient
+# color from light green (eeffee) to dark green (008800) as background. Set border
+# and grid lines to white (ffffff).
+$c-&gt;setPlotArea(60, 40, 480, 280, $c-&gt;linearGradientColor(60, 40, 60, 280, 0xeeffee,
+    0x008800), -1, 0xffffff, 0xffffff);
+
+# Add a multi-color bar chart layer using the revenue data.
+my $layer = $c-&gt;addBarLayer3($revenue);
+
+# Set cylinder bar shape
+$layer-&gt;setBarShape($perlchartdir::CircleShape);
+
+# Add extra field to the bars. These fields are used for showing additional
+# information.
+$layer-&gt;addExtraField2($grossMargin);
+$layer-&gt;addExtraField2($backLog);
+
+# Set the labels on the x axis.
+$c-&gt;xAxis()-&gt;setLabels($labels);
+
+# In this example, we show the same scale using both axes
+$c-&gt;syncYAxis();
+
+# Set the axis line to transparent
+$c-&gt;xAxis()-&gt;setColors($perlchartdir::Transparent);
+$c-&gt;yAxis()-&gt;setColors($perlchartdir::Transparent);
+$c-&gt;yAxis2()-&gt;setColors($perlchartdir::Transparent);
+
+# Set the axis label to using 8pt Arial Bold as font
+$c-&gt;yAxis()-&gt;setLabelStyle("arialbd.ttf", 8);
+$c-&gt;yAxis2()-&gt;setLabelStyle("arialbd.ttf", 8);
+$c-&gt;xAxis()-&gt;setLabelStyle("arialbd.ttf", 8);
+
+# Add title to the y axes
+$c-&gt;yAxis()-&gt;setTitle("USD (millions)", "arialbd.ttf", 10);
+$c-&gt;yAxis2()-&gt;setTitle("USD (millions)", "arialbd.ttf", 10);
+
+# Create the image and save it in a temporary location
+my $chart1URL = $c-&gt;makeTmpFile("/tmp/tmpcharts");
+
+# Client side Javascript to show detail information "onmouseover"
+my $showText = "onmouseover='showInfo(\"{xLabel}\", {value}, {field0}, {field1});' ";
+
+# Client side Javascript to hide detail information "onmouseout"
+my $hideText = "onmouseout='showInfo(null);' ";
+
+# "title" attribute to show tool tip
+my $toolTip = "title='{xLabel}: US\$ {value|0}M'";
+
+# Create an image map for the chart
+my $imageMap = $c-&gt;getHTMLImageMap("xystub.pl", "", "$showText$hideText$toolTip");
+
+print "Content-type: text/html\n\n";
+print &lt;&lt;EndOfHTML
+&lt;html&gt;
+&lt;body style="margin:5px 0px 0px 5px"&gt;
+&lt;script type="text/javascript"&gt;
+//
+//Client side script function to show and hide detail information.
+//
+function showInfo(year, revenue, grossMargin, backLog) {
+    var obj;
+    if (document.getElementById)
+        //IE 5.x or NS 6.x or above
+        obj = document.getElementById('detailInfo');
+    else
+        //IE 4.x
+        obj = document.all['detailInfo'];
+
+    if (!year)
+    {
+        obj.style.visibility = "hidden";
+        return;
+    }
+
+    var content = "&lt;table border='1' cellpadding='3' style='font-size:10pt; " +
+       "font-family:verdana; background-color:#CCCCFF' width='480'&gt;";
+    content += "&lt;tr&gt;&lt;td&gt;&lt;b&gt;Year&lt;/b&gt;&lt;/td&gt;&lt;td width='300'&gt;" + year + "&lt;/td&gt;&lt;/tr&gt;";
+    content += "&lt;tr&gt;&lt;td&gt;&lt;b&gt;Revenue&lt;/b&gt;&lt;/td&gt;&lt;td&gt;US\$ " + revenue + "M&lt;/td&gt;&lt;/tr&gt;";
+    content += "&lt;tr&gt;&lt;td&gt;&lt;b&gt;Gross Margin&lt;/b&gt;&lt;/td&gt;&lt;td&gt;" + grossMargin + "%&lt;/td&gt;&lt;/tr&gt;";
+    content += "&lt;tr&gt;&lt;td&gt;&lt;b&gt;Back Log&lt;/b&gt;&lt;/td&gt;&lt;td&gt;US\$ " + backLog + "M&lt;/td&gt;&lt;/tr&gt;";
+    content += "&lt;/table&gt;";
+
+    obj.innerHTML = content;
+    obj.style.visibility = "visible";
+}
+&lt;/script&gt;
+&lt;div style="font-size:18pt; font-family:verdana; font-weight:bold"&gt;
+    Javascript Clickable Chart
+&lt;/div&gt;
+&lt;hr style="border:solid 1px #000080" /&gt;
+&lt;div style="font-size:10pt; font-family:verdana; margin-bottom:20"&gt;
+    &lt;a href='viewsource.pl?file=$ENV{"SCRIPT_NAME"}'&gt;View Source Code&lt;/a&gt;
+&lt;/div&gt;
+&lt;img src="getchart.pl?img=/tmp/tmpcharts/$chart1URL" border="0" usemap="#map1"&gt;
+&lt;map name="map1"&gt;
+$imageMap
+&lt;/map&gt;
+&lt;div id="detailInfo" style="margin-left:60"&gt;&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+EndOfHTML
+;</pre></tr></td></table><br>
+In the above code, the chart is created and saved in a temporary file using <a href="BaseChart.makeTmpFile.htm">BaseChart.makeTmpFile</a>. An &lt;IMG&gt; tag is used to retrieve the chart with "getchart.pl?img=/tmp/tmpcharts/$chart1URL"<br><br>
+as the URL. "getchart.pl" is a simple utility that comes with ChartDirector for retrieving images from files.<br><br>
+<div style="background-color:#cccccc;width:99%;padding:10px">
+<b><font color="#FF0000">NOTE:</font></b> This sample script uses "getchart.pl" and assumes it is in the same directory as the script. When developing your own script using this sample script as a template, please ensure you copy "getchart.pl" to the same directory as your script. If you put "getchart.pl" in other directory, please adjust the paths in your script accordingly.
+</div><br>
+The image map for the chart is created using the following code:<br><br>
+<div style="background-color:#cccccc;width:99%;padding:5px"><pre>#Client side Javascript to show detail information "onmouseover"
+my $showText = "onmouseover='showInfo(\"{xLabel}\", {value}, {field0}, {field1});' ";
+
+#Client side Javascript to hide detail information "onmouseout"
+my $hideText = "onmouseout='showInfo(null);' ";
+
+#"title" attribute to show tool tip
+my $toolTip = "title='{xLabel}: USD {value|0}M'";
+
+#Create an image map for the chart
+my $imageMap = $c-&gt;getHTMLImageMap("xystub.pl", "", "$showText$hideText$toolTip"
+    );</pre></div><br>
+Note that in additional to the "title" attribute for the "tool tip", the image map also includes event handlers "onmouseover" and "onmouseout". These event handles call the client side Javascript function "showInfo", which creates and hides the dynamic HTML block for displaying the additional information.<br><br>
+<div style="background-color:#cccccc;width:99%;padding:5px"><pre>&lt;script&gt;
+//
+//Client side script function to show and hide detail information.
+//
+function showInfo(year, revenue, grossMargin, backLog) {
+    var obj;
+    if (document.getElementById)
+        //IE 5.x or NS 6.x or above
+        obj = document.getElementById('detailInfo');
+    else
+        //IE 4.x
+        obj = document.all['detailInfo'];
+
+    if (!year)
+    {
+        obj.style.visibility = "hidden";
+        return;
+    }
+
+    var content = "&lt;table border='1' cellpadding='3' style='font-size:10pt; " +
+       "font-family:verdana; background-color:#CCCCFF' width='480'&gt;";
+    content += "&lt;tr&gt;&lt;td&gt;&lt;b&gt;Year&lt;/b&gt;&lt;/td&gt;&lt;td width='300'&gt;" + year + "&lt;/td&gt;&lt;/tr&gt;";
+    content += "&lt;tr&gt;&lt;td&gt;&lt;b&gt;Revenue&lt;/b&gt;&lt;/td&gt;&lt;td&gt;US$ " + revenue + "M&lt;/td&gt;&lt;/tr&gt;";
+    content += "&lt;tr&gt;&lt;td&gt;&lt;b&gt;Gross Margin&lt;/b&gt;&lt;/td&gt;&lt;td&gt;" + grossMargin + "%&lt;/td&gt;&lt;/tr&gt;";
+    content += "&lt;tr&gt;&lt;td&gt;&lt;b&gt;Back Log&lt;/b&gt;&lt;/td&gt;&lt;td&gt;US$ " + backLog + "M&lt;/td&gt;&lt;/tr&gt;";
+    content += "&lt;/table&gt;";
+
+    obj.innerHTML = content;
+    obj.style.visibility = "visible";
+}
+&lt;/script&gt;</pre></div><br>
+Note that in this example, we are displaying extra information, such as the "grossMargin" and "backLog" fields, which does not come from the x or y value of the bars. This is achieved by associated these fields as "extra fields" to the data items with <a href="Layer.addExtraField2.htm">Layer.addExtraField2</a>. These extra fields can then be represented using the template "{field<font color="#008800"><b><i>N</i></b></font>}", where "<font color="#008800"><b><i>N</i></b></font>" represents the field number. (The first field is 0, the second field is 1, etc.)<br><br>
+In addition to responding to mouse over and mouse out events, the chart is also clickable using "xystub.pl" as the handler.<br><br>
+For demo purpose, "xystub.pl" simply displays information on what is clicked. It's source code is as follows.<br><br>
+<b>[CGI Version]</b> perldemo_cgi\xystub.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Get HTTP query parameters
+use CGI;
+my $query = new CGI;
+
+print "Content-type: text/html\n\n";
+print &lt;&lt;EndOfHTML
+&lt;html&gt;
+&lt;body style="margin:5px 0px 0px 5px"&gt;
+&lt;div style="font-size:18pt; font-family:verdana; font-weight:bold"&gt;
+    Simple Clickable XY Chart Handler
+&lt;/div&gt;
+&lt;hr style="border:solid 1px #000080" /&gt;
+&lt;div style="font-size:10pt; font-family:verdana; margin-bottom:20"&gt;
+    &lt;a href="viewsource.pl?file=$ENV{"SCRIPT_NAME"}"&gt;View Source Code&lt;/a&gt;
+&lt;/div&gt;
+&lt;div style="font-size:10pt; font-family:verdana;"&gt;
+&lt;b&gt;You have clicked on the following chart element :&lt;/b&gt;&lt;br /&gt;
+&lt;ul&gt;
+    &lt;li&gt;Data Set : @{[$query-&gt;param("dataSetName")]}&lt;/li&gt;
+    &lt;li&gt;X Position : @{[$query-&gt;param("x")]}&lt;/li&gt;
+    &lt;li&gt;X Label : @{[$query-&gt;param("xLabel")]}&lt;/li&gt;
+    &lt;li&gt;Data Value : @{[$query-&gt;param("value")]}&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+EndOfHTML
+;</pre></tr></td></table></div><br>
+<hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div></body>
+</HTML>

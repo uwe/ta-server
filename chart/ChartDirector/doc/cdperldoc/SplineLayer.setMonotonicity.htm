@@ -1,0 +1,47 @@
+<HTML>
+<HEAD>
+<Title>SplineLayer.setMonotonicity</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="SplineLayer.htm">SplineLayer</a>.setMonotonicity</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setMonotonicity(monotonicMode)
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the monotonicity constraint when computing the spline curve.<br><br>
+Monotonicity means a sequence is increasing or decreasing in one direction. For example, the sequence 1, 2, 3, 4 is monotonically increasing, while the sequence 1, 3, 2, 5, 4 is not monotonic.<br><br>
+A standard spline curve can overshoot or undershoot if the underlying points have "sharp corners". That means without any constrain, even if the data points are monotonic, the spline curve joining the points is not necessarily monotonic. It can overshoot and then "fall back".<br><br>
+In many charts, it may be desirable to constraint the spline curve to flow in a certain direction. For example, in a time based chart, it may be desirable to constraint the curve always flow from left to right.<br><br>
+ChartDirector supports the following monotonic modes.<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="19%">Constant<th width="19%%">Value<th width="60%">Description <tr><td><a href="perlchartdir.MonotonicNone.htm">MonotonicNone</a><td>0<td>The spline curve is not constraint to flow in any direction. This results in the smoothest spline curve.
+<tr><td><a href="perlchartdir.MonotonicX.htm">MonotonicX</a><td>1<td>The spline curve is constraint to not overshooting or undershooting in the x-axis direction. This means if the data points are monotonic in the x-axis direction, the spline curve will also be monotonic in the x-axis direction.
+<tr><td><a href="perlchartdir.MonotonicY.htm">MonotonicY</a><td>2<td>The spline curve is constraint to not overshooting or undershooting in the y-axis direction. This means if the data points are monotonic in the y-axis direction, the spline curve will also be monotonic in the y-axis direction.
+<tr><td><a href="perlchartdir.MonotonicXY.htm">MonotonicXY</a><td>3<td>The spline curve is constraint to not overshooting or undershooting in both the x-axis and the y-axis directions. This means if the data points are monotonic in the x-axis direction, the spline curve will also be monotonic in the x-axis direction. If the data points are monotonic in the y-axis direction, the spline curve will also be monotonic in the y-axis direction.
+<tr><td><a href="perlchartdir.MonotonicAuto.htm">MonotonicAuto</a><td>4<td>Automatically choose between MonotonicX, MonotonicY or MonotonicXY, depending on whether the data points are monotonic in the x-axis direction, or y-axis direction, or both.
+</table>
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>monotonicMode</td><td>(Mandatory)</td><td>The monotonic constraint of the spline curve. Must be be one of the constants in the above table. If this method is never called for a spline layer, the default is MonotonicAuto.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

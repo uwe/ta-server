@@ -1,0 +1,43 @@
+<HTML>
+<HEAD>
+<Title>DrawArea.rAffineTransform</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="DrawArea.htm">DrawArea</a>.rAffineTransform</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+rAffineTransform(a, b, c, d, e, f [, bgColor [, filter [, blur ]]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Perform reverse affine transformation on the drawing surface.<br><br>
+A reverse affine transformation is an operation where every pixel is copied from another pixel according to the formula.<br><br>
+<div style="margin-left:25;font-family:courier new,courier">
+<pre>xSrc = a * xDest + b * yDest + c
+ySrc = d * xDest + e * yDest + f</pre> </div><br>
+where (xDest, yDest) is a destination pixel, and (xSrc, ySrc) is where it should come from.<br><br>
+Many graphics operation, such as translation, rotation, and resizing, can be considered as a special case of reverse affine transformation.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>a</td><td>(Mandatory)</td><td>The parameter 'a' in the coordinate transformation formula "xSrc = a * xDest + b * yDest + c".</td></tr><tr><td>b</td><td>(Mandatory)</td><td>The parameter 'b' in the coordinate transformation formula "xSrc = a * xDest + b * yDest + c".</td></tr><tr><td>c</td><td>(Mandatory)</td><td>The parameter 'c' in the coordinate transformation formula "xSrc = a * xDest + b * yDest + c".</td></tr><tr><td>d</td><td>(Mandatory)</td><td>The parameter 'd' in the coordinate transformation formula "ySrc = d * xDest + e * yDest + f".</td></tr><tr><td>e</td><td>(Mandatory)</td><td>The parameter 'e' in the coordinate transformation formula "ySrc = d * xDest + e * yDest + f".</td></tr><tr><td>f</td><td>(Mandatory)</td><td>The parameter 'f' in the coordinate transformation formula "ySrc = d * xDest + e * yDest + f".</td></tr><tr><td>bgColor</td><td>FFFFFF</td><td>The background color used to fill destination pixels that are not mapped to any source pixels.</td></tr><tr><td>filter</td><td><a href="perlchartdir.LinearFilter.htm">LinearFilter</a></td><td>The filter to use for <a href="resampling.htm">re-sampling</a>.</td></tr><tr><td>blur</td><td>1</td><td>The blur factor to use for <a href="resampling.htm">re-sampling</a>.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

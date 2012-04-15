@@ -1,0 +1,118 @@
+<HTML>
+<HEAD>
+<Title>Rotated Pyramid Chart</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Rotated Pyramid Chart</p>
+<hr class="separator">
+<div class="content">
+<img src="images/rotatedpyramid.png">
+<br><br>
+This example demonstrates a semi-transparent pyramid viewed at elevation and rotation angles. It also demonstrates adding a legend box to the pyramid chart.<br><br>
+The elevation and rotation angles are set using <a href="PyramidChart.setViewAngle.htm">PyramidChart.setViewAngle</a>. The legend box is added using <a href="BaseChart.addLegend.htm">BaseChart.addLegend</a>. Semi-transparent colors are used to make the pyramid semi-transparent.
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\rotatedpyramid.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# The data for the pyramid chart
+my $data = [156, 123, 211, 179];
+
+# The labels for the pyramid chart
+my $labels = ["Funds", "Bonds", "Stocks", "Cash"];
+
+# The semi-transparent colors for the pyramid layers
+my $colors = [0x400000cc, 0x4066aaee, 0x40ffbb00, 0x40ee6622];
+
+# Create a PyramidChart object of size 450 x 400 pixels
+my $c = new PyramidChart(450, 400);
+
+# Set the pyramid center at (220, 180), and width x height to 150 x 300 pixels
+$c-&gt;setPyramidSize(220, 180, 150, 300);
+
+# Set the elevation to 15 degrees and rotation to 75 degrees
+$c-&gt;setViewAngle(15, 75);
+
+# Set the pyramid data and labels
+$c-&gt;setData($data, $labels);
+
+# Set the layer colors to the given colors
+$c-&gt;setColors2($perlchartdir::DataColor, $colors);
+
+# Leave 1% gaps between layers
+$c-&gt;setLayerGap(0.01);
+
+# Add a legend box at (320, 60), with light grey (eeeeee) background and grey
+# (888888) border. Set the top-left and bottom-right corners to rounded corners of 10
+# pixels radius.
+my $legendBox = $c-&gt;addLegend(320, 60);
+$legendBox-&gt;setBackground(0xeeeeee, 0x888888);
+$legendBox-&gt;setRoundedCorners(10, 0, 10, 0);
+
+# Add labels at the center of the pyramid layers using Arial Bold font. The labels
+# will show the percentage of the layers.
+$c-&gt;setCenterLabel("{percent}%", "arialbd.ttf");
+
+# Output the chart
+$c-&gt;makeChart("rotatedpyramid.png")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\rotatedpyramid.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The data for the pyramid chart
+my $data = [156, 123, 211, 179];
+
+# The labels for the pyramid chart
+my $labels = ["Funds", "Bonds", "Stocks", "Cash"];
+
+# The semi-transparent colors for the pyramid layers
+my $colors = [0x400000cc, 0x4066aaee, 0x40ffbb00, 0x40ee6622];
+
+# Create a PyramidChart object of size 450 x 400 pixels
+my $c = new PyramidChart(450, 400);
+
+# Set the pyramid center at (220, 180), and width x height to 150 x 300 pixels
+$c-&gt;setPyramidSize(220, 180, 150, 300);
+
+# Set the elevation to 15 degrees and rotation to 75 degrees
+$c-&gt;setViewAngle(15, 75);
+
+# Set the pyramid data and labels
+$c-&gt;setData($data, $labels);
+
+# Set the layer colors to the given colors
+$c-&gt;setColors2($perlchartdir::DataColor, $colors);
+
+# Leave 1% gaps between layers
+$c-&gt;setLayerGap(0.01);
+
+# Add a legend box at (320, 60), with light grey (eeeeee) background and grey
+# (888888) border. Set the top-left and bottom-right corners to rounded corners of 10
+# pixels radius.
+my $legendBox = $c-&gt;addLegend(320, 60);
+$legendBox-&gt;setBackground(0xeeeeee, 0x888888);
+$legendBox-&gt;setRoundedCorners(10, 0, 10, 0);
+
+# Add labels at the center of the pyramid layers using Arial Bold font. The labels
+# will show the percentage of the layers.
+$c-&gt;setCenterLabel("{percent}%", "arialbd.ttf");
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

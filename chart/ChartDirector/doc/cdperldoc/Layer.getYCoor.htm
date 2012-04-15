@@ -1,0 +1,39 @@
+<HTML>
+<HEAD>
+<Title>Layer.getYCoor</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="Layer.htm">Layer</a>.getYCoor</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+getYCoor(v [, yAxis ])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Gets the y pixel coordinate of a point given the y data value.<br><br>
+<b>Note:</b> You must call <a href="XYChart.layoutAxes.htm">XYChart.layoutAxes</a>, <a href="BaseChart.layout.htm">BaseChart.layout</a> or <a href="XYChart.packPlotArea.htm">XYChart.packPlotArea</a> first before calling this method. ChartDirector needs to perform auto-scaling and layout the axis before it can compute the coordinates.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>v</td><td>(Mandatory)</td><td>The y data value.</td></tr><tr><td>yAxis</td><td>[Null]</td><td>The y-axis to use to determine the pixel coordinates of data values. The y-axis may be obtained using <a href="XYChart.yAxis.htm">XYChart.yAxis</a>, <a href="XYChart.yAxis2.htm">XYChart.yAxis2</a> or <a href="XYChart.addAxis.htm">XYChart.addAxis</a>. The default is to use the primary y-axis.<br><br>
+For backward compatibility, the axis argument can also be a boolean value. A true (non-zero) value means the primary y-axis. A false (zero) value means the secondary y-axis.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+The y coordinate of the y data value.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

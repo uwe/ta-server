@@ -1,0 +1,357 @@
+<HTML>
+<HEAD>
+<Title>Simple Clickable Charts</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Simple Clickable Charts</p>
+<hr class="separator">
+<div class="content">In this example, we will create a bar chart that displays the annual revenue of a company for the last 10 years. When a bar is clicked, the browser will load a line chart showing the monthly revenue for the selected year. When the line chart is clicked, the browser will load a pie chart showing the breakdown of the revenue for the selected month. When the pie chart is clicked, it will show the sector details in a web page.<br><br>
+The capability is often called "drill-down", because the user can "zoom-in" to get more details by clicking on the chart.
+</div><p class="heading1a">Clickable Bar Chart</p><div class="content">
+<img src="images/clickbar_doc.png"><br><br>
+<b>[CGI Version]</b> perldemo_cgi\clickbar.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The data for the bar chart
+my $data = [450, 560, 630, 800, 1100, 1350, 1600, 1950, 2300, 2700];
+
+# The labels for the bar chart
+my $labels = ["1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004",
+    "2005"];
+
+# Create a XYChart object of size 600 x 360 pixels
+my $c = new XYChart(600, 360);
+
+# Add a title to the chart using 18pts Times Bold Italic font
+$c-&gt;addTitle("Annual Revenue for Star Tech", "timesbi.ttf", 18);
+
+# Set the plotarea at (60, 40) and of size 500 x 280 pixels. Use a vertical gradient
+# color from light blue (eeeeff) to deep blue (0000cc) as background. Set border and
+# grid lines to white (ffffff).
+$c-&gt;setPlotArea(60, 40, 500, 280, $c-&gt;linearGradientColor(60, 40, 60, 280, 0xeeeeff,
+    0x0000cc), -1, 0xffffff, 0xffffff);
+
+# Add a multi-color bar chart layer using the supplied data. Use soft lighting effect
+# with light direction from top.
+$c-&gt;addBarLayer3($data)-&gt;setBorderColor($perlchartdir::Transparent,
+    perlchartdir::softLighting($perlchartdir::Top));
+
+# Set x axis labels using the given labels
+$c-&gt;xAxis()-&gt;setLabels($labels);
+
+# Draw the ticks between label positions (instead of at label positions)
+$c-&gt;xAxis()-&gt;setTickOffset(0.5);
+
+# When auto-scaling, use tick spacing of 40 pixels as a guideline
+$c-&gt;yAxis()-&gt;setTickDensity(40);
+
+# Add a title to the y axis with 12pts Times Bold Italic font
+$c-&gt;yAxis()-&gt;setTitle("USD (millions)", "timesbi.ttf", 12);
+
+# Set axis label style to 8pts Arial Bold
+$c-&gt;xAxis()-&gt;setLabelStyle("arialbd.ttf", 8);
+$c-&gt;yAxis()-&gt;setLabelStyle("arialbd.ttf", 8);
+
+# Set axis line width to 2 pixels
+$c-&gt;xAxis()-&gt;setWidth(2);
+$c-&gt;yAxis()-&gt;setWidth(2);
+
+# Create the image and save it in a temporary location
+my $chart1URL = $c-&gt;makeTmpFile("/tmp/tmpcharts");
+
+# Create an image map for the chart
+my $imageMap = $c-&gt;getHTMLImageMap("clickline.pl", "",
+    "title='{xLabel}: US\$ {value|0}M'");
+
+print "Content-type: text/html\n\n";
+print &lt;&lt;EndOfHTML
+&lt;html&gt;
+&lt;body style="margin:5px 0px 0px 5px"&gt;
+&lt;div style="font-size:18pt; font-family:verdana; font-weight:bold"&gt;
+    Simple Clickable Bar Chart
+&lt;/div&gt;
+&lt;hr style="border:solid 1px #000080" /&gt;
+&lt;div style="font-size:10pt; font-family:verdana; margin-bottom:20"&gt;
+    &lt;a href="viewsource.pl?file=$ENV{"SCRIPT_NAME"}"&gt;View Source Code&lt;/a&gt;
+&lt;/div&gt;
+&lt;img src="getchart.pl?img=/tmp/tmpcharts/$chart1URL" border="0" usemap="#map1"&gt;
+&lt;map name="map1"&gt;
+$imageMap
+&lt;/map&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+EndOfHTML
+;</pre></tr></td></table><br>
+In the above code, the chart is created and saved in a temporary file in the "/tmp/tmp_chart" directory using <a href="BaseChart.makeTmpFile.htm">BaseChart.makeTmpFile</a>. This function also simultaneously removes old temporary files (default lifetime = 600 seconds) to avoid temporary files from building up.<br><br>
+<b>Note:</b> For the above code to run correctly, please verify the web server anonymous user has sufficient privileges to read and write to "/tmp/tmp_chart".<br><br>
+An &lt;IMG&gt; tag is used to retrieve the chart with "getchart.pl?img=/tmp/tmpcharts/$chart1URL"  as the URL. "getchart.pl" is a simple utility that comes with ChartDirector for retrieving images files. The "getchart.pl" is needed because the "/tmp/tmp_chart" directory is not under the web server root directory. If your scripts use a temporary directory that is under the web server root directory, you may put the temporary file URL directly in the &lt;IMG&gt; tag instead of using "getchart.pl".<br><br>
+<div style="background-color:#cccccc;width:99%;padding:10px">
+<b><font color="#FF0000">NOTE:</font></b> This sample script uses "getchart.pl" and assumes it is in the same directory as the script. When developing your own script using this sample script as a template, please ensure you copy "getchart.pl" to the same directory as your script. If you put "getchart.pl" in other directory, please adjust the paths in your script accordingly.
+</div><br>
+The image map for the chart is created using the following code:<br><br>
+<div style="background-color:#cccccc;width:99%;padding:5px"><pre>my $imageMap = $c-&gt;getHTMLImageMap("clickline.pl", "",
+    "title='{xLabel}: US\$ {value|0}M'");</pre></div><br>
+As seen above, only one line of code is needed. <a href="BaseChart.getHTMLImageMap.htm">BaseChart.getHTMLImageMap</a> will generate the image map for the entire chart. The image map will use "clickline.pl" as the handler when a bar is clicked.<br><br>
+If you right click on the browser and choose "View Source" to look at the HTML of the web page as received by the browser, you can see that the image map generated above will be something like:<br><br>
+<div style="background-color:#cccccc;width:99%;padding:5px"><pre>&lt;area shape="rect" coords="67,278,103,320" title='1996: US$ 450M'
+    href="clickline.pl?x=0&xLabel=1996&dataSet=0&dataSetName=&value=450"&gt;
+
+&lt;area shape="rect" coords="117,268,153,320" title='1997: US$ 560M'
+    href="clickline.pl?x=1&xLabel=1997&dataSet=1&dataSetName=&value=560"&gt;
+
+&lt;area shape="rect" coords="167,261,203,320" title='1998: US$ 630M'
+    href="clickline.pl?x=2&xLabel=1998&dataSet=2&dataSetName=&value=630"&gt;
+
+&lt;area shape="rect" coords="217,245,253,320" title='1999: US$ 800M'
+    href="clickline.pl?x=3&xLabel=1999&dataSet=3&dataSetName=&value=800"&gt;
+
+...... (one &lt;area&gt; tag for each bar) ......</pre></div><br>
+The image map generated by ChartDirector contains one &lt;AREA&gt; tag per bar. This defines the bars as hot spots. The "href" attributes of the &lt;AREA&gt; tags use "clickline.pl" as the URL, with query parameters appended to describe the bars. In this way, "clickline.pl" can distinguish which bar the user has clicked.<br><br>
+The &lt;AREA&gt; tags also include "title" attributes, which act as tool tips when the mouse pointer moves over the bars. In this example, the tool tips are in the format:<br><br>
+<div style="margin-left:25;font-family:courier new,courier"> "title='{xLabel}: US\$ {value|0}M'" </div><br>
+which is specified as the third argument of <a href="BaseChart.getHTMLImageMap.htm">BaseChart.getHTMLImageMap</a>.
+</div><p class="heading1a">Clickable Line Chart</p><div class="content">
+<img src="images/clickline_doc.png"><br><br>
+In the previous Clickable Bar Chart sample code, when a bar is clicked, "clickline.pl" will be invoked.<br><br>
+The code for "clickline.pl" is listed below. It determines which year the user has clicked from query parameters. It then draws a line chart based on the selected year. To produce a clickable line chart, it generates and saves the chart in a temporary file using <a href="BaseChart.makeTmpFile.htm">BaseChart.makeTmpFile</a>, and generates the image map using <a href="BaseChart.getHTMLImageMap.htm">BaseChart.getHTMLImageMap</a>, with "clickpie.pl" as the handler.<br><br>
+As "clickline.pl" is very similar to "clickbar.pl", it will not be explained further here.<br><br>
+<b>[CGI Version]</b> perldemo_cgi\clickline.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# Get HTTP query parameters
+use CGI;
+my $query = new CGI;
+
+# Get the selected year.
+my $selectedYear = $query-&gt;param("xLabel");
+
+#
+# In real life, the data may come from a database based on selectedYear. In this
+# example, we just use a random number generator.
+#
+my $seed = 50 + (int($selectedYear) - 1996) * 15;
+my $rantable = new RanTable($seed, 1, 12);
+$rantable-&gt;setCol2(0, $seed, -$seed * 0.25, $seed * 0.33, $seed * 0.1, $seed * 3);
+
+my $data = $rantable-&gt;getCol(0);
+
+#
+# Now we obtain the data into arrays, we can start to draw the chart using
+# ChartDirector
+#
+
+# Create a XYChart object of size 600 x 320 pixels
+my $c = new XYChart(600, 360);
+
+# Add a title to the chart using 18pts Times Bold Italic font
+$c-&gt;addTitle("Month Revenue for Star Tech for $selectedYear", "timesbi.ttf", 18);
+
+# Set the plotarea at (60, 40) and of size 500 x 280 pixels. Use a vertical gradient
+# color from light blue (eeeeff) to deep blue (0000cc) as background. Set border and
+# grid lines to white (ffffff).
+$c-&gt;setPlotArea(60, 40, 500, 280, $c-&gt;linearGradientColor(60, 40, 60, 280, 0xeeeeff,
+    0x0000cc), -1, 0xffffff, 0xffffff);
+
+# Add a red line (ff0000) chart layer using the data
+my $dataSet = $c-&gt;addLineLayer()-&gt;addDataSet($data, 0xff0000, "Revenue");
+
+# Set the line width to 3 pixels
+$dataSet-&gt;setLineWidth(3);
+
+# Use a 13 point circle symbol to plot the data points
+$dataSet-&gt;setDataSymbol($perlchartdir::CircleSymbol, 13);
+
+# Set the labels on the x axis. In this example, the labels must be Jan - Dec.
+my $labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct",
+    "Nov", "Dec"];
+$c-&gt;xAxis()-&gt;setLabels($labels);
+
+# When auto-scaling, use tick spacing of 40 pixels as a guideline
+$c-&gt;yAxis()-&gt;setTickDensity(40);
+
+# Add a title to the x axis to reflect the selected year
+$c-&gt;xAxis()-&gt;setTitle("Year $selectedYear", "timesbi.ttf", 12);
+
+# Add a title to the y axis
+$c-&gt;yAxis()-&gt;setTitle("USD (millions)", "timesbi.ttf", 12);
+
+# Set axis label style to 8pts Arial Bold
+$c-&gt;xAxis()-&gt;setLabelStyle("arialbd.ttf", 8);
+$c-&gt;yAxis()-&gt;setLabelStyle("arialbd.ttf", 8);
+
+# Set axis line width to 2 pixels
+$c-&gt;xAxis()-&gt;setWidth(2);
+$c-&gt;yAxis()-&gt;setWidth(2);
+
+# Create the image and save it in a temporary location
+my $chart1URL = $c-&gt;makeTmpFile("/tmp/tmpcharts");
+
+# Create an image map for the chart
+my $imageMap = $c-&gt;getHTMLImageMap("clickpie.pl?year=$selectedYear", "",
+    "title='{xLabel}: US\$ {value|0}M'");
+
+print "Content-type: text/html\n\n";
+print &lt;&lt;EndOfHTML
+&lt;html&gt;
+&lt;body style="margin:5px 0px 0px 5px"&gt;
+&lt;div style="font-size:18pt; font-family:verdana; font-weight:bold"&gt;
+    Simple Clickable Line Chart
+&lt;/div&gt;
+&lt;hr style="border:solid 1px #000080" /&gt;
+&lt;div style="font-size:10pt; font-family:verdana; margin-bottom:20"&gt;
+    &lt;a href="viewsource.pl?file=$ENV{"SCRIPT_NAME"}"&gt;View Source Code&lt;/a&gt;
+&lt;/div&gt;
+&lt;img src="getchart.pl?img=/tmp/tmpcharts/$chart1URL" border="0" usemap="#map1"&gt;
+&lt;map name="map1"&gt;
+$imageMap
+&lt;/map&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+EndOfHTML
+;</pre></tr></td></table><br>
+</div><p class="heading1a">Clickable Pie Chart</p><div class="content">
+<img src="images/clickpie_doc.png"><br><br>
+In the previous Clickable Line Chart sample code, when a line is clicked, the "clickpie.pl" will be invoked.<br><br>
+The code for "clickpie.pl" is listed below. It determines which year and month the user has clicked from query parameters. It then draws a pie chart based on those parameters. To produce a clickable pie chart, it generates and saves the chart in a temporary file using <a href="BaseChart.makeTmpFile.htm">BaseChart.makeTmpFile</a>, and generates the image map using <a href="BaseChart.getHTMLImageMap.htm">BaseChart.getHTMLImageMap</a>, with "piestub.pl" as the handler.<br><br>
+As "clickpie.pl" is very similar to "clickbar.pl" and "clickline.pl", it will not be explained further here.<br><br>
+<b>[CGI Version]</b> perldemo_cgi\clickpie.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# Get HTTP query parameters
+use CGI;
+my $query = new CGI;
+
+# Get the selected year and month
+my $selectedYear = int($query-&gt;param("year"));
+my $selectedMonth = int($query-&gt;param("x")) + 1;
+
+#
+# In real life, the data may come from a database based on selectedYear. In this
+# example, we just use a random number generator.
+#
+my $seed = ($selectedYear - 1992) * (100 + 3 * $selectedMonth);
+my $rantable = new RanTable($seed, 1, 4);
+$rantable-&gt;setCol(0, $seed * 0.003, $seed * 0.017);
+
+my $data = $rantable-&gt;getCol(0);
+
+# The labels for the pie chart
+my $labels = ["Services", "Hardware", "Software", "Others"];
+
+# Create a PieChart object of size 600 x 240 pixels
+my $c = new PieChart(600, 280);
+
+# Set the center of the pie at (300, 140) and the radius to 120 pixels
+$c-&gt;setPieSize(300, 140, 120);
+
+# Add a title to the pie chart using 18 pts Times Bold Italic font
+$c-&gt;addTitle("Revenue Breakdown for $selectedMonth/$selectedYear", "timesbi.ttf", 18)
+    ;
+
+# Draw the pie in 3D with 20 pixels 3D depth
+$c-&gt;set3D(20);
+
+# Set label format to display sector label, value and percentage in two lines
+$c-&gt;setLabelFormat("{label}&lt;*br*&gt;\${value|2}M ({percent}%)");
+
+# Set label style to 10 pts Arial Bold Italic font. Set background color to the same
+# as the sector color, with reduced-glare glass effect and rounded corners.
+my $t = $c-&gt;setLabelStyle("arialbi.ttf", 10);
+$t-&gt;setBackground($perlchartdir::SameAsMainColor, $perlchartdir::Transparent,
+    perlchartdir::glassEffect($perlchartdir::ReducedGlare));
+$t-&gt;setRoundedCorners();
+
+# Use side label layout method
+$c-&gt;setLabelLayout($perlchartdir::SideLayout);
+
+# Set the pie data and the pie labels
+$c-&gt;setData($data, $labels);
+
+# Create the image and save it in a temporary location
+my $chart1URL = $c-&gt;makeTmpFile("/tmp/tmpcharts");
+
+# Create an image map for the chart
+my $imageMap = $c-&gt;getHTMLImageMap("piestub.pl", "",
+    "title='{label}:US\$ {value|2}M'");
+
+print "Content-type: text/html\n\n";
+print &lt;&lt;EndOfHTML
+&lt;html&gt;
+&lt;body style="margin:5px 0px 0px 5px"&gt;
+&lt;div style="font-size:18pt; font-family:verdana; font-weight:bold"&gt;
+    Simple Clickable Pie Chart
+&lt;/div&gt;
+&lt;hr style="border:solid 1px #000080" /&gt;
+&lt;div style="font-size:10pt; font-family:verdana; margin-bottom:20"&gt;
+    &lt;a href="viewsource.pl?file=$ENV{"SCRIPT_NAME"}"&gt;View Source Code&lt;/a&gt;
+&lt;/div&gt;
+&lt;img src="getchart.pl?img=/tmp/tmpcharts/$chart1URL" border="0" usemap="#map1"&gt;
+&lt;map name="map1"&gt;
+$imageMap
+&lt;/map&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+EndOfHTML
+;</pre></tr></td></table><br>
+</div><p class="heading1a">Clickable Pie Chart Handler</p><div class="content">
+<img src="images/piestub_doc.png"><br><br>
+In the previous Clickable Pie Chart sample code, when a sector is clicked, "piestub.pl" will be invoked. Its code is listed below. In this example, it simply displays some data about the sector clicked.<br><br>
+<b>[CGI Version]</b> perldemo_cgi\piestub.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Get HTTP query parameters
+use CGI;
+my $query = new CGI;
+
+print "Content-type: text/html\n\n";
+print &lt;&lt;EndOfHTML
+&lt;html&gt;
+&lt;body style="margin:5px 0px 0px 5px"&gt;
+&lt;div style="font-size:18pt; font-family:verdana; font-weight:bold"&gt;
+    Simple Clickable Pie Chart Handler
+&lt;/div&gt;
+&lt;hr style="border:solid 1px #000080" /&gt;
+&lt;div style="font-size:10pt; font-family:verdana; margin-bottom:20"&gt;
+    &lt;a href="viewsource.pl?file=$ENV{"SCRIPT_NAME"}"&gt;View Source Code&lt;/a&gt;
+&lt;/div&gt;
+&lt;div style="font-size:10pt; font-family:verdana;"&gt;
+&lt;b&gt;You have clicked on the following sector :&lt;/b&gt;&lt;br /&gt;
+&lt;ul&gt;
+    &lt;li&gt;Sector Number : @{[$query-&gt;param("sector")]}&lt;/li&gt;
+    &lt;li&gt;Sector Name : @{[$query-&gt;param("label")]}&lt;/li&gt;
+    &lt;li&gt;Sector Value : @{[$query-&gt;param("value")]}&lt;/li&gt;
+    &lt;li&gt;Sector Percentage : @{[$query-&gt;param("percent")]}%&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+EndOfHTML
+;</pre></tr></td></table></div><br>
+<hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div></body>
+</HTML>

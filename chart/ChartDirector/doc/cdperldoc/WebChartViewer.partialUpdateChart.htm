@@ -1,0 +1,39 @@
+<HTML>
+<HEAD>
+<Title>WebChartViewer.partialUpdateChart</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="WebChartViewer.htm">WebChartViewer</a>.partialUpdateChart</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+partialUpdateChart([ msg [, timeout ]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Generates the response to a partial chart update request.<br><br>
+This method will encode the information for updating the JsChartViewer into a text string. The text string can then be sent to the browser by using the standard Perl "print" statement.<br><br>
+The response can optionally cause a message to pop up on the chart on the browser side. This is useful for displaying error messages or other information to the user. The pop up message may automatically hide after a certain time. An OK button may also be put on the message to allow the user to dismiss it.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>msg</td><td>""</td><td>A pop up message to be displayed on the chart. "" means no pop up message will be displayed.</td></tr><tr><td>timeout</td><td>0</td><td>The delay time in milliseconds, after which the pop up message will automatically hide. If a negative number is used, the delay time is set as the absolute value. In addition, there will be an OK button to allow the user to dismiss the message. Use a very large negative number to show the message until the user press OK. 0 means the pop up message will stay until the chart refreshes.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+A text string containing the response of a partial chart update request.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

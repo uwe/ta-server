@@ -1,0 +1,114 @@
+<HTML>
+<HEAD>
+<Title>Multi-Bar Chart</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Multi-Bar Chart</p>
+<hr class="separator">
+<div class="content">
+<img src="images/multibar.png">
+<br><br>
+This example demonstrates a multi-bar chart, in which bars are clustered. It also demonstrates using alternative plot area background colors, and putting legends internal to the plot area.<br><br>
+A multi-bar chart is a bar chart in which multiple data sets are represented by drawing the bars side by side in a cluster. The multi-bar layer is created by using <a href="XYChart.addBarLayer2.htm">XYChart.addBarLayer2</a> with the <a href="perlchartdir.Side.htm">Side</a> predefined constant.<br><br>
+In this example, the two alternative background colors in the plot area is achieved by specifying two background colors in <a href="PlotArea.setBackground.htm">PlotArea.setBackground</a>. ChartDirector also supports another method <a href="PlotArea.setAltBgColor.htm">PlotArea.setAltBgColor</a> that can be used for both horizontal and vertical alternative background colors.<br><br>
+Note that in this example, a margin is configured at the top of the plot area for the legend keys. This is achieved by using <a href="Axis.setMargin.htm">Axis.setMargin</a>.
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\multibar.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# The data for the bar chart
+my $data0 = [100, 125, 245, 147, 67];
+my $data1 = [85, 156, 179, 211, 123];
+my $data2 = [97, 87, 56, 267, 157];
+my $labels = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+
+# Create a XYChart object of size 400 x 240 pixels
+my $c = new XYChart(400, 240);
+
+# Add a title to the chart using 10 pt Arial font
+$c-&gt;addTitle("         Average Weekday Network Load", "", 10);
+
+# Set the plot area at (50, 25) and of size 320 x 180. Use two alternative background
+# colors (0xffffc0 and 0xffffe0)
+$c-&gt;setPlotArea(50, 25, 320, 180, 0xffffc0, 0xffffe0);
+
+# Add a legend box at (55, 18) using horizontal layout. Use 8 pt Arial font, with
+# transparent background
+$c-&gt;addLegend(55, 18, 0, "", 8)-&gt;setBackground($perlchartdir::Transparent);
+
+# Add a title to the y-axis
+$c-&gt;yAxis()-&gt;setTitle("Throughput (MBytes Per Hour)");
+
+# Reserve 20 pixels at the top of the y-axis for the legend box
+$c-&gt;yAxis()-&gt;setTopMargin(20);
+
+# Set the x axis labels
+$c-&gt;xAxis()-&gt;setLabels($labels);
+
+# Add a multi-bar layer with 3 data sets and 3 pixels 3D depth
+my $layer = $c-&gt;addBarLayer2($perlchartdir::Side, 3);
+$layer-&gt;addDataSet($data0, 0xff8080, "Server #1");
+$layer-&gt;addDataSet($data1, 0x80ff80, "Server #2");
+$layer-&gt;addDataSet($data2, 0x8080ff, "Server #3");
+
+# Output the chart
+$c-&gt;makeChart("multibar.png")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\multibar.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The data for the bar chart
+my $data0 = [100, 125, 245, 147, 67];
+my $data1 = [85, 156, 179, 211, 123];
+my $data2 = [97, 87, 56, 267, 157];
+my $labels = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+
+# Create a XYChart object of size 400 x 240 pixels
+my $c = new XYChart(400, 240);
+
+# Add a title to the chart using 10 pt Arial font
+$c-&gt;addTitle("         Average Weekday Network Load", "", 10);
+
+# Set the plot area at (50, 25) and of size 320 x 180. Use two alternative background
+# colors (0xffffc0 and 0xffffe0)
+$c-&gt;setPlotArea(50, 25, 320, 180, 0xffffc0, 0xffffe0);
+
+# Add a legend box at (55, 18) using horizontal layout. Use 8 pt Arial font, with
+# transparent background
+$c-&gt;addLegend(55, 18, 0, "", 8)-&gt;setBackground($perlchartdir::Transparent);
+
+# Add a title to the y-axis
+$c-&gt;yAxis()-&gt;setTitle("Throughput (MBytes Per Hour)");
+
+# Reserve 20 pixels at the top of the y-axis for the legend box
+$c-&gt;yAxis()-&gt;setTopMargin(20);
+
+# Set the x axis labels
+$c-&gt;xAxis()-&gt;setLabels($labels);
+
+# Add a multi-bar layer with 3 data sets and 3 pixels 3D depth
+my $layer = $c-&gt;addBarLayer2($perlchartdir::Side, 3);
+$layer-&gt;addDataSet($data0, 0xff8080, "Server #1");
+$layer-&gt;addDataSet($data1, 0x80ff80, "Server #2");
+$layer-&gt;addDataSet($data2, 0x8080ff, "Server #3");
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

@@ -1,0 +1,36 @@
+<HTML>
+<HEAD>
+<Title>CDMLTable</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">CDMLTable</p>
+<hr class="separator">
+<div class="content">
+The CDMLTable class represents tables for <a href="cdml.htm">CDML</a> contents.<br><br>
+A CDMLTable consists of rows and columns. The rows are numbered from top to bottom, with the top row being 0. The columns are numbered from left to right, with the leftmost column being 0.<br><br>
+By default, the intersection of a row and a column is a cell. You may create cells that span multiple rows and/or columns with <a href="CDMLTable.setCell.htm">CDMLTable.setCell</a>.<br><br>
+The styles of a cell, such as its background color, font, etc., are determined using the following order.<br><br>
+For any style attribute (eg. background color):<br><br>
+<ul>
+<li> The <a href="TextBox.htm">TextBox</a> object representing the cell (obtained using <a href="CDMLTable.getCell.htm">CDMLTable.getCell</a>) is examined to see if the attribute is defined. If it is defined, its value is used.<br><br>
+<li> The <a href="TextBox.htm">TextBox</a> objects representing the prototype of the cells in the column and row of the cell (obtained using <a href="CDMLTable.getColStyle.htm">CDMLTable.getColStyle</a> and <a href="CDMLTable.getRowStyle.htm">CDMLTable.getRowStyle</a>) are examined to see if the attribute is defined. If the attribute is defined, its value is used. If the attribute is defined in both the column and row prototypes, the prototype that is created later will take precedence.<br><br>
+<li> The attribute is taken from the <a href="TextBox.htm">TextBox</a> object representing the prototype of all cells (obtained using <a href="CDMLTable.getStyle.htm">CDMLTable.getStyle</a>).<br><br>
+</ul>
+For example, if you set the background to white using the prototype for all cells, the background of the whole table will change to white. If you then set the background to grey using the prototype for a row, the background for that row will change to grey. Finally, if you set the background to red using the text box that represents a cell, only that cell will have a red background.
+<br><br>
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Method</th><th width="19%">Inherited</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td><a href="CDMLTable.setPos.htm">setPos</a></td><td>(Self)</td><td>Sets the position of the table.</td></tr><tr><td><a href="CDMLTable.insertCol.htm">insertCol</a></td><td>(Self)</td><td>Inserts a column to the table.</td></tr><tr><td><a href="CDMLTable.appendCol.htm">appendCol</a></td><td>(Self)</td><td>Appends a column to the right of the table.</td></tr><tr><td><a href="CDMLTable.getColCount.htm">getColCount</a></td><td>(Self)</td><td>Gets the number of columns in the table.</td></tr><tr><td><a href="CDMLTable.insertRow.htm">insertRow</a></td><td>(Self)</td><td>Inserts a row to the table.</td></tr><tr><td><a href="CDMLTable.appendRow.htm">appendRow</a></td><td>(Self)</td><td>Appends a row to the bottom of the table.</td></tr><tr><td><a href="CDMLTable.getRowCount.htm">getRowCount</a></td><td>(Self)</td><td>Gets the number of rows in the table.</td></tr><tr><td><a href="CDMLTable.setText.htm">setText</a></td><td>(Self)</td><td>Puts text into a cell in the table.</td></tr><tr><td><a href="CDMLTable.setCell.htm">setCell</a></td><td>(Self)</td><td>Sets the number of rows and columns that a cell spans, and puts text in the cell.</td></tr><tr><td><a href="CDMLTable.getCell.htm">getCell</a></td><td>(Self)</td><td>Gets the <a href="TextBox.htm">TextBox</a> object that represents a cell.</td></tr><tr><td><a href="CDMLTable.getColStyle.htm">getColStyle</a></td><td>(Self)</td><td>Gets the <a href="TextBox.htm">TextBox</a> object that represents the prototype of the cells in a column.</td></tr><tr><td><a href="CDMLTable.getRowStyle.htm">getRowStyle</a></td><td>(Self)</td><td>Gets the <a href="TextBox.htm">TextBox</a> object that represents the prototype of the cells in a row.</td></tr><tr><td><a href="CDMLTable.getStyle.htm">getStyle</a></td><td>(Self)</td><td>Gets the <a href="TextBox.htm">TextBox</a> object that represents the prototype of the cells in the table.</td></tr><tr><td><a href="CDMLTable.layout.htm">layout</a></td><td>(Self)</td><td>Lays out the table.</td></tr><tr><td><a href="CDMLTable.getColWidth.htm">getColWidth</a></td><td>(Self)</td><td>Gets the width of a column.</td></tr><tr><td><a href="CDMLTable.getRowHeight.htm">getRowHeight</a></td><td>(Self)</td><td>Gets the height of a row.</td></tr><tr><td><a href="CDMLTable.getWidth.htm">getWidth</a></td><td>(Self)</td><td>Gets the width of the table.</td></tr><tr><td><a href="CDMLTable.getHeight.htm">getHeight</a></td><td>(Self)</td><td>Gets the height of the table.</td></tr><tr><td><a href="CDMLTable.setZOrder.htm">setZOrder</a></td><td>(Self)</td><td>Sets the z-order (drawing order) of the table.</td>
+</tr>
+</table>
+
+</div>
+<hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

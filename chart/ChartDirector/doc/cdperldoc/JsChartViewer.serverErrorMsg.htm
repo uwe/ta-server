@@ -1,0 +1,29 @@
+<HTML>
+<HEAD>
+<Title>JsChartViewer.serverErrorMsg</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="JsChartViewer.htm">JsChartViewer</a>.serverErrorMsg</p>
+<hr class="separator">
+<p class="heading2a">Description</p>
+
+<div class="content">
+Gets or sets the HTML template for displaying server error messages.<br><br>
+When a partial update error occurs, the default behaviour is to display the error message on the chart. (See <a href="JsChartViewer.UpdateError.htm">JsChartViewer.UpdateError</a> on how to change the default behaviour.) This property determines the format to display the error message.<br><br>
+The format should be written in HTML, using "%errCode" and "%errMsg" as the place holder for the error code and the error message. The template may include <a href="JsChartViewer.okButton.htm">JsChartViewer.okButton</a> or <a href="JsChartViewer.xButton.htm">JsChartViewer.xButton</a> for putting an "OK" or an "X" (close window) button in the template for closing the error message window.<br><br>
+If the template begins with the &lt;DIV&gt; tag, then the template will be used as is, otherwise the template will be put into a container first as defined by <a href="JsChartViewer.msgContainer.htm">JsChartViewer.msgContainer</a> before use.<br><br>
+This property is available as both a static property (class property) and an instance property. If you set the static property (class property) using JsChartViewer.updatingMsg, then all JsChartViewer objects will be affected. If you set the instance property using <i>objName</i>.updatingMsg, then only the object being configured will be affected.<br><br>
+As an example, the default JsChartViewer.serverErrorMsg is:<br><br>
+<div style="background-color:#cccccc;width:99%;padding:5px"><pre>JsChartViewer.serverErrorMsg = JsChartViewer.xButton +
+    '&lt;div style="font-family:Arial; font-weight:bold; font-size:15pt;"&gt;' +
+        'Error %errCode accessing server' +
+    '&lt;/div&gt;&lt;hr&gt;%errMsg';</pre></div><br>
+The above means that the error message will be display using the default message container, with an "X" button on top for closing the window, followed by a title line showing the error code, followed by the horizontal line separator, and finally the error message.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

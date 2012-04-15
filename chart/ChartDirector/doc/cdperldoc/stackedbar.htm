@@ -1,0 +1,129 @@
+<HTML>
+<HEAD>
+<Title>Stacked Bar Chart</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Stacked Bar Chart</p>
+<hr class="separator">
+<div class="content">
+<img src="images/stackedbar.png">
+<br><br>
+This example demonstrates creating a stacked bar chart, completed with bar labels and legend box.<br><br>
+The key features demonstrated in this example are:<br><br>
+<ul><li> Add a legend to the chart using <a href="BaseChart.addLegend.htm">BaseChart.addLegend</a>.<br><br>
+<li> Add a title to the y-axis using <a href="Axis.setTitle.htm">Axis.setTitle</a>, and draw the title upright using <a href="TextBox.setFontAngle.htm">TextBox.setFontAngle</a> (the default for y-axis is to draw the title rotated by 90 degrees). Note the y-axis title can contain multiple lines by including the line break character.<br><br>
+<li> Add a stacked bar layer using <a href="XYChart.addBarLayer2.htm">XYChart.addBarLayer2</a> with the <a href="perlchartdir.Stack.htm">Stack</a> predefined constant.<br><br>
+<li> Add multiple data sets to the bar layer using <a href="Layer.addDataSet.htm">Layer.addDataSet</a>.<br><br>
+<li> Include labels for the whole bar using <a href="Layer.setAggregateLabelStyle.htm">Layer.setAggregateLabelStyle</a>.<br><br>
+<li> Include labels for the bar segments within a stacked bar using <a href="Layer.setDataLabelStyle.htm">Layer.setDataLabelStyle</a>.</ul>
+For bar labels, <a href="Layer.setDataLabelStyle.htm">Layer.setDataLabelStyle</a> and <a href="Layer.setAggregateLabelStyle.htm">Layer.setAggregateLabelStyle</a> control the styles (fonts, colors, backgrounds, etc), while <a href="Layer.setDataLabelFormat.htm">Layer.setDataLabelFormat</a> and <a href="Layer.setAggregateLabelFormat.htm">Layer.setAggregateLabelFormat</a> control the formats (the contents of the label, number of decimal points in numbers, etc). You may also add custom labels to the bars using <a href="Layer.addCustomDataLabel.htm">Layer.addCustomDataLabel</a> and <a href="Layer.addCustomAggregateLabel.htm">Layer.addCustomAggregateLabel</a> and <a href="Layer.addCustomGroupLabel.htm">Layer.addCustomGroupLabel</a>.
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\stackedbar.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# The data for the bar chart
+my $data0 = [100, 125, 245, 147, 67];
+my $data1 = [85, 156, 179, 211, 123];
+my $data2 = [97, 87, 56, 267, 157];
+
+# The labels for the bar chart
+my $labels = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+
+# Create a XYChart object of size 500 x 320 pixels
+my $c = new XYChart(500, 320);
+
+# Set the plotarea at (100, 40) and of size 280 x 240 pixels
+$c-&gt;setPlotArea(100, 40, 280, 240);
+
+# Add a legend box at (400, 100)
+$c-&gt;addLegend(400, 100);
+
+# Add a title to the chart using 14 points Times Bold Itatic font
+$c-&gt;addTitle("Weekday Network Load", "timesbi.ttf", 14);
+
+# Add a title to the y axis. Draw the title upright (font angle = 0)
+$c-&gt;yAxis()-&gt;setTitle("Average\nWorkload\n(MBytes\nPer Hour)")-&gt;setFontAngle(0);
+
+# Set the labels on the x axis
+$c-&gt;xAxis()-&gt;setLabels($labels);
+
+# Add a stacked bar layer and set the layer 3D depth to 8 pixels
+my $layer = $c-&gt;addBarLayer2($perlchartdir::Stack, 8);
+
+# Add the three data sets to the bar layer
+$layer-&gt;addDataSet($data0, 0xff8080, "Server # 1");
+$layer-&gt;addDataSet($data1, 0x80ff80, "Server # 2");
+$layer-&gt;addDataSet($data2, 0x8080ff, "Server # 3");
+
+# Enable bar label for the whole bar
+$layer-&gt;setAggregateLabelStyle();
+
+# Enable bar label for each segment of the stacked bar
+$layer-&gt;setDataLabelStyle();
+
+# Output the chart
+$c-&gt;makeChart("stackedbar.png")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\stackedbar.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The data for the bar chart
+my $data0 = [100, 125, 245, 147, 67];
+my $data1 = [85, 156, 179, 211, 123];
+my $data2 = [97, 87, 56, 267, 157];
+
+# The labels for the bar chart
+my $labels = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+
+# Create a XYChart object of size 500 x 320 pixels
+my $c = new XYChart(500, 320);
+
+# Set the plotarea at (100, 40) and of size 280 x 240 pixels
+$c-&gt;setPlotArea(100, 40, 280, 240);
+
+# Add a legend box at (400, 100)
+$c-&gt;addLegend(400, 100);
+
+# Add a title to the chart using 14 points Times Bold Itatic font
+$c-&gt;addTitle("Weekday Network Load", "timesbi.ttf", 14);
+
+# Add a title to the y axis. Draw the title upright (font angle = 0)
+$c-&gt;yAxis()-&gt;setTitle("Average\nWorkload\n(MBytes\nPer Hour)")-&gt;setFontAngle(0);
+
+# Set the labels on the x axis
+$c-&gt;xAxis()-&gt;setLabels($labels);
+
+# Add a stacked bar layer and set the layer 3D depth to 8 pixels
+my $layer = $c-&gt;addBarLayer2($perlchartdir::Stack, 8);
+
+# Add the three data sets to the bar layer
+$layer-&gt;addDataSet($data0, 0xff8080, "Server # 1");
+$layer-&gt;addDataSet($data1, 0x80ff80, "Server # 2");
+$layer-&gt;addDataSet($data2, 0x8080ff, "Server # 3");
+
+# Enable bar label for the whole bar
+$layer-&gt;setAggregateLabelStyle();
+
+# Enable bar label for each segment of the stacked bar
+$layer-&gt;setDataLabelStyle();
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

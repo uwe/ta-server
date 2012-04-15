@@ -1,0 +1,130 @@
+<HTML>
+<HEAD>
+<Title>Polar Area Chart</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Polar Area Chart</p>
+<hr class="separator">
+<div class="content">
+<img src="images/polararea.png">
+<br><br>
+This examples demonstrates a polar area chart.<br><br>
+The polar area layer is created using <a href="PolarChart.addAreaLayer.htm">PolarChart.addAreaLayer</a>. In this example, 3 area layers are used. The area data are already stacked before passing to ChartDirector.
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\polararea.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# Data for the chart
+my $data0 = [5, 3, 10, 4, 3, 5, 2, 5];
+my $data1 = [12, 6, 17, 6, 7, 9, 4, 7];
+my $data2 = [17, 7, 22, 7, 18, 13, 5, 11];
+
+my $labels = ["North", "North&lt;*br*&gt;East", "East", "South&lt;*br*&gt;East", "South",
+    "South&lt;*br*&gt;West", "West", "North&lt;*br*&gt;West"];
+
+# Create a PolarChart object of size 460 x 500 pixels, with a grey (e0e0e0)
+# background and 1 pixel 3D border
+my $c = new PolarChart(460, 500, 0xe0e0e0, 0x000000, 1);
+
+# Add a title to the chart at the top left corner using 15pts Arial Bold Italic font.
+# Use a wood pattern as the title background.
+$c-&gt;addTitle("Polar Area Chart Demo", "arialbi.ttf", 15)-&gt;setBackground(
+    $c-&gt;patternColor("wood.png"));
+
+# Set center of plot area at (230, 280) with radius 180 pixels, and white (ffffff)
+# background.
+$c-&gt;setPlotArea(230, 280, 180, 0xffffff);
+
+# Set the grid style to circular grid
+$c-&gt;setGridStyle(0);
+
+# Add a legend box at top-center of plot area (230, 35) using horizontal layout. Use
+# 10 pts Arial Bold font, with 1 pixel 3D border effect.
+my $b = $c-&gt;addLegend(230, 35, 0, "arialbd.ttf", 9);
+$b-&gt;setAlignment($perlchartdir::TopCenter);
+$b-&gt;setBackground($perlchartdir::Transparent, $perlchartdir::Transparent, 1);
+
+# Set angular axis using the given labels
+$c-&gt;angularAxis()-&gt;setLabels($labels);
+
+# Specify the label format for the radial axis
+$c-&gt;radialAxis()-&gt;setLabelFormat("{value}%");
+
+# Set radial axis label background to semi-transparent grey (40cccccc)
+$c-&gt;radialAxis()-&gt;setLabelStyle()-&gt;setBackground(0x40cccccc, 0);
+
+# Add the data as area layers
+$c-&gt;addAreaLayer($data2, -1, "5 m/s or above");
+$c-&gt;addAreaLayer($data1, -1, "1 - 5 m/s");
+$c-&gt;addAreaLayer($data0, -1, "less than 1 m/s");
+
+# Output the chart
+$c-&gt;makeChart("polararea.png")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\polararea.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# Data for the chart
+my $data0 = [5, 3, 10, 4, 3, 5, 2, 5];
+my $data1 = [12, 6, 17, 6, 7, 9, 4, 7];
+my $data2 = [17, 7, 22, 7, 18, 13, 5, 11];
+
+my $labels = ["North", "North&lt;*br*&gt;East", "East", "South&lt;*br*&gt;East", "South",
+    "South&lt;*br*&gt;West", "West", "North&lt;*br*&gt;West"];
+
+# Create a PolarChart object of size 460 x 500 pixels, with a grey (e0e0e0)
+# background and 1 pixel 3D border
+my $c = new PolarChart(460, 500, 0xe0e0e0, 0x000000, 1);
+
+# Add a title to the chart at the top left corner using 15pts Arial Bold Italic font.
+# Use a wood pattern as the title background.
+$c-&gt;addTitle("Polar Area Chart Demo", "arialbi.ttf", 15)-&gt;setBackground(
+    $c-&gt;patternColor(dirname($0)."/wood.png"));
+
+# Set center of plot area at (230, 280) with radius 180 pixels, and white (ffffff)
+# background.
+$c-&gt;setPlotArea(230, 280, 180, 0xffffff);
+
+# Set the grid style to circular grid
+$c-&gt;setGridStyle(0);
+
+# Add a legend box at top-center of plot area (230, 35) using horizontal layout. Use
+# 10 pts Arial Bold font, with 1 pixel 3D border effect.
+my $b = $c-&gt;addLegend(230, 35, 0, "arialbd.ttf", 9);
+$b-&gt;setAlignment($perlchartdir::TopCenter);
+$b-&gt;setBackground($perlchartdir::Transparent, $perlchartdir::Transparent, 1);
+
+# Set angular axis using the given labels
+$c-&gt;angularAxis()-&gt;setLabels($labels);
+
+# Specify the label format for the radial axis
+$c-&gt;radialAxis()-&gt;setLabelFormat("{value}%");
+
+# Set radial axis label background to semi-transparent grey (40cccccc)
+$c-&gt;radialAxis()-&gt;setLabelStyle()-&gt;setBackground(0x40cccccc, 0);
+
+# Add the data as area layers
+$c-&gt;addAreaLayer($data2, -1, "5 m/s or above");
+$c-&gt;addAreaLayer($data1, -1, "1 - 5 m/s");
+$c-&gt;addAreaLayer($data0, -1, "less than 1 m/s");
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

@@ -1,0 +1,38 @@
+<HTML>
+<HEAD>
+<Title>FinanceChart.setData</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="FinanceChart.htm">FinanceChart</a>.setData</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setData(timeStamps, highData, lowData, openData, closeData, volData, extraPoints)
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the data to be used in the chart.<br><br>
+If some of the data are not available, some artificial values should be used. For example, if the high and low values are not available, you may use closeData as highData and lowData.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>timeStamps</td><td>(Mandatory)</td><td>An array of dates/times for the time intervals.</td></tr><tr><td>highData</td><td>(Mandatory)</td><td>The high values in the time intervals.</td></tr><tr><td>lowData</td><td>(Mandatory)</td><td>The low values in the time intervals.</td></tr><tr><td>openData</td><td>(Mandatory)</td><td>The open values in the time intervals.</td></tr><tr><td>closeData</td><td>(Mandatory)</td><td>The close values in the time intervals.</td></tr><tr><td>volData</td><td>(Mandatory)</td><td>The volume values in the time intervals.</td></tr><tr><td>extraPoints</td><td>(Mandatory)</td><td>The number of leading time intervals that are not displayed in the chart. These intervals are typically used for computing indicators that require extra leading data, such as moving averages.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

@@ -1,0 +1,234 @@
+<HTML>
+<HEAD>
+<Title>Missing Data Points</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Missing Data Points</p>
+<hr class="separator">
+<div class="content">
+<img src="images/missingpoints.jpg">
+<br><br>
+This example demonstrates various methods to representing missing data points. It also demonstrates automatic resizing of the plot area to fit the chart.<br><br>
+In ChartDirector, a data series may contain missing values, represented using the <a href="perlchartdir.NoValue.htm">NoValue</a> predefined constant. In a line layer, by default, a missing value is represented as a gap in the line. In other words, the line will be broken. <a href="LineLayer.setGapColor.htm">LineLayer.setGapColor</a> can be used to configure the line layer to join through the NoValue point instead, using a line segment that can be of a different color and/or style.<br><br>
+In this example, the three data series all contain <a href="perlchartdir.NoValue.htm">NoValue</a> points. The red line demonstrates the default behaviour of using a gap to representing the NoValue point. The green line demonstrates joining through the NoValue point with a dash line. The orange line demonstrates joining through the NoValue point with the same line style as for joining normal data points.<br><br>
+After the entire chart is configured, the <a href="XYChart.packPlotArea.htm">XYChart.packPlotArea</a> method is used to adjust the plot area size, so as to fit the plot area and the axes in a given bounding box.
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\missingpoints.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# The data for the chart
+my $data0 = [42, 49, $perlchartdir::NoValue, 38, 64, 56, 29, 41, 44, 57];
+my $data1 = [65, 75, 47, 34, 42, 49, 73, $perlchartdir::NoValue, 90, 69, 66, 78];
+my $data2 = [$perlchartdir::NoValue, $perlchartdir::NoValue, 25, 28, 38, 20, 22,
+    $perlchartdir::NoValue, 25, 33, 30, 24];
+my $labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct",
+    "Nov", "Dec"];
+
+# Create a XYChart object of size 600 x 360 pixels. Set background color to brushed
+# silver, with a 2 pixel 3D border. Use rounded corners.
+my $c = new XYChart(600, 360, perlchartdir::brushedSilverColor(),
+    $perlchartdir::Transparent, 2);
+$c-&gt;setRoundedFrame();
+
+# Add a title using 18 pts Times New Roman Bold Italic font. #Set top/bottom margins
+# to 6 pixels.
+my $title = $c-&gt;addTitle("Product Line Global Revenue", "timesbi.ttf", 18);
+$title-&gt;setMargin2(0, 0, 6, 6);
+
+# Add a separator line just under the title
+$c-&gt;addLine(10, $title-&gt;getHeight(), $c-&gt;getWidth() - 11, $title-&gt;getHeight(),
+    $perlchartdir::LineColor);
+
+# Add a legend box where the top-center is anchored to the horizontal center of the
+# chart, just under the title. Use horizontal layout and 10 points Arial Bold font,
+# and transparent background and border.
+my $legendBox = $c-&gt;addLegend($c-&gt;getWidth() / 2, $title-&gt;getHeight(), 0,
+    "arialbd.ttf", 10);
+$legendBox-&gt;setAlignment($perlchartdir::TopCenter);
+$legendBox-&gt;setBackground($perlchartdir::Transparent, $perlchartdir::Transparent);
+
+# Tentatively set the plotarea at (70, 75) and of 460 x 240 pixels in size. Use
+# transparent border and black (000000) grid lines
+$c-&gt;setPlotArea(70, 75, 460, 240, -1, -1, $perlchartdir::Transparent, 0x000000, -1);
+
+# Set the x axis labels
+$c-&gt;xAxis()-&gt;setLabels($labels);
+
+# Show the same scale on the left and right y-axes
+$c-&gt;syncYAxis();
+
+# Set y-axis tick density to 30 pixels. ChartDirector auto-scaling will use this as
+# the guideline when putting ticks on the y-axis.
+$c-&gt;yAxis()-&gt;setTickDensity(30);
+
+# Set all axes to transparent
+$c-&gt;xAxis()-&gt;setColors($perlchartdir::Transparent);
+$c-&gt;yAxis()-&gt;setColors($perlchartdir::Transparent);
+$c-&gt;yAxis2()-&gt;setColors($perlchartdir::Transparent);
+
+# Set the x-axis margins to 15 pixels, so that the horizontal grid lines can extend
+# beyond the leftmost and rightmost vertical grid lines
+$c-&gt;xAxis()-&gt;setMargin(15, 15);
+
+# Set axis label style to 8pts Arial Bold
+$c-&gt;xAxis()-&gt;setLabelStyle("arialbd.ttf", 8);
+$c-&gt;yAxis()-&gt;setLabelStyle("arialbd.ttf", 8);
+$c-&gt;yAxis2()-&gt;setLabelStyle("arialbd.ttf", 8);
+
+# Add axis title using 10pts Arial Bold Italic font
+$c-&gt;yAxis()-&gt;setTitle("Revenue in USD millions", "arialbi.ttf", 10);
+$c-&gt;yAxis2()-&gt;setTitle("Revenue in USD millions", "arialbi.ttf", 10);
+
+# Add the first line. The missing data will be represented as gaps in the line (the
+# default behaviour)
+my $layer0 = $c-&gt;addLineLayer2();
+$layer0-&gt;addDataSet($data0, 0xff0000, "Quantum Computer")-&gt;setDataSymbol(
+    $perlchartdir::GlassSphere2Shape, 11);
+$layer0-&gt;setLineWidth(3);
+
+# Add the second line. The missing data will be represented by using dash lines to
+# bridge the gap
+my $layer1 = $c-&gt;addLineLayer2();
+$layer1-&gt;addDataSet($data1, 0x00ff00, "Atom Synthesizer")-&gt;setDataSymbol(
+    $perlchartdir::GlassSphere2Shape, 11);
+$layer1-&gt;setLineWidth(3);
+$layer1-&gt;setGapColor($c-&gt;dashLineColor(0x00ff00));
+
+# Add the third line. The missing data will be ignored - just join the gap with the
+# original line style.
+my $layer2 = $c-&gt;addLineLayer2();
+$layer2-&gt;addDataSet($data2, 0xff6600, "Proton Cannon")-&gt;setDataSymbol(
+    $perlchartdir::GlassSphere2Shape, 11);
+$layer2-&gt;setLineWidth(3);
+$layer2-&gt;setGapColor($perlchartdir::SameAsMainColor);
+
+# layout the legend so we can get the height of the legend box
+$c-&gt;layoutLegend();
+
+# Adjust the plot area size, such that the bounding box (inclusive of axes) is 15
+# pixels from the left edge, just under the legend box, 16 pixels from the right
+# edge, and 25 pixels from the bottom edge.
+$c-&gt;packPlotArea(15, $legendBox-&gt;getTopY() + $legendBox-&gt;getHeight(), $c-&gt;getWidth()
+     - 16, $c-&gt;getHeight() - 25);
+
+# Output the chart
+$c-&gt;makeChart("missingpoints.jpg")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\missingpoints.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The data for the chart
+my $data0 = [42, 49, $perlchartdir::NoValue, 38, 64, 56, 29, 41, 44, 57];
+my $data1 = [65, 75, 47, 34, 42, 49, 73, $perlchartdir::NoValue, 90, 69, 66, 78];
+my $data2 = [$perlchartdir::NoValue, $perlchartdir::NoValue, 25, 28, 38, 20, 22,
+    $perlchartdir::NoValue, 25, 33, 30, 24];
+my $labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct",
+    "Nov", "Dec"];
+
+# Create a XYChart object of size 600 x 360 pixels. Set background color to brushed
+# silver, with a 2 pixel 3D border. Use rounded corners.
+my $c = new XYChart(600, 360, perlchartdir::brushedSilverColor(),
+    $perlchartdir::Transparent, 2);
+$c-&gt;setRoundedFrame();
+
+# Add a title using 18 pts Times New Roman Bold Italic font. #Set top/bottom margins
+# to 6 pixels.
+my $title = $c-&gt;addTitle("Product Line Global Revenue", "timesbi.ttf", 18);
+$title-&gt;setMargin2(0, 0, 6, 6);
+
+# Add a separator line just under the title
+$c-&gt;addLine(10, $title-&gt;getHeight(), $c-&gt;getWidth() - 11, $title-&gt;getHeight(),
+    $perlchartdir::LineColor);
+
+# Add a legend box where the top-center is anchored to the horizontal center of the
+# chart, just under the title. Use horizontal layout and 10 points Arial Bold font,
+# and transparent background and border.
+my $legendBox = $c-&gt;addLegend($c-&gt;getWidth() / 2, $title-&gt;getHeight(), 0,
+    "arialbd.ttf", 10);
+$legendBox-&gt;setAlignment($perlchartdir::TopCenter);
+$legendBox-&gt;setBackground($perlchartdir::Transparent, $perlchartdir::Transparent);
+
+# Tentatively set the plotarea at (70, 75) and of 460 x 240 pixels in size. Use
+# transparent border and black (000000) grid lines
+$c-&gt;setPlotArea(70, 75, 460, 240, -1, -1, $perlchartdir::Transparent, 0x000000, -1);
+
+# Set the x axis labels
+$c-&gt;xAxis()-&gt;setLabels($labels);
+
+# Show the same scale on the left and right y-axes
+$c-&gt;syncYAxis();
+
+# Set y-axis tick density to 30 pixels. ChartDirector auto-scaling will use this as
+# the guideline when putting ticks on the y-axis.
+$c-&gt;yAxis()-&gt;setTickDensity(30);
+
+# Set all axes to transparent
+$c-&gt;xAxis()-&gt;setColors($perlchartdir::Transparent);
+$c-&gt;yAxis()-&gt;setColors($perlchartdir::Transparent);
+$c-&gt;yAxis2()-&gt;setColors($perlchartdir::Transparent);
+
+# Set the x-axis margins to 15 pixels, so that the horizontal grid lines can extend
+# beyond the leftmost and rightmost vertical grid lines
+$c-&gt;xAxis()-&gt;setMargin(15, 15);
+
+# Set axis label style to 8pts Arial Bold
+$c-&gt;xAxis()-&gt;setLabelStyle("arialbd.ttf", 8);
+$c-&gt;yAxis()-&gt;setLabelStyle("arialbd.ttf", 8);
+$c-&gt;yAxis2()-&gt;setLabelStyle("arialbd.ttf", 8);
+
+# Add axis title using 10pts Arial Bold Italic font
+$c-&gt;yAxis()-&gt;setTitle("Revenue in USD millions", "arialbi.ttf", 10);
+$c-&gt;yAxis2()-&gt;setTitle("Revenue in USD millions", "arialbi.ttf", 10);
+
+# Add the first line. The missing data will be represented as gaps in the line (the
+# default behaviour)
+my $layer0 = $c-&gt;addLineLayer2();
+$layer0-&gt;addDataSet($data0, 0xff0000, "Quantum Computer")-&gt;setDataSymbol(
+    $perlchartdir::GlassSphere2Shape, 11);
+$layer0-&gt;setLineWidth(3);
+
+# Add the second line. The missing data will be represented by using dash lines to
+# bridge the gap
+my $layer1 = $c-&gt;addLineLayer2();
+$layer1-&gt;addDataSet($data1, 0x00ff00, "Atom Synthesizer")-&gt;setDataSymbol(
+    $perlchartdir::GlassSphere2Shape, 11);
+$layer1-&gt;setLineWidth(3);
+$layer1-&gt;setGapColor($c-&gt;dashLineColor(0x00ff00));
+
+# Add the third line. The missing data will be ignored - just join the gap with the
+# original line style.
+my $layer2 = $c-&gt;addLineLayer2();
+$layer2-&gt;addDataSet($data2, 0xff6600, "Proton Cannon")-&gt;setDataSymbol(
+    $perlchartdir::GlassSphere2Shape, 11);
+$layer2-&gt;setLineWidth(3);
+$layer2-&gt;setGapColor($perlchartdir::SameAsMainColor);
+
+# layout the legend so we can get the height of the legend box
+$c-&gt;layoutLegend();
+
+# Adjust the plot area size, such that the bounding box (inclusive of axes) is 15
+# pixels from the left edge, just under the legend box, 16 pixels from the right
+# edge, and 25 pixels from the bottom edge.
+$c-&gt;packPlotArea(15, $legendBox-&gt;getTopY() + $legendBox-&gt;getHeight(), $c-&gt;getWidth()
+     - 16, $c-&gt;getHeight() - 25);
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/jpeg\n\n";
+print $c-&gt;makeChart2($perlchartdir::JPG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

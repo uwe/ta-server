@@ -1,0 +1,37 @@
+<HTML>
+<HEAD>
+<Title>BarLayer.setBarShape2</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="BarLayer.htm">BarLayer</a>.setBarShape2</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setBarShape2(shape [, dataGroup [, dataItem ]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the shape of the bar(s) to a custom shape defined using an array of (x, y) coordinates.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>shape</td><td>(Mandatory)</td><td>The bar shape to use. Please refer to <a href="shapespec.htm">Shape Specification</a> on how shapes are specified.</td></tr><tr><td>dataGroup</td><td>-1</td><td>The index of the data group that the shape applies to. In a multi-stacked bar, the data sets that are stacked up into a single bar forms a data group. In a multi-bar chart, each data set is a data group by itself. -1 means the shape applies to all data groups.</td></tr><tr><td>dataItem</td><td>-1</td><td>The index of the data points that the shape applies to. For example, if set to 3, the shape will only apply to the 4th bar (index starts from 0) in each data series. -1 means the shape applies to all data points.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

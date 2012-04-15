@@ -1,0 +1,204 @@
+<HTML>
+<HEAD>
+<Title>Bars with Marks</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Bars with Marks</p>
+<hr class="separator">
+<div class="content">
+<img src="images/markbar.png">
+<br><br>
+This example demonstrates combine a bar layer with a box-whisker layer to create bars with marks. It also demonstrates gradient background color, rounded frame, soft drop shadow, and automatic resizing of the plot area to fit the chart.<br><br>
+<ul><li> The gradient background is achieved by using <a href="BaseChart.linearGradientColor.htm">BaseChart.linearGradientColor</a> to define the gradient color, then use <a href="BaseChart.setBackground.htm">BaseChart.setBackground</a> to set it as the chart background color.<br><br>
+<li> The rounded frame is configured using <a href="BaseChart.setRoundedFrame.htm">BaseChart.setRoundedFrame</a>.<br><br>
+<li> The soft drop shadow is configured using <a href="BaseChart.setDropShadow.htm">BaseChart.setDropShadow</a>.<br><br>
+<li> The box-whisker layer is created using <a href="XYChart.addBoxWhiskerLayer.htm">XYChart.addBoxWhiskerLayer</a>. Only the middle data set is used, so the box- whisker symbol appears as a mark line. <a href="BaseBoxLayer.setDataGap.htm">BaseBoxLayer.setDataGap</a> is used to reduce the horizontal gap between the box- whisker symbols, so as to make the mark lines wider than the bars.<br><br>
+<li> The bar layer is created using <a href="XYChart.addBarLayer.htm">XYChart.addBarLayer</a>.<br><br>
+<li> The soft lighting effect of the bars is defined using <a href="perlchartdir.softLighting.htm">perlchartdir::softLighting</a>, then applied to the bars using <a href="Layer.setBorderColor.htm">Layer.setBorderColor</a>.<br><br>
+<li> After the entire chart is configured, the <a href="XYChart.packPlotArea.htm">XYChart.packPlotArea</a> method is used  to adjust the plot area size, so as to fit the plot area and the axes in a given  bounding box.</ul>
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\markbar.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# The data for the bars and the marks
+my $barData = [100, 125, 245, 147, 67, 96, 160, 145, 97, 167, 220, 125];
+my $markData = [85, 156, 220, 120, 80, 110, 140, 130, 111, 180, 175, 100];
+
+# The labels for the bar chart
+my $labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct",
+    "Nov", "Dec"];
+
+# Create a XYChart object of size 480 x 360 pixels. Use a vertical gradient color
+# from pale blue (e8f0f8) to sky blue (aaccff) spanning half the chart height as
+# background. Set border to blue (88aaee). Use rounded corners. Enable soft drop
+# shadow.
+my $c = new XYChart(480, 360);
+$c-&gt;setBackground($c-&gt;linearGradientColor(0, 0, 0, $c-&gt;getHeight() / 2, 0xe8f0f8,
+    0xaaccff), 0x88aaee);
+$c-&gt;setRoundedFrame();
+$c-&gt;setDropShadow();
+
+# Add a title to the chart using 15 points Arial Italic font. Set top/bottom margins
+# to 12 pixels.
+my $title = $c-&gt;addTitle("Bars with Marks Demonstration", "ariali.ttf", 15);
+$title-&gt;setMargin2(0, 0, 12, 12);
+
+# Tentatively set the plotarea to 50 pixels from the left edge to allow for the
+# y-axis, and to just under the title. Set the width to 65 pixels less than the chart
+# width, and the height to reserve 90 pixels at the bottom for the x-axis and the
+# legend box. Use pale blue (e8f0f8) background, transparent border, and grey
+# (888888) dotted horizontal grid lines.
+$c-&gt;setPlotArea(50, $title-&gt;getHeight(), $c-&gt;getWidth() - 65, $c-&gt;getHeight() -
+    $title-&gt;getHeight() - 90, 0xe8f0f8, -1, $perlchartdir::Transparent,
+    $c-&gt;dashLineColor(0x888888, $perlchartdir::DotLine));
+
+# Add a legend box where the bottom-center is anchored to the 15 pixels above the
+# bottom-center of the chart. Use horizontal layout and 8 points Arial font.
+my $legendBox = $c-&gt;addLegend($c-&gt;getWidth() / 2, $c-&gt;getHeight() - 15, 0,
+    "arial.ttf", 8);
+$legendBox-&gt;setAlignment($perlchartdir::BottomCenter);
+
+# Set the legend box background and border to pale blue (e8f0f8) and bluish grey
+# (445566)
+$legendBox-&gt;setBackground(0xe8f0f8, 0x445566);
+
+# Use rounded corners of 5 pixel radius for the legend box
+$legendBox-&gt;setRoundedCorners(5);
+
+# Use line style legend key
+$legendBox-&gt;setLineStyleKey();
+
+# Set axes to transparent
+$c-&gt;xAxis()-&gt;setColors($perlchartdir::Transparent);
+$c-&gt;yAxis()-&gt;setColors($perlchartdir::Transparent);
+
+# Set the labels on the x axis
+$c-&gt;xAxis()-&gt;setLabels($labels);
+
+# Add a box-whisker layer with just the middle mark visible for the marks. Use red
+# (ff0000) color for the mark, with a line width of 2 pixels and 10% horizontal gap
+my $markLayer = $c-&gt;addBoxWhiskerLayer(undef, undef, undef, undef, $markData, -1,
+    0xff0000);
+$markLayer-&gt;setLineWidth(2);
+$markLayer-&gt;setDataGap(0.1);
+
+# Add the legend key for the mark line
+$legendBox-&gt;addKey("Target", 0xff0000, 2);
+
+# Add a blue (0066cc) bar layer using the given data.
+my $barLayer = $c-&gt;addBarLayer($barData, 0x0066cc, "Actual");
+
+# Use soft lighting effect for the bars with light direction from left.
+$barLayer-&gt;setBorderColor($perlchartdir::Transparent, perlchartdir::softLighting(
+    $perlchartdir::Left));
+
+# Adjust the plot area size, such that the bounding box (inclusive of axes) is 10
+# pixels from the left edge, just below the title, 15 pixels from the right edge, and
+# 10 pixels above the legend box.
+$c-&gt;packPlotArea(10, $title-&gt;getHeight(), $c-&gt;getWidth() - 15, $c-&gt;layoutLegend(
+    )-&gt;getTopY() - 10);
+
+# Output the chart
+$c-&gt;makeChart("markbar.png")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\markbar.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The data for the bars and the marks
+my $barData = [100, 125, 245, 147, 67, 96, 160, 145, 97, 167, 220, 125];
+my $markData = [85, 156, 220, 120, 80, 110, 140, 130, 111, 180, 175, 100];
+
+# The labels for the bar chart
+my $labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct",
+    "Nov", "Dec"];
+
+# Create a XYChart object of size 480 x 360 pixels. Use a vertical gradient color
+# from pale blue (e8f0f8) to sky blue (aaccff) spanning half the chart height as
+# background. Set border to blue (88aaee). Use rounded corners. Enable soft drop
+# shadow.
+my $c = new XYChart(480, 360);
+$c-&gt;setBackground($c-&gt;linearGradientColor(0, 0, 0, $c-&gt;getHeight() / 2, 0xe8f0f8,
+    0xaaccff), 0x88aaee);
+$c-&gt;setRoundedFrame();
+$c-&gt;setDropShadow();
+
+# Add a title to the chart using 15 points Arial Italic font. Set top/bottom margins
+# to 12 pixels.
+my $title = $c-&gt;addTitle("Bars with Marks Demonstration", "ariali.ttf", 15);
+$title-&gt;setMargin2(0, 0, 12, 12);
+
+# Tentatively set the plotarea to 50 pixels from the left edge to allow for the
+# y-axis, and to just under the title. Set the width to 65 pixels less than the chart
+# width, and the height to reserve 90 pixels at the bottom for the x-axis and the
+# legend box. Use pale blue (e8f0f8) background, transparent border, and grey
+# (888888) dotted horizontal grid lines.
+$c-&gt;setPlotArea(50, $title-&gt;getHeight(), $c-&gt;getWidth() - 65, $c-&gt;getHeight() -
+    $title-&gt;getHeight() - 90, 0xe8f0f8, -1, $perlchartdir::Transparent,
+    $c-&gt;dashLineColor(0x888888, $perlchartdir::DotLine));
+
+# Add a legend box where the bottom-center is anchored to the 15 pixels above the
+# bottom-center of the chart. Use horizontal layout and 8 points Arial font.
+my $legendBox = $c-&gt;addLegend($c-&gt;getWidth() / 2, $c-&gt;getHeight() - 15, 0,
+    "arial.ttf", 8);
+$legendBox-&gt;setAlignment($perlchartdir::BottomCenter);
+
+# Set the legend box background and border to pale blue (e8f0f8) and bluish grey
+# (445566)
+$legendBox-&gt;setBackground(0xe8f0f8, 0x445566);
+
+# Use rounded corners of 5 pixel radius for the legend box
+$legendBox-&gt;setRoundedCorners(5);
+
+# Use line style legend key
+$legendBox-&gt;setLineStyleKey();
+
+# Set axes to transparent
+$c-&gt;xAxis()-&gt;setColors($perlchartdir::Transparent);
+$c-&gt;yAxis()-&gt;setColors($perlchartdir::Transparent);
+
+# Set the labels on the x axis
+$c-&gt;xAxis()-&gt;setLabels($labels);
+
+# Add a box-whisker layer with just the middle mark visible for the marks. Use red
+# (ff0000) color for the mark, with a line width of 2 pixels and 10% horizontal gap
+my $markLayer = $c-&gt;addBoxWhiskerLayer(undef, undef, undef, undef, $markData, -1,
+    0xff0000);
+$markLayer-&gt;setLineWidth(2);
+$markLayer-&gt;setDataGap(0.1);
+
+# Add the legend key for the mark line
+$legendBox-&gt;addKey("Target", 0xff0000, 2);
+
+# Add a blue (0066cc) bar layer using the given data.
+my $barLayer = $c-&gt;addBarLayer($barData, 0x0066cc, "Actual");
+
+# Use soft lighting effect for the bars with light direction from left.
+$barLayer-&gt;setBorderColor($perlchartdir::Transparent, perlchartdir::softLighting(
+    $perlchartdir::Left));
+
+# Adjust the plot area size, such that the bounding box (inclusive of axes) is 10
+# pixels from the left edge, just below the title, 15 pixels from the right edge, and
+# 10 pixels above the legend box.
+$c-&gt;packPlotArea(10, $title-&gt;getHeight(), $c-&gt;getWidth() - 15, $c-&gt;layoutLegend(
+    )-&gt;getTopY() - 10);
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

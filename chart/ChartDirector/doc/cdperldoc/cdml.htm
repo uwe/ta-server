@@ -1,0 +1,92 @@
+<HTML>
+<HEAD>
+<Title>ChartDirector Mark Up Language</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">ChartDirector Mark Up Language</p>
+<hr class="separator">
+<div class="content"> 
+ChartDirector Mark Up Language (CDML) is a language for including formatting information in text strings by marking up the text with tags.<br><br>
+CDML allows a single text string to be rendered using multiple fonts, with different colors, and even embed images in the text.
+</div><p class="heading1a">Font Styles</p><div class="content">
+You can change the style of the text by using CDML tags. For example, the line:<br><br>
+<div style="margin-left:25;font-family:courier new,courier">
+<pre>&lt;*font=timesi.ttf,size=16,color=FF0000*&gt;Hello &lt;*font=arial.ttf,size=12,color=008000*&gt;world!</pre> </div><br>
+will result in the following text rendered:<br><br>
+<div style="margin-left:25;font-family:courier new,courier"> <img src="images/helloworld.png"> </div><br>
+In general, all tags in CDML are enclosed by <b>&lt;*</b> and <b>*&gt;</b>. Attributes within the tags determine the styles of the text following the tags within the same block.<br><br>
+If you want to include <b>&lt;*</b> in text without being interpreted as CDML tags, use <b>&lt;&lt;*</b> as the escape sequence.<br><br>
+The following table describes the supported font style attributes in CDML. See <a href="fontspec.htm">Font Specification</a> for details on various font attributes.<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="19%">Attribute<th width="79%">Description
+<tr><td>font<td>Starts a new style section, and sets the font name. You may use this attribute without a value (that is, use "font" instead of "font=arial.ttf") to create a new style section without modifying the font name.
+<tr><td>size<td>The font size.
+<tr><td>width<td>The font width. This attribute is used to set the font width and height to different values. If the width and height are the same, use the <i>size</i> attribute.
+<tr><td>height<td>The font height. This attribute is used to set the font width and height to different values. If the width and height are the same, use the <i>size</i> attribute.
+<tr><td>color<td>The text color in hex format.
+<tr><td>bgColor<td>The background color of the text in hex format.
+<tr><td>underline<td>The line width of the line used to underline the following characters. Set to 0 to disable underline.
+<tr><td>sub<td>Set the following text to be in subscript style. This attribute does not need to have a value. (You may use "sub" as the attribute instead of "sub=1".)
+<tr><td>super<td>Set the following text to be in superscript style.<br><br>
+Set the following text to be in superscript style. This attribute does not need to have a value. (You may use "super" as the attribute instead of "super=1".)
+<tr><td>xoffset<td>Draw the following the text by shifting the text horizontally from the original position by the specified offset in pixels.
+<tr><td>yoffset<td>Draw the following the text by shifting the text vertically from the original position by the specified offset in pixels.
+<tr><td>advance<td>Move the cursor forward (to the right) by the number of pixels as specified by the value this attribute.
+<tr><td>advanceTo<td>Move the cursor forward (to the right) to the position as specified by the value this attribute. The position is specified as the number of pixels to the right of the left border of the block. If the cursor has already passed through the specified position, the cursor is not moved.
+</table><br>
+Note that unlike HTML tags, no double or single quotes are used in the tags. It is because CDML tags are often embedded as string literals in source code. The double or single quotes, if used, will conflict with the string literal quotes in the source code. Therefore in CDML, no quotes are necessary and they must not be used.<br><br>
+Also, unlike HTML tags, CDML uses the comma character as the delimiter between attributes. It is because certain attributes may contain embed spaces (such as the font file name). So space is not used as the delimiter and the comma character is used instead.<br><br>
+Note the <b>font</b> attribute above starts a new style section, while other attributes just modify the current style section. You may use <b>&lt;*/font*&gt;</b> to terminate a style section, which will restore the font styles to the state before the style section.
+</div><p class="heading1a">Blocks and Lines</p><div class="content">
+In CDML, a text string may contain multiple <i>blocks</i>. A block may contain multiple lines of text by separating them with new line characters ("\n") or with <b>&lt;*br*&gt;</b>. The latter is useful for programming languages that cannot represent new line characters easily.<br><br>
+For example, the line:<br><br>
+<div style="margin-left:25;font-family:courier new,courier">
+<pre>&lt;*size=15*&gt;&lt;*block*&gt;&lt;*color=FF*&gt;BLOCK&lt;*br*&gt;ONE&lt;*/*&gt; and &lt;*block*&gt;&lt;*color=FF00*&gt;BLOCK&lt;*br*&gt;TWO&lt;*/*&gt;</pre> </div><br>
+will result in the following text rendered:<br><br>
+<div style="margin-left:25;font-family:courier new,courier"> <img src="images/blocks.png"> </div><br>
+The above example contains a line of text. The line contains two blocks with the characters <i>" and "</i> in between. Each block in turn contains two lines. The blocks are defined using <b>&lt;*block*&gt;</b> as the start tag and <b>&lt;*/*&gt;</b> as the end tag.<br><br>
+When a block ends, font styles will be restored to the state before entering the block.
+</div><p class="heading1a">Embedding Images</p><div class="content">
+CDML supports embedding images in text using the following syntax:<br><br>
+<div style="margin-left:25;font-family:courier new,courier">
+<pre>&lt;*img=my_image_file.png*&gt;</pre> </div><br>
+where <code>my_image_file.png</code> is the path name of the image file.<br><br>
+For example, the line:<br><br>
+<div style="margin-left:25;font-family:courier new,courier">
+<pre>&lt;*size=20*&gt;A &lt;*img=sun.png*&gt; day</pre> </div><br>
+will result in the following text rendered:<br><br>
+<div style="margin-left:25;font-family:courier new,courier"> <img src="images/suntext.png"> </div><br>
+ChartDirector will automatically detect the image file format using the file extension, which must either png, jpg, jpeg, gif, wbmp or wmp (case insensitive).<br><br>
+Please refer to <a href="BaseChart.setSearchPath.htm">BaseChart.setSearchPath</a> or <a href="DrawArea.setSearchPath.htm">DrawArea.setSearchPath</a> on the directory that ChartDirector will search for the file.<br><br>
+The &lt;*img*&gt; tag may optionally contain width and height attributes to specify its pixel width and height. In this case, ChartDirector will stretch or compress the image if necessary to the required width and height.
+</div><p class="heading1a">Blocks Attributes</p><div class="content">
+CDML supports nesting blocks, that is, a block can contain other sub-blocks. Attributes are supported in the <b>&lt;*block*&gt;</b> tag to control the alignment and orientation of the sub-blocks. The &lt;*img=my_image_file.png*&gt; is treated as a block for layout purposes.<br><br>
+For example, the line:<br><br>
+<div style="margin-left:25;font-family:courier new,courier">
+<pre>&lt;*block,valign=absmiddle*&gt;&lt;*img=molecule.png*&gt; &lt;*block*&gt;Hydrazino\nMolecule&lt;*/*&gt;&lt;*/*&gt;</pre> </div><br>
+will result in the following text rendered:<br><br>
+<div style="margin-left:25;font-family:courier new,courier"> <img src="images/hydrazino.png"> </div><br>
+The the above starts <b>&lt;*block,valign=absmiddle*&gt;</b> which specifies its content should align with each others in the vertical direction using the <i>absolute middle</i> alignment. The block contains an image, followed by a space characters, and then another block which has two lines of text.<br><br>
+The following table describes the supported attributes inside <b>&lt;*block*&gt;</b> tag:<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="19%">Attribute<th width="79%">Description
+<tr><td>width<td>The width of the block in pixels. By default, the width is automatically determined to be the width necessary for the contents of the block. If the width attribute is specified, it will be used as the width of the block. If the width is insufficient for the contents, the contents will be wrapped into multiple lines.
+<tr><td>height<td>The height of the block in pixels. By default, the height is automatically determined to be the height necessary for the contents of the block. If the height attribute is specified, it will be used as the height of the block.
+<tr><td>maxwidth<td>The maximum width of the block in pixels. If the content is wider than maximum width, it will be wrapped into multiple lines.
+<tr><td>truncate<td>The maximum number of lines of the block. If the content requires more than the maximum number of lines, it will be truncated. In particular, if truncate is 1, the content will be truncated if it exceeds the maximum width (as specified by maxwidth or width) without wrapping. The last few characters at the truncation point will be replaced with "...".
+<tr><td>linespacing<td>The spacing between lines as a ratio to the default line spacing. For example, a line spacing of 2 means the line spacing is two times the default line spacing. The default line spacing is the line spacing as specified in the font used.
+<tr><td>bgColor<td>The background color of the block in hex format.
+<tr><td>valign<td>The vertical alignment of sub-blocks. This is for blocks that contain sub-blocks. Supported values are <b>baseline</b>, <b>top</b>, <b>bottom</b>, <b>middle</b> and <b>absmiddle</b>.<br><br>
+The value <b>baseline</b> means the baseline of sub-blocks should align with the baseline of the block. The baseline is the underline position of text. This is normal method of aligning text, and is the default in CDML. For images or blocks that are rotated, the baseline is the same as the bottom.<br><br>
+The value <b>top</b> means the top line of sub-blocks should align with the top line of the block.<br><br>
+The value <b>bottom</b> means the bottom line of sub-blocks should align with the bottom line of the block.<br><br>
+The value <b>middle</b> means the middle line of sub-blocks should align with the the middle line of the block. The middle line is the middle position between the top line and the baseline.<br><br>
+The value <b>absmiddle</b> means the absolute middle line of sub-blocks should align with the absolute middle line of the block. The absolute middle line is the middle position between the top line and the bottom line.
+<tr><td>halign<td>The horizontal alignment of lines. This is for blocks that contain multiple lines. Supported values are <b>left</b>, <b>center</b> and <b>right</b>.<br><br>
+The value <b>left</b> means the left border of each line should align with the left border of the block. This is the default.<br><br>
+The value <b>center</b> means the horizontal center of each line should align with the horizontal center of the block.<br><br>
+The value <b>right</b> means the right border of each line should align with the right border of the block.
+<tr><td>angle<td>Rotate the content of the block by an angle. The angle is specified in degrees in counter-clockwise direction.
+</table></div><br>
+<hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div></body>
+</HTML>

@@ -1,0 +1,40 @@
+<HTML>
+<HEAD>
+<Title>Layer.xZoneColor</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="Layer.htm">Layer</a>.xZoneColor</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+xZoneColor(threshold, belowColor, aboveColor)
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Creates an x-zone color. An x-zone will change from one color to another depending on a threshold value on the x-axis.<br><br>
+For example, if an x-zone color is used as the line color in a line layer, the line will switch from one color to another when its passes through a certain value on the x-axis. Similarly, if an x-zone color is used as the fill color in an area layer, the area will switch from one color to another when it passes through a certain value on the x-axis.<br><br>
+The two colors used in an x-zone color can be other dynamic colors. For example, one color can be a solid color, while the other color can be a dash line color (see !BaseChart.dashLineColor). When this x-zone color is as the line color, the line will change from a solid style to a dash line style when the line passes through a certain value on the x-axis<br><br>
+You may create x-zone colors with more than 2 zones by cascading multiple x-zone colors.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>threshold</td><td>(Mandatory)</td><td>The x value serving as the threshold for switching between two colors.</td></tr><tr><td>belowColor</td><td>(Mandatory)</td><td>The color to use when the x-axis value of the pixel is smaller than the threshold.</td></tr><tr><td>aboveColor</td><td>(Mandatory)</td><td>The color to use when the x-axis value of the pixel is greater than the threshold.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+A 32-bit integer representing the x-zone color.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

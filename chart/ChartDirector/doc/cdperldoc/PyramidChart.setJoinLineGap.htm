@@ -1,0 +1,40 @@
+<HTML>
+<HEAD>
+<Title>PyramidChart.setJoinLineGap</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="PyramidChart.htm">PyramidChart</a>.setJoinLineGap</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setJoinLineGap(pyramidGap [, pyramidMargin [, textGap ]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the gaps of the join lines that join the pyramid layers with the left and right labels.<br><br>
+This method affects all pyramid layers. To apply this method to one particular pyramid layer only, use <a href="PyramidLayer.setJoinLineGap.htm">PyramidLayer.setJoinLineGap</a>.<br><br>
+By default, the starting point of the join line connects to the pyramid layer edge with a 3 pixels gap. The join line is horizontal, and its length is such that the ending point is 10 pixels outside the pyramid bounding box. The label text box connects to the ending point with a 3 pixels gap.<br><br>
+This method allows the gaps and positions of the join line end points to be configured to other values.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>pyramidGap</td><td>(Mandatory)</td><td>The gap in pixels between the starting point of the join line and the pyramid layer edge.</td></tr><tr><td>pyramidMargin</td><td>10</td><td>The distance in pixels between the ending point of the join line and the pyramid bounding box.</td></tr><tr><td>textGap</td><td>3</td><td>The gap in pixels between the label text box and the ending point of the join line.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

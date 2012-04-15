@@ -1,0 +1,39 @@
+<HTML>
+<HEAD>
+<Title>Axis.setMargin</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="Axis.htm">Axis</a>.setMargin</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setMargin(topMargin [, bottomMargin ])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Reserve margins at the ends of the axis.<br><br>
+This method is usually used to reserve space in the plot area. For example, if some margin is reserved at the top of the vertical y-axis, the top of the plot area will contain no data points. It is because this region would be outside the active range of the y-axis. If anything is put at the top of the plot area (such as a legend box or custom text), it will not overlap with the data points.<br><br>
+Note if auto-scaling is used, there is an alternative way to reserve space at the top and/or bottom of the plot area - the <a href="Axis.setAutoScale.htm">Axis.setAutoScale</a> method.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>topMargin</td><td>(Mandatory)</td><td>The margin reserved at the top end (or right end for horizontal axis) of the axis in pixels.</td></tr><tr><td>bottomMargin</td><td>0</td><td>The margin reserved at the bottom end (or left end for horizontal axis) of the axis in pixels.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

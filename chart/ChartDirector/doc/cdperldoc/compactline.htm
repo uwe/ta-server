@@ -1,0 +1,164 @@
+<HTML>
+<HEAD>
+<Title>Compact Line Chart</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Compact Line Chart</p>
+<hr class="separator">
+<div class="content">
+<img src="images/compactline.png">
+<br><br>
+This example extends the <a href="simpleline.htm">Simple Line Chart</a> example by decorating the chart using a number of chart formatting features.<br><br>
+In this example, random data is used. They are generated using a ChartDirector utility class <a href="RanTable.htm">RanTable</a>. RanTable simulates a database table with the cells filled with random numbers. The columns of the table can be retrieved as arrays using <a href="RanTable.getCol.htm">RanTable.getCol</a>.<br><br>
+<ul><li> Create an XYChart object with background color using <a href="XYChart.XYChart.htm">XYChart.XYChart</a>.<br><br>
+<li> Add title boxes on top and bottom using <a href="BaseChart.addTitle.htm">BaseChart.addTitle</a> and <a href="BaseChart.addTitle2.htm">BaseChart.addTitle2</a>.<br><br>
+<li> Set the background color of the plot area using <a href="PlotArea.setBackground.htm">PlotArea.setBackground</a>.<br><br>
+<li> Add custom text at the top right corner of the plot area using <a href="BaseChart.addText.htm">BaseChart.addText</a>.<br><br>
+<li> Distribute the text labels on the x-axis evenly using <a href="Axis.setLinearScale.htm">Axis.setLinearScale</a><br><br>
+<li> Set the label fonts on the axes using <a href="Axis.setLabelStyle.htm">Axis.setLabelStyle</a>.</ul>
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\compactline.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+#
+#    We use a random number generator to simulate the data from 9:30am to 4:30pm with
+#    one data point every 4 minutes. The total number of points during that period is
+#    106.  (7 hours x 15 points/hour + 1)
+#
+my $noOfPoints = 106;
+
+# Assume we have not reached the end of the day yet, and only 85 points are
+# available. Create a random table object of 1 col x 85 rows, using 9 as seed.
+my $rantable = new RanTable(9, 1, 85);
+
+# Set the 1st column to start with 1800 and with random delta from -5 to 5.
+$rantable-&gt;setCol(0, 1800, -5, 5);
+
+# Get the data as the 1st column of the random table
+my $data = $rantable-&gt;getCol(0);
+
+# The x-axis labels for the chart
+my $labels = ["-", "10am", "-", " ", "-", "12am", "-", " ", "-", "2pm", "-", " ",
+    "-", "4pm", "-"];
+
+#
+#    Now we obtain the data into arrays, we can start to draw the chart using
+#    ChartDirector
+#
+
+# Create a XYChart object of size 180 x 180 pixels with a blue background (0x9c9cce)
+my $c = new XYChart(180, 180, 0x9c9cce);
+
+# Add titles to the top and bottom of the chart using 7.5pt Arial font. The text is
+# white 0xffffff on a deep blue 0x31319C background.
+$c-&gt;addTitle2($perlchartdir::Top, "STAR TECH INDEX  2003-01-28", "arial.ttf", 7.5,
+    0xffffff, 0x31319c);
+$c-&gt;addTitle2($perlchartdir::Bottom, "LATEST  STI:1809.41 (+14.51)", "arial.ttf",
+    7.5, 0xffffff, 0x31319c);
+
+# Set the plotarea at (31, 21) and of size 145 x 124 pixels, with a pale yellow
+# (0xffffc8) background.
+$c-&gt;setPlotArea(31, 21, 145, 124, 0xffffc8);
+
+# Add custom text at (176, 21) (top right corner of plotarea) using 11pt Times Bold
+# Italic font/red (0xc09090) color
+$c-&gt;addText(176, 21, "Chart Demo", "timesbi.ttf", 11, 0xc09090)-&gt;setAlignment(
+    $perlchartdir::TopRight);
+
+# Use 7.5 pts Arial as the y axis label font
+$c-&gt;yAxis()-&gt;setLabelStyle("", 7.5);
+
+# Set the labels on the x axis by spreading the labels evenly between the first point
+# (index = 0) and the last point (index = noOfPoints - 1)
+$c-&gt;xAxis()-&gt;setLinearScale(0, $noOfPoints - 1, $labels);
+
+# Use 7.5 pts Arial as the x axis label font
+$c-&gt;xAxis()-&gt;setLabelStyle("", 7.5);
+
+# Add a deep blue (0x000080) line layer to the chart
+$c-&gt;addLineLayer($data, 0x000080);
+
+# Output the chart
+$c-&gt;makeChart("compactline.png")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\compactline.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+#
+#    We use a random number generator to simulate the data from 9:30am to 4:30pm with
+#    one data point every 4 minutes. The total number of points during that period is
+#    106.  (7 hours x 15 points/hour + 1)
+#
+my $noOfPoints = 106;
+
+# Assume we have not reached the end of the day yet, and only 85 points are
+# available. Create a random table object of 1 col x 85 rows, using 9 as seed.
+my $rantable = new RanTable(9, 1, 85);
+
+# Set the 1st column to start with 1800 and with random delta from -5 to 5.
+$rantable-&gt;setCol(0, 1800, -5, 5);
+
+# Get the data as the 1st column of the random table
+my $data = $rantable-&gt;getCol(0);
+
+# The x-axis labels for the chart
+my $labels = ["-", "10am", "-", " ", "-", "12am", "-", " ", "-", "2pm", "-", " ",
+    "-", "4pm", "-"];
+
+#
+#    Now we obtain the data into arrays, we can start to draw the chart using
+#    ChartDirector
+#
+
+# Create a XYChart object of size 180 x 180 pixels with a blue background (0x9c9cce)
+my $c = new XYChart(180, 180, 0x9c9cce);
+
+# Add titles to the top and bottom of the chart using 7.5pt Arial font. The text is
+# white 0xffffff on a deep blue 0x31319C background.
+$c-&gt;addTitle2($perlchartdir::Top, "STAR TECH INDEX  2003-01-28", "arial.ttf", 7.5,
+    0xffffff, 0x31319c);
+$c-&gt;addTitle2($perlchartdir::Bottom, "LATEST  STI:1809.41 (+14.51)", "arial.ttf",
+    7.5, 0xffffff, 0x31319c);
+
+# Set the plotarea at (31, 21) and of size 145 x 124 pixels, with a pale yellow
+# (0xffffc8) background.
+$c-&gt;setPlotArea(31, 21, 145, 124, 0xffffc8);
+
+# Add custom text at (176, 21) (top right corner of plotarea) using 11pt Times Bold
+# Italic font/red (0xc09090) color
+$c-&gt;addText(176, 21, "Chart Demo", "timesbi.ttf", 11, 0xc09090)-&gt;setAlignment(
+    $perlchartdir::TopRight);
+
+# Use 7.5 pts Arial as the y axis label font
+$c-&gt;yAxis()-&gt;setLabelStyle("", 7.5);
+
+# Set the labels on the x axis by spreading the labels evenly between the first point
+# (index = 0) and the last point (index = noOfPoints - 1)
+$c-&gt;xAxis()-&gt;setLinearScale(0, $noOfPoints - 1, $labels);
+
+# Use 7.5 pts Arial as the x axis label font
+$c-&gt;xAxis()-&gt;setLabelStyle("", 7.5);
+
+# Add a deep blue (0x000080) line layer to the chart
+$c-&gt;addLineLayer($data, 0x000080);
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

@@ -1,0 +1,172 @@
+<HTML>
+<HEAD>
+<Title>3D Donut Chart</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">3D Donut Chart</p>
+<hr class="separator">
+<div class="content">
+<img src="images/threeddonut.png">
+<br><br>
+This example demonstrates a 3D donut chart with sector gradient shading. It also demonstrates gradient color background, rounded frame, custom sector colors, and using <a href="cdml.htm">CDML</a> and <a href="paramsub.htm">Parameter Substitution and Formatting</a> to format sector labels<br><br>
+<ul><li> The gradient background is achieved by using <a href="BaseChart.linearGradientColor.htm">BaseChart.linearGradientColor</a> to define the gradient color, then use <a href="BaseChart.setBackground.htm">BaseChart.setBackground</a> to set it as the chart background color.<br><br>
+<li> The rounded frame is configured using <a href="BaseChart.setRoundedFrame.htm">BaseChart.setRoundedFrame</a>.<br><br>
+<li> The sector colors are set using <a href="BaseChart.setColors.htm">BaseChart.setColors</a>. The sector gradient shading and thick sector border is configured using <a href="PieChart.setSectorStyle.htm">PieChart.setSectorStyle</a>.<br><br>
+<li> The sector label style are configured using <a href="PieChart.setLabelStyle.htm">PieChart.setLabelStyle</a>. It returns a <a href="TextBox.htm">TextBox</a> object representing the sector label prototype. The gradient background color and rounded corners of the sector labels are configured using the <a href="Box.setBackground.htm">Box.setBackground</a> and <a href="Box.setRoundedCorners.htm">Box.setRoundedCorners</a> methods of the label prototype.<br><br>
+<li> The sector label contents are configured using <a href="PieChart.setLabelFormat.htm">PieChart.setLabelFormat</a>. The template is specified using <a href="cdml.htm">CDML</a> and <a href="paramsub.htm">Parameter Substitution and Formatting</a>. It consists of two lines using different fonts. This first line shows the sector label, while the second line shows the sector value and percentage.</ul>
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\threeddonut.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# The data for the pie chart
+my $data = [20, 10, 15, 12];
+
+# The labels for the pie chart
+my $labels = ["Labor", "Licenses", "Facilities", "Production"];
+
+# The colors to use for the sectors
+my $colors = [0x66aaee, 0xeebb22, 0xcccccc, 0xcc88ff];
+
+# Create a PieChart object of size 600 x 320 pixels. Use a vertical gradient color
+# from deep blue (000066) to blue (0000cc) as background. Use rounded corners of 20
+# pixels radius.
+my $c = new PieChart(600, 320);
+$c-&gt;setBackground($c-&gt;linearGradientColor(0, 0, 0, $c-&gt;getHeight(), 0x000066,
+    0x0000cc));
+$c-&gt;setRoundedFrame(0xffffff, 20);
+
+# Add a title using 18 pts Times New Roman Bold Italic font in white (ffffff) color.
+# Set top/bottom margins to 8 pixels.
+my $title = $c-&gt;addTitle("Donut Chart Demonstration", "timesbi.ttf", 18, 0xffffff);
+$title-&gt;setMargin2(0, 0, 8, 8);
+
+# Add a separator line in white color just under the title
+$c-&gt;addLine(10, $title-&gt;getHeight(), $c-&gt;getWidth() - 11, $title-&gt;getHeight(),
+    0xffffff);
+
+# Set donut center at (300, 170), and outer/inner radii as 120/60 pixels
+$c-&gt;setDonutSize(300, 170, 120, 60);
+
+# Draw the pie in 3D with a pie thickness of 25 pixels
+$c-&gt;set3D(25);
+
+# Set the pie data and the pie labels
+$c-&gt;setData($data, $labels);
+
+# Set the sector colors
+$c-&gt;setColors2($perlchartdir::DataColor, $colors);
+
+# Use local gradient shading for the sectors
+$c-&gt;setSectorStyle($perlchartdir::LocalGradientShading);
+
+# Set sector border color to same as fill color. Set label join line color to white
+# (ffffff)
+$c-&gt;setLineColor($perlchartdir::SameAsMainColor, 0xffffff);
+
+# Use the side label layout method, with the labels positioned 16 pixels from the
+# donut bounding box
+$c-&gt;setLabelLayout($perlchartdir::SideLayout, 16);
+
+# Set the sector label format. The label consists of two lines. The first line is the
+# sector name in Times Bold Italic font and is underlined. The second line shows the
+# data value and percentage.
+$c-&gt;setLabelFormat(
+    "&lt;*block,halign=left*&gt;&lt;*font=timesbi.ttf,size=12,underline=1*&gt;{label}&lt;*/font*&gt;".
+    "&lt;*br*&gt;US\$ {value}K ({percent}%)");
+
+# Set the label box background color the same as the sector color. Use soft lighting
+# effect with light direction from right. Use rounded corners.
+my $t = $c-&gt;setLabelStyle();
+$t-&gt;setBackground($perlchartdir::SameAsMainColor, $perlchartdir::Transparent,
+    perlchartdir::softLighting($perlchartdir::Right));
+$t-&gt;setRoundedCorners();
+
+# Output the chart
+$c-&gt;makeChart("threeddonut.png")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\threeddonut.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The data for the pie chart
+my $data = [20, 10, 15, 12];
+
+# The labels for the pie chart
+my $labels = ["Labor", "Licenses", "Facilities", "Production"];
+
+# The colors to use for the sectors
+my $colors = [0x66aaee, 0xeebb22, 0xcccccc, 0xcc88ff];
+
+# Create a PieChart object of size 600 x 320 pixels. Use a vertical gradient color
+# from deep blue (000066) to blue (0000cc) as background. Use rounded corners of 20
+# pixels radius.
+my $c = new PieChart(600, 320);
+$c-&gt;setBackground($c-&gt;linearGradientColor(0, 0, 0, $c-&gt;getHeight(), 0x000066,
+    0x0000cc));
+$c-&gt;setRoundedFrame(0xffffff, 20);
+
+# Add a title using 18 pts Times New Roman Bold Italic font in white (ffffff) color.
+# Set top/bottom margins to 8 pixels.
+my $title = $c-&gt;addTitle("Donut Chart Demonstration", "timesbi.ttf", 18, 0xffffff);
+$title-&gt;setMargin2(0, 0, 8, 8);
+
+# Add a separator line in white color just under the title
+$c-&gt;addLine(10, $title-&gt;getHeight(), $c-&gt;getWidth() - 11, $title-&gt;getHeight(),
+    0xffffff);
+
+# Set donut center at (300, 170), and outer/inner radii as 120/60 pixels
+$c-&gt;setDonutSize(300, 170, 120, 60);
+
+# Draw the pie in 3D with a pie thickness of 25 pixels
+$c-&gt;set3D(25);
+
+# Set the pie data and the pie labels
+$c-&gt;setData($data, $labels);
+
+# Set the sector colors
+$c-&gt;setColors2($perlchartdir::DataColor, $colors);
+
+# Use local gradient shading for the sectors
+$c-&gt;setSectorStyle($perlchartdir::LocalGradientShading);
+
+# Set sector border color to same as fill color. Set label join line color to white
+# (ffffff)
+$c-&gt;setLineColor($perlchartdir::SameAsMainColor, 0xffffff);
+
+# Use the side label layout method, with the labels positioned 16 pixels from the
+# donut bounding box
+$c-&gt;setLabelLayout($perlchartdir::SideLayout, 16);
+
+# Set the sector label format. The label consists of two lines. The first line is the
+# sector name in Times Bold Italic font and is underlined. The second line shows the
+# data value and percentage.
+$c-&gt;setLabelFormat(
+    "&lt;*block,halign=left*&gt;&lt;*font=timesbi.ttf,size=12,underline=1*&gt;{label}&lt;*/font*&gt;".
+    "&lt;*br*&gt;US\$ {value}K ({percent}%)");
+
+# Set the label box background color the same as the sector color. Use soft lighting
+# effect with light direction from right. Use rounded corners.
+my $t = $c-&gt;setLabelStyle();
+$t-&gt;setBackground($perlchartdir::SameAsMainColor, $perlchartdir::Transparent,
+    perlchartdir::softLighting($perlchartdir::Right));
+$t-&gt;setRoundedCorners();
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

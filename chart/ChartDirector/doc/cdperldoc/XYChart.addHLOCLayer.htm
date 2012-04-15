@@ -1,0 +1,40 @@
+<HTML>
+<HEAD>
+<Title>XYChart.addHLOCLayer</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="XYChart.htm">XYChart</a>.addHLOCLayer</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+addHLOCLayer(highData, lowData [, openData [, closeData [, color ]]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Adds a high-low-open-close (HLOC) layer to the XYChart, and specify the data sets to use for drawing the layer.<br><br>
+In this method, all HLOC symbols will be drawn using the color specified in the <b>color</b> argument. Use <a href="XYChart.addHLOCLayer3.htm">XYChart.addHLOCLayer3</a> for multi-color HLOC layers.<br><br>
+Internally, ChartDirector maps the colors of different parts of the HLOC symbol to data set colors as shown in the following table. You may control the colors of the HLOC symbol in more details by setting the data set colors directly. The data set objects can be obtained using <a href="Layer.getDataSet.htm">Layer.getDataSet</a>, and the colors can be changed using <a href="DataSet.setDataColor.htm">DataSet.setDataColor</a>.<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="38%">HLOC Symbol Color<th width="60%">Data Set Color <tr><td>Central Line<td>Data Color for the first data set (index = 0) <tr><td>Open Mark Line<td>Data Color for the third data set (index = 2) <tr><td>Close Mark Line<td>Data Color for the fourth data set (index = 3) </table>
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>highData</td><td>(Mandatory)</td><td>An array of numbers representing the high values. An empty array means there is no high value data available.</td></tr><tr><td>lowData</td><td>(Mandatory)</td><td>An array of numbers representing the low values. An empty array means there is no low value data available.</td></tr><tr><td>openData</td><td>[Empty_Array]</td><td>An array of numbers representing the opening values. An empty array means there is no opening value data available.</td></tr><tr><td>closeData</td><td>[Empty_Array]</td><td>An array of numbers representing the closing values. An empty array means there is no closing value data available.</td></tr><tr><td>color</td><td>-1</td><td>The color to draw the HLOC symbol. -1 means that the color is automatically selected from the palette.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+A <a href="HLOCLayer.htm">HLOCLayer</a> object representing the HLOC layer created.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

@@ -1,0 +1,815 @@
+<HTML>
+<HEAD>
+<Title>Zooming and Scrolling Demonstration</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Zooming and Scrolling Demonstration</p>
+<hr class="separator">
+<div class="content"><img src="images/zoomscroll_web.png"><br><br>
+This sample program demonstrates a zoomable and scrollable chart for time based data series. The followings are the key elements of this sample program:<br><br>
+<ul>
+<li>The date/time range of the chart can be controlled by mouse actions, such as drag to scroll, drag to zoom, click to zoom, as well as by selecting the start and end dates directly using drop down list boxes.<br><br>
+<li>Charts are updated using partial chart update (AJAX requests) by default. If the browser does not support AJAX, it will fall back to full page update. The full page update works even if the browser does not support Javascript, in which case the user can use the drop down list boxes to control the date range.<br><br>
+<li>Zoom and scroll directions can be horizontal only (with vertical axis auto-scaled) or both horizontal and vertical.<br><br>
+<li>Data points are with tool tips.<br><br>
+<li>The time range of the axes can be from 5 years down to 10 days. The date/time format is configured differently depending on the time range.<br><br>
+<li>Data are aggregated to avoid overlapping data points for long duration charts. This makes the chart sharp and clear at any zoom ratio.<br><br>
+</ul>
+The source code listing of this sample program is included at the end of this section. The code consists of the following main parts:<br><br>
+<ul>
+<li>createFirstChart: This function is for handing the initial chart request. It initializes the total date/time range and the visible range, the initial view port positions as well as other chart parameters. It then calls drawChart to draw the chart.<br><br>
+<li>processPartialUpdate: This function is for handling partial chart updates (AJAX chart updates). If the request is caused by mouse zoom/scroll actions, it computes the start and end dates based on the view port. On the other hand, if the request is caused by the user selecting the start and end dates directly from the drop down list boxes, the selected start and end dates will be used. It then calls drawChart to draw the chart, and updates the custom attributes representing the drop down list boxes to reflect the actual start and end dates used chosen.<br><br>
+<li>processFullUpdate: This is the function for handling full page updates. It simply copies the HTTP POST or GET fields representing the drop down list boxes to the custom attributes to emulate a partial chart update, and then calls processPartialUpdate to perform the chart update.<br><br>
+<li>drawChart: This is the main charting code. It draws the chart according to the selected date range.<br><br>
+<li>HTML: The HTML part of the code represents the web page. Helper functions are used to generate the &lt;OPTION&gt; tags of the drop down list boxes. <a href="WebChartViewer.renderHTML.htm">WebChartViewer.renderHTML</a> are for generating the tags for the chart image. Some Javascript code are used to implement the push buttons used in this example.<br><br>
+<li>initJsChartViewer: This Javascript function performs browser side initialization. It is invoked by the onload event handler of the &lt;BODY&gt; tag. It connects the browser side JsChartViewer with buttons for setting the mouse usage modes and for setting the zoom and scroll directions. It detects if the browser supports partial chart updates and sets up the ViewPortChanged event handler accordingly. It also sets up PreUpdate and PostUpdate event handlers to transfer the drop down list box states to and from the custom attributes, so that these list boxes can be accessible and updatable from the server side during partial chart updates.<br><br>
+</ul>
+</div><p class="heading1a">Files in this Demonstration</p><div class="content">
+This sample script requires the following files. When developing your own script using this sample script as a template, please ensure you copy the necessary files to the proper directories and reference them using proper paths.<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="24%">File<th width="74%">Description
+<tr><td>zoomscrolldemo.pl<td>Main source code for this demo.
+<tr><td>pointer.gif<br>zoomInIcon.gif<br>zoomOutIcon.gif<br>xrange.gif<br>xyrange.gif<td>The images used in the push buttons in this demo.
+<tr><td>getchart.pl<td>The standard utility script used in the image url for retrieving the chart image from a temporary file (see <a href="BaseChart.makeTmpFile.htm">BaseChart.makeTmpFile</a>).
+<tr><td>cdjcv.js<br>zoomin.cur<br>zoomout.cur<br>nozoom.cur<br>wait.gif<td>The script file for <a href="JsChartViewer.htm">JsChartViewer</a>, and the supporting cursor and image files. These files must be in the same directory.
+<tr><td>loadresource.pl<td>A utility script for loading non-CGI files from the CGI directory.<br><br>
+For convenience of distribution, in this demonstration, all files, including Javascript, GIF and CUR files, are put in the same directory as the CGI script, and "loadresource.pl" is used to load them. This is less efficient. In your own script, it is recommended that you put the Javascript, GIF and CUR files in a web document directory, so that "loadresource.pl" is not needed.
+</table><br>
+</div><p class="heading1a">Source Code Listing</p><div class="content">
+<b>[CGI Version]</b> perldemo_cgi\zoomscrolldemo.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# Get HTTP query parameters
+use CGI;
+my $query = new CGI;
+
+#
+# In this demo, the generated web page needs to load the "cdjcv.js" Javascript file and several GIF
+# files. For ease of installation, we put these files in the same directory as this script. However,
+# if this script is installed in a CGI only directory (such as cgi-bin), the web server would not
+# allow the browser to access these non-CGI files.
+#
+# To get around this potential issue, a special load resource script is used to load these files.
+# Instead of using:
+#
+#    &lt;SCRIPT SRC="cdjcv.js"&gt;
+#
+# we now use:
+#
+#    &lt;SCRIPT SRC="loadresource.pl?file=cdjcv.js"&gt;
+#
+# Similar methods are used to load the GIF files.
+#
+# If this script is not in a CGI only directory, you may replace the following loadResource string
+# with an empty string "" to improve performance.
+#
+my $loadResource = "loadresource.pl?file=";
+
+#
+# We need to handle 3 types of request: - initial request for the full web page - partial update
+# (AJAX chart update) to update the chart without reloading the page - full page update for old
+# browsers that does not support partial updates
+#
+
+# The total date range of all data.
+my $startDate = undef;
+my $endDate = undef;
+
+# The date range of the data that we zoomed into (visible on the chart).
+my $viewPortStartDate = undef;
+my $viewPortEndDate = undef;
+
+#
+# Handles the initial request
+#
+sub createFirstChart
+{
+    my ($viewer) = @_;
+    # Initialize the Javascript ChartViewer
+    $viewer-&gt;setMouseUsage($perlchartdir::MouseUsageScroll);
+
+    # In this demo, we allow scrolling the chart for the last 5 years
+    my($unused, $unused, $unused, $d, $m, $y, $unused, $unused, $unused) = localtime();
+
+    # The localtime month format is from 0 - 11, while the year is offsetted by 1900. We adjust them
+    # to human used format.
+    $m = $m + 1;
+    $y = $y + 1900;
+
+    $endDate = perlchartdir::chartTime($y, $m, $d);
+
+    # We roll back 5 years for the start date. Note that if the end date is Feb 29 (leap year only
+    # date), we need to change it to Feb 28 in the start year
+    if (($m == 2) && ($d == 29)) {
+        $d = 28;
+    }
+    $startDate = perlchartdir::chartTime($y - 5, $m, $d);
+
+    # The initial selected date range is last 1 year
+    $viewPortStartDate = perlchartdir::chartTime($y - 1, $m, $d);
+    $viewPortEndDate = $endDate;
+
+    # We store the scroll range as custom Javascript ChartViewer attributes, so the range can be
+    # retrieved later in partial or full update requests
+    $viewer-&gt;setCustomAttr("startDate", $startDate);
+    $viewer-&gt;setCustomAttr("endDate", $endDate);
+
+    # In this demo, we set the maximum zoom-in to 10 days
+    $viewer-&gt;setZoomInWidthLimit(10 * 86400 / ($endDate - $startDate));
+
+    # Draw the chart
+    drawChart($viewer);
+}
+
+#
+# Handles partial update (AJAX chart update)
+#
+sub processPartialUpdate
+{
+    my ($viewer) = @_;
+    # Retrieve the overall date range from custom Javascript ChartViewer attributes.
+    $startDate = $viewer-&gt;getCustomAttr("startDate");
+    $endDate = $viewer-&gt;getCustomAttr("endDate");
+
+    # Now we need to determine the visible date range selected by the user. There are two
+    # possibilities. The user may use the zoom/scroll features of the Javascript ChartViewer to
+    # select the range, or s/he may use the start date / end date select boxes to select the date
+    # range.
+
+    if ($viewer-&gt;isViewPortChangedEvent()) {
+        # Is a view port change event from the Javascript ChartViewer, so we should get the selected
+        # date range from the ChartViewer view port settings.
+        my $duration = $endDate - $startDate;
+        $viewPortStartDate = $startDate + int(0.5 + $viewer-&gt;getViewPortLeft() * $duration);
+        $viewPortEndDate = $viewPortStartDate + int(0.5 + $viewer-&gt;getViewPortWidth() * $duration);
+    } else {
+        # The user has changed the selected range by using the start date / end date select boxes.
+        # We need to retrieve the selected dates from those boxes. For partial updates, the select
+        # box values are sent in as Javascript ChartViewer custom attributes.
+        my $startYear = int($viewer-&gt;getCustomAttr("StartYear"));
+        my $startMonth = int($viewer-&gt;getCustomAttr("StartMonth"));
+        my $startDay = int($viewer-&gt;getCustomAttr("StartDay"));
+        my $endYear = int($viewer-&gt;getCustomAttr("EndYear"));
+        my $endMonth = int($viewer-&gt;getCustomAttr("EndMonth"));
+        my $endDay = int($viewer-&gt;getCustomAttr("EndDay"));
+
+        # Note that for browsers that do not support Javascript, there is no validation on the
+        # client side. So it is possible for the day to exceed the valid range for a month (eg. Nov
+        # 31, but Nov only has 30 days). So we set the date by adding the days difference to the 1
+        # day of a month. For example, Nov 31 will be treated as Nov 1 + 30 days = Dec 1.
+        $viewPortStartDate = perlchartdir::chartTime($startYear, $startMonth, 1) + ($startDay - 1) *
+            86400;
+        $viewPortEndDate = perlchartdir::chartTime($endYear, $endMonth, 1) + ($endDay - 1) * 86400;
+    }
+
+    # Draw the chart
+    drawChart($viewer);
+
+    #
+    # We need to communicate the new start date / end date back to the select boxes on the browser
+    # side.
+    #
+
+    # The getChartYMD function retrives the date as an 8 digit decimal number yyyymmdd.
+    my $startYMD = perlchartdir::getChartYMD($viewPortStartDate);
+    my $endYMD = perlchartdir::getChartYMD($viewPortEndDate);
+
+    # Send year, month, day components to the start date / end date select boxes through Javascript
+    # ChartViewer custom attributes.
+    $viewer-&gt;setCustomAttr("StartYear", int($startYMD / 10000));
+    $viewer-&gt;setCustomAttr("StartMonth", int($startYMD / 100) % 100);
+    $viewer-&gt;setCustomAttr("StartDay", $startYMD % 100);
+    $viewer-&gt;setCustomAttr("EndYear", int($endYMD / 10000));
+    $viewer-&gt;setCustomAttr("EndMonth", int($endYMD / 100) % 100);
+    $viewer-&gt;setCustomAttr("EndDay", $endYMD % 100);
+}
+
+#
+# Handles full update
+#
+sub processFullUpdate
+{
+    my ($viewer) = @_;
+    # A full chart update is essentially the same as a partial chart update. The main difference is
+    # that in a full chart update, the start date / end date select boxes are in Form Post
+    # variables, while in partial chart update, they are in Javascript ChartViewer custom
+    # attributes.
+    #
+    # So a simple implementation of the full chart update is to copy the Form Post values to the
+    # Javascript ChartViewer custom attributes, and then call the partial chart update.
+
+    # Controls to copy
+    my $ctrls = ["StartYear", "StartMonth", "StartDay", "EndYear", "EndMonth", "EndDay"];
+
+    # Copy control values to Javascript ChartViewer custom attributes
+    for(my $i = 0; $i &lt; scalar(@$ctrls); ++$i) {
+        $viewer-&gt;setCustomAttr($ctrls-&gt;[$i], $query-&gt;param($ctrls-&gt;[$i]));
+    }
+
+    # Now can use partial chart update
+    processPartialUpdate($viewer);
+}
+
+#
+# Draw the chart
+#
+sub drawChart
+{
+    my ($viewer) = @_;
+    #
+    # Validate and adjust the view port dates.
+    #
+
+    # Verify if the view port dates are within limits
+    my $totalDuration = $endDate - $startDate;
+    my $minDuration = $viewer-&gt;getZoomInWidthLimit() * $totalDuration;
+    if ($viewPortStartDate &lt; $startDate) {
+        $viewPortStartDate = $startDate;
+    }
+    if ($endDate - $viewPortStartDate &lt; $minDuration) {
+        $viewPortStartDate = $endDate - $minDuration;
+    }
+    if ($viewPortEndDate &gt; $endDate) {
+        $viewPortEndDate = $endDate;
+    }
+    if ($viewPortEndDate - $viewPortStartDate &lt; $minDuration) {
+        $viewPortEndDate = $viewPortStartDate + $minDuration;
+    }
+
+    # Adjust the view port to reflect the selected date range
+    $viewer-&gt;setViewPortWidth(($viewPortEndDate - $viewPortStartDate) / $totalDuration);
+    $viewer-&gt;setViewPortLeft(($viewPortStartDate - $startDate) / $totalDuration);
+
+    #
+    # Now we have the date range, we can get the necessary data. In this demo, we just use a random
+    # number generator. In practice, you may get the data from a database or XML or by other means.
+    # (See "Using Data Sources with ChartDirector" in the ChartDirector documentation if you need
+    # some sample code on how to read data from database to array variables.)
+    #
+
+    # Just a random number generator to generate the data - emulates a table of numbers from
+    # startDate to endDate
+    my $r = new RanTable(127, 4, int(0.5 + $totalDuration / 86400) + 1);
+    $r-&gt;setDateCol(0, $startDate, 86400);
+    $r-&gt;setCol(1, 150, -10, 10);
+    $r-&gt;setCol(2, 200, -10, 10);
+    $r-&gt;setCol(3, 250, -10, 10);
+
+    # Emulate selecting the date range viewPortStartDate to viewPortEndDate. Note that we add one
+    # day margin on both ends. It is because we are using daily data, but the view port can cover
+    # partial days. For example, the view port end date can be at 3:00am Feb 1, 2006. In this case,
+    # we need the data point at Feb 2, 2006.
+    $r-&gt;selectDate(0, $viewPortStartDate - 86400, $viewPortEndDate + 86400);
+
+    # Emulate getting the random data from the table
+    my $timeStamps = $r-&gt;getCol(0);
+    my $dataSeriesA = $r-&gt;getCol(1);
+    my $dataSeriesB = $r-&gt;getCol(2);
+    my $dataSeriesC = $r-&gt;getCol(3);
+
+    if (scalar(@$timeStamps) &gt;= 520) {
+        #
+        # Zoomable chart with high zooming ratios often need to plot many thousands of points when
+        # fully zoomed out. However, it is usually not needed to plot more data points than the
+        # pixel resolution of the chart. Plotting too many points may cause the points and the lines
+        # to overlap on the same pixel. So rather than increasing resolution, this reduces the
+        # clarity of the chart. It is better to aggregate the data first if there are too many
+        # points.
+        #
+        # In our current example, the chart plot area only has 520 pixels in width and is using a 2
+        # pixel line width. So if there are more than 520 data points, we aggregate the data using
+        # the ChartDirector aggregation utility method.
+        #
+        # If in your real application, you do not have too many data points, you may remove the
+        # following code altogether.
+        #
+
+        # Set up an aggregator to aggregate the data based on regular sized slots
+        my $m = new ArrayMath($timeStamps);
+        $m-&gt;selectRegularSpacing(scalar(@$timeStamps) / 260);
+
+        # For the timestamps, take the first timestamp on each slot
+        $timeStamps = $m-&gt;aggregate($timeStamps, $perlchartdir::AggregateFirst);
+
+        # For the data values, take the averages
+        $dataSeriesA = $m-&gt;aggregate($dataSeriesA, $perlchartdir::AggregateAvg);
+        $dataSeriesB = $m-&gt;aggregate($dataSeriesB, $perlchartdir::AggregateAvg);
+        $dataSeriesC = $m-&gt;aggregate($dataSeriesC, $perlchartdir::AggregateAvg);
+    }
+
+    #
+    # Now we have obtained the data, we can plot the chart.
+    #
+
+    #================================================================================
+    # Step 1 - Configure overall chart appearance.
+    #================================================================================
+
+    # Create an XYChart object 600 x 300 pixels in size, with pale blue (0xf0f0ff) background, black
+    # (000000) rounded border, 1 pixel raised effect.
+    my $c = new XYChart(600, 300, 0xf0f0ff, 0x000000);
+    $c-&gt;setRoundedFrame();
+
+    # Set the plotarea at (52, 60) and of size 520 x 192 pixels. Use white (ffffff) background.
+    # Enable both horizontal and vertical grids by setting their colors to grey (cccccc). Set
+    # clipping mode to clip the data lines to the plot area.
+    $c-&gt;setPlotArea(55, 60, 520, 192, 0xffffff, -1, -1, 0xcccccc, 0xcccccc);
+    $c-&gt;setClipping();
+
+    # Add a top title to the chart using 15 pts Times New Roman Bold Italic font, with a light blue
+    # (ccccff) background, black (000000) border, and a glass like raised effect.
+    $c-&gt;addTitle("Zooming and Scrolling Demonstration", "timesbi.ttf", 15)-&gt;setBackground(0xccccff,
+        0x000000, perlchartdir::glassEffect());
+
+    # Add a bottom title to the chart to show the date range of the axis, with a light blue (ccccff)
+    # background.
+    $c-&gt;addTitle2($perlchartdir::Bottom, sprintf(
+        "From &lt;*font=arialbi.ttf*&gt;%s&lt;*/font*&gt; to &lt;*font=arialbi.ttf*&gt;%s&lt;*/font*&gt; (Duration ".
+        "&lt;*font=arialbi.ttf*&gt;%s&lt;*/font*&gt; days)", $c-&gt;formatValue($viewPortStartDate,
+        "{value|mmm dd, yyyy}"), $c-&gt;formatValue($viewPortEndDate, "{value|mmm dd, yyyy}"), int(0.5
+         + ($viewPortEndDate - $viewPortStartDate) / 86400)), "ariali.ttf", 10)-&gt;setBackground(
+        0xccccff);
+
+    # Add a legend box at the top of the plot area with 9pts Arial Bold font with flow layout.
+    $c-&gt;addLegend(50, 33, 0, "arialbd.ttf", 9)-&gt;setBackground($perlchartdir::Transparent,
+        $perlchartdir::Transparent);
+
+    # Set axes width to 2 pixels
+    $c-&gt;xAxis()-&gt;setWidth(2);
+    $c-&gt;yAxis()-&gt;setWidth(2);
+
+    # Add a title to the y-axis
+    $c-&gt;yAxis()-&gt;setTitle("Price (USD)", "arialbd.ttf", 10);
+
+    #================================================================================
+    # Step 2 - Add data to chart
+    #================================================================================
+
+    #
+    # In this example, we represent the data by lines. You may modify the code below if you want to
+    # use other representations (areas, scatter plot, etc).
+    #
+
+    # Add a line layer for the lines, using a line width of 2 pixels
+    my $layer = $c-&gt;addLineLayer2();
+    $layer-&gt;setLineWidth(2);
+
+    # Now we add the 3 data series to a line layer, using the color red (ff0000), green (00cc00) and
+    # blue (0000ff)
+    $layer-&gt;setXData($timeStamps);
+    $layer-&gt;addDataSet($dataSeriesA, 0xff0000, "Product Alpha");
+    $layer-&gt;addDataSet($dataSeriesB, 0x00cc00, "Product Beta");
+    $layer-&gt;addDataSet($dataSeriesC, 0x0000ff, "Product Gamma");
+
+    #================================================================================
+    # Step 3 - Set up x-axis scale
+    #================================================================================
+
+    # Set x-axis date scale to the view port date range. ChartDirector auto-scaling will
+    # automatically determine the ticks on the axis.
+    $c-&gt;xAxis()-&gt;setDateScale($viewPortStartDate, $viewPortEndDate);
+
+    #
+    # In the current demo, the x-axis range can be from a few years to a few days. We can let
+    # ChartDirector auto-determine the date/time format. However, for more beautiful formatting, we
+    # set up several label formats to be applied at different conditions.
+    #
+
+    # If all ticks are yearly aligned, then we use "yyyy" as the label format.
+    $c-&gt;xAxis()-&gt;setFormatCondition("align", 360 * 86400);
+    $c-&gt;xAxis()-&gt;setLabelFormat("{value|yyyy}");
+
+    # If all ticks are monthly aligned, then we use "mmm yyyy" in bold font as the first label of a
+    # year, and "mmm" for other labels.
+    $c-&gt;xAxis()-&gt;setFormatCondition("align", 30 * 86400);
+    $c-&gt;xAxis()-&gt;setMultiFormat(perlchartdir::StartOfYearFilter(), "&lt;*font=bold*&gt;{value|mmm yyyy}",
+        perlchartdir::AllPassFilter(), "{value|mmm}");
+
+    # If all ticks are daily algined, then we use "mmm dd&lt;*br*&gt;yyyy" in bold font as the first label
+    # of a year, and "mmm dd" in bold font as the first label of a month, and "dd" for other labels.
+    $c-&gt;xAxis()-&gt;setFormatCondition("align", 86400);
+    $c-&gt;xAxis()-&gt;setMultiFormat(perlchartdir::StartOfYearFilter(),
+        "&lt;*block,halign=left*&gt;&lt;*font=bold*&gt;{value|mmm dd&lt;*br*&gt;yyyy}",
+        perlchartdir::StartOfMonthFilter(), "&lt;*font=bold*&gt;{value|mmm dd}");
+    $c-&gt;xAxis()-&gt;setMultiFormat2(perlchartdir::AllPassFilter(), "{value|dd}");
+
+    # For all other cases (sub-daily ticks), use "hh:nn&lt;*br*&gt;mmm dd" for the first label of a day,
+    # and "hh:nn" for other labels.
+    $c-&gt;xAxis()-&gt;setFormatCondition("else");
+    $c-&gt;xAxis()-&gt;setMultiFormat(perlchartdir::StartOfDayFilter(),
+        "&lt;*font=bold*&gt;{value|hh:nn&lt;*br*&gt;mmm dd}", perlchartdir::AllPassFilter(), "{value|hh:nn}");
+
+    #================================================================================
+    # Step 4 - Set up y-axis scale
+    #================================================================================
+
+    if ($viewer-&gt;getZoomDirection() == $perlchartdir::DirectionHorizontal) {
+        # y-axis is auto-scaled - so vertically, the view port always cover the entire y data range.
+        # We save the y-axis scale for supporting xy-zoom mode if needed in the future.
+        $c-&gt;layout();
+        $viewer-&gt;setCustomAttr("minValue", $c-&gt;yAxis()-&gt;getMinValue());
+        $viewer-&gt;setCustomAttr("maxValue", $c-&gt;yAxis()-&gt;getMaxValue());
+        $viewer-&gt;setViewPortTop(0);
+        $viewer-&gt;setViewPortHeight(1);
+    } else {
+        # xy-zoom mode - retrieve the auto-scaled axis range, which contains the entire y data
+        # range.
+        my $minValue = $viewer-&gt;getCustomAttr("minValue");
+        my $maxValue = $viewer-&gt;getCustomAttr("maxValue");
+
+        # Compute the view port axis range
+        my $axisLowerLimit = $maxValue - ($maxValue - $minValue) * ($viewer-&gt;getViewPortTop() +
+            $viewer-&gt;getViewPortHeight());
+        my $axisUpperLimit = $maxValue - ($maxValue - $minValue) * $viewer-&gt;getViewPortTop();
+
+        # Set the axis scale to the view port axis range
+        $c-&gt;yAxis()-&gt;setLinearScale($axisLowerLimit, $axisUpperLimit);
+
+        # By default, ChartDirector will round the axis scale to the tick position. For zooming, we
+        # want to use the exact computed axis scale and so we disable rounding.
+        $c-&gt;yAxis()-&gt;setRounding(0, 0);
+    }
+
+    #================================================================================
+    # Step 5 - Output the chart
+    #================================================================================
+
+    # Create the image and save it in a temporary location
+    my $chartQuery = $c-&gt;makeTmpFile("/tmp/tmpcharts");
+
+    # Include tool tip for the chart
+    my $imageMap = $c-&gt;getHTMLImageMap("", "",
+        "title='[{dataSetName}] {x|mmm dd, yyyy}: USD {value|2}'");
+
+    # Set the chart URL, image map, and chart metrics to the viewer. For the image map, we use
+    # delayed delivery and with compression, so the chart image will show up quicker.
+    $viewer-&gt;setImageUrl("getchart.pl?img=/tmp/tmpcharts/".$chartQuery);
+    $viewer-&gt;setImageMap("getchart.pl?img=/tmp/tmpcharts/".$viewer-&gt;makeDelayedMapAsTmpFile(
+        "/tmp/tmpcharts", $imageMap, 1));
+    $viewer-&gt;setChartMetrics($c-&gt;getChartMetrics());
+}
+
+#
+# A utility to create the &lt;option&gt; tags for the date range &lt;select&gt; boxes
+#
+# Parameters: startValue: The minimum selectable value. endValue: The maximum selectable value.
+# selectedValue: The currently selected value.
+#
+sub createSelectOptions
+{
+    my ($startValue, $endValue, $selectedValue) = @_;
+    my $ret = [(undef) x ($endValue - $startValue + 1)];
+    for(my $i = $startValue; $i &lt; $endValue + 1; ++$i) {
+        if ($i == $selectedValue) {
+            # Use a "selected" &lt;option&gt; tag if it is the selected value
+            $ret-&gt;[$i - $startValue] = "&lt;option value='$i' selected&gt;$i&lt;/option&gt;";
+        } else {
+            # Use a normal &lt;option&gt; tag
+            $ret-&gt;[$i - $startValue] = "&lt;option value='$i'&gt;$i&lt;/option&gt;";
+        }
+    }
+    return join("", @$ret);
+}
+
+# Create the WebChartViewer object
+my $viewer = new WebChartViewer($query, "chart1");
+if ($viewer-&gt;isPartialUpdateRequest()) {
+    # Is a partial update request (AJAX chart update)
+    processPartialUpdate($viewer);
+    # Since it is a partial update, there is no need to output the entire web page. We stream the
+    # chart and then terminate the script immediately.
+    print $viewer-&gt;partialUpdateChart();
+    exit 0;
+} elsif ($viewer-&gt;isFullUpdateRequest()) {
+    # Is a full update request
+    processFullUpdate($viewer);
+} else {
+    # Is a initial request
+    createFirstChart($viewer);
+}
+
+# Create the &lt;option&gt; tags for the start date / end date select boxes to reflect the currently
+# selected data range
+my $startYearSelectOptions = createSelectOptions(int(perlchartdir::getChartYMD($startDate) / 10000),
+    int(perlchartdir::getChartYMD($endDate) / 10000), int(perlchartdir::getChartYMD(
+    $viewPortStartDate) / 10000));
+my $startMonthSelectOptions = createSelectOptions(1, 12, int(perlchartdir::getChartYMD(
+    $viewPortStartDate) / 100) % 100);
+my $startDaySelectOptions = createSelectOptions(1, 31, int(perlchartdir::getChartYMD(
+    $viewPortStartDate) % 100));
+my $endYearSelectOptions = createSelectOptions(int(perlchartdir::getChartYMD($startDate) / 10000),
+    int(perlchartdir::getChartYMD($endDate) / 10000), int(perlchartdir::getChartYMD($viewPortEndDate
+    ) / 10000));
+my $endMonthSelectOptions = createSelectOptions(1, 12, int(perlchartdir::getChartYMD(
+    $viewPortEndDate) / 100) % 100);
+my $endDaySelectOptions = createSelectOptions(1, 31, int(perlchartdir::getChartYMD($viewPortEndDate)
+     % 100));
+
+print "Content-type: text/html\n\n";
+print &lt;&lt;EndOfHTML
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;ChartDirector Zoom and Scroll Demonstration&lt;/title&gt;
+    &lt;script type="text/javascript" src="${loadResource}cdjcv.js"&gt;&lt;/script&gt;
+    &lt;style type="text/css"&gt;
+        div.chartPushButtonSelected { padding:5px; background:#ccffcc; cursor:hand; }
+        div.chartPushButton { padding:5px; cursor:hand; }
+        td.chartPushButton { font-family:Verdana; font-size:9pt; cursor:pointer; border-bottom:#000000 1px solid; }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body style="margin:0px" onload="initJsChartViewer()"&gt;
+&lt;script type="text/javascript"&gt;
+// Initialize browser side Javascript controls
+function initJsChartViewer()
+{
+    // Check if the Javascript ChartViewer library is loaded
+    if (!window.JsChartViewer)
+        return;
+
+    // Get the Javascript ChartViewer object
+    var viewer = JsChartViewer.get('@{[$viewer-&gt;getId()]}');
+
+    // Connect the mouse usage buttons to the Javascript ChartViewer object
+    connectViewerMouseUsage('ViewerMouseUsage1', viewer);
+    // Connect the xy zoom mode buttons to the Javascript ChartViewer object
+    connectViewerZoomControl('ViewerZoomControl1', viewer);
+
+    // Detect if browser is capable of support partial update (AJAX chart update)
+    if (JsChartViewer.canSupportPartialUpdate())
+    {
+        // Browser can support partial update, so connect the view port change event and
+        // the submit button to trigger a partial update
+        viewer.attachHandler("ViewPortChanged", viewer.partialUpdate);
+        document.getElementById('SubmitButton').onclick = function() { viewer.partialUpdate(); return false; };
+
+        // For partial updates, we need to pass the start date / end date select boxes values to/from
+        // the server via Javascript ChartViewer custom attributes
+        var controlsToSync = ['StartYear', 'StartMonth', 'StartDay', 'EndYear', 'EndMonth', 'EndDay'];
+        viewer.attachHandler("PreUpdate", function() { copyToViewer(viewer, controlsToSync); });
+        viewer.attachHandler("PostUpdate", function() { copyFromViewer(viewer, controlsToSync); });
+    }
+    else
+        // Browser cannot support partial update - so use full page update
+        viewer.attachHandler("ViewPortChanged", function() { document.forms[0].submit(); });
+}
+// A utility to copy HTML control values to Javascript ChartViewer custom attributes
+function copyToViewer(viewer, controlsToSync)
+{
+    for (var i = 0; i &lt; controlsToSync.length; ++i)
+    {
+        var obj = document.getElementById(controlsToSync[i]);
+        if (obj && !{"button":1, "file":1, "image":1, "reset":1, "submit":1}[obj.type])
+        {
+            if ((obj.type == "checkbox") || (obj.type == "radio"))
+                viewer.setCustomAttr(obj.id, obj.checked ? 1 : 0);
+            else
+                viewer.setCustomAttr(obj.id, obj.value);
+        }
+    }
+}
+// A utility to copy Javascipt ChartViewer custom attributes to HTML controls
+function copyFromViewer(viewer, controlsToSync)
+{
+    for (var i = 0; i &lt; controlsToSync.length; ++i)
+    {
+        var obj = document.getElementById(controlsToSync[i]);
+        if (obj)
+        {
+            var value = viewer.getCustomAttr(obj.id);
+            if (typeof value != "undefined")
+            {
+                if ((obj.type == "checkbox") || (obj.type == "radio"))
+                    obj.checked = parseInt(value);
+                else
+                    obj.value = value;
+
+                if (obj.validate)
+                    obj.validate();
+            }
+        }
+    }
+}
+&lt;/script&gt;
+&lt;form method="post"&gt;
+&lt;table cellspacing="0" cellpadding="0" border="0"&gt;
+    &lt;tr&gt;
+        &lt;td align="right" colspan="2" style="background:#000088"&gt;
+            &lt;div style="padding-bottom:2px; padding-right:3px; font-weight:bold; font-size:10pt; font-style:italic; font-family:Arial;"&gt;
+                &lt;a style="color:#FFFF00; text-decoration:none" href="http://www.advsofteng.com/"&gt;Advanced Software Engineering&lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr valign="top"&gt;
+        &lt;td style="width:150px; background:#c0c0ff; border-left:black 1px solid; border-right:black 1px solid; border-bottom:black 1px solid;"&gt;
+            &lt;!-- The following table is to create 3 cells for 3 buttons. The buttons are used to control
+                 the mouse usage mode of the Javascript ChartViewer. --&gt;
+            &lt;table id="ViewerMouseUsage1" cellspacing="0" cellpadding="0" width="100%" border="0"&gt;
+                &lt;tr&gt;
+                    &lt;td class="chartPushButton"&gt;
+                        &lt;div class="chartPushButton" id="ViewerMouseUsage1_Scroll" title="Pointer"&gt;
+                            &lt;img src="${loadResource}pointer.gif" style="vertical-align:middle" width="16" height="16" alt="Pointer" /&gt;&nbsp;&nbsp;Pointer
+                        &lt;/div&gt;
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td class="chartPushButton"&gt;
+                        &lt;div class="chartPushButton" id="ViewerMouseUsage1_ZoomIn" title="Zoom In"&gt;
+                            &lt;img src="${loadResource}zoomInIcon.gif" style="vertical-align:middle" width="16" height="16" alt="Zoom In" /&gt;&nbsp;&nbsp;Zoom In
+                        &lt;/div&gt;
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td class="chartPushButton"&gt;
+                        &lt;div class="chartPushButton" id="ViewerMouseUsage1_ZoomOut" title="Zoom Out"&gt;
+                            &lt;img src="${loadResource}zoomOutIcon.gif" style="vertical-align:middle" width="16" height="16" alt="Zoom Out" /&gt;&nbsp;&nbsp;Zoom Out
+                        &lt;/div&gt;
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/table&gt;
+            &lt;script type="text/javascript"&gt;
+            // Connect the mouse usage buttons to the Javascript ChartViewer
+            function connectViewerMouseUsage(controlId, viewer)
+            {
+                // A cross browser utility to get the object by id.
+                function getObj(id) { return document.getElementById ? document.getElementById(id) : document.all[id]; }
+
+                // Set the button styles (colors) based on the current mouse usage mode of the Javascript ChartViewer
+                function syncButtons()
+                {
+                    getObj(controlId + "_Scroll").className = (viewer.getMouseUsage() == JsChartViewer.Scroll) ?
+                        "chartPushButtonSelected" : "chartPushButton";
+                    getObj(controlId + "_ZoomIn").className = (viewer.getMouseUsage() == JsChartViewer.ZoomIn) ?
+                        "chartPushButtonSelected" : "chartPushButton";
+                    getObj(controlId + "_ZoomOut").className = (viewer.getMouseUsage() == JsChartViewer.ZoomOut) ?
+                        "chartPushButtonSelected" : "chartPushButton";
+                }
+                syncButtons();
+
+                // Run syncButtons whenever the Javascript ChartViewer is updated
+                viewer.attachHandler("PostUpdate", syncButtons);
+
+                // Set the Javascript ChartViewer mouse usage mode if a button is clicked.
+                getObj(controlId + "_Scroll").onclick = function() { viewer.setMouseUsage(JsChartViewer.Scroll); syncButtons(); }
+                getObj(controlId + "_ZoomIn").onclick = function() { viewer.setMouseUsage(JsChartViewer.ZoomIn); syncButtons(); }
+                getObj(controlId + "_ZoomOut").onclick = function() { viewer.setMouseUsage(JsChartViewer.ZoomOut); syncButtons(); }
+            }
+            &lt;/script&gt;
+            &lt;div style="font-size:9pt; margin:15px 5px 0px; font-family:verdana"&gt;&lt;b&gt;Zoom Mode&lt;/b&gt;&lt;/div&gt;
+            &lt;!-- The following table is to create 2 cells for 2 buttons. The buttons are used to control
+                 the zoom/scroll directions of the Javascript ChartViewer. --&gt;
+            &lt;table id="ViewerZoomControl1" cellspacing="0" cellpadding="0" width="100%" border="0"&gt;
+                &lt;tr&gt;
+                    &lt;td class="chartPushButton" style="border-bottom: #000000 1px solid; border-top: #000000 1px solid;"&gt;
+                        &lt;div class="chartPushButton" id="ViewerZoomControl1_Xmode" title="X-Axis zoomable / Y-Axis auto-scaled"&gt;
+                            &lt;img src="${loadResource}xrange.gif" style="vertical-align:middle" width="16" height="16" alt="X Zoom/Y Auto" /&gt;&nbsp;&nbsp;X Zoom / Y Auto
+                        &lt;/div&gt;
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td class="chartPushButton" style="border-bottom: #000000 1px solid;"&gt;
+                        &lt;div class="chartPushButton" id="ViewerZoomControl1_XYmode" title="X-Axis and Y-Axis zoomable"&gt;
+                            &lt;img src="${loadResource}xyrange.gif" style="vertical-align:middle" width="16" height="16" alt="XY Zoom" /&gt;&nbsp;&nbsp;XY Zoom
+                        &lt;/div&gt;
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/table&gt;
+            &lt;script type="text/javascript"&gt;
+            // Connect the zoom/scroll direction buttons to the Javascript ChartViewer
+            function connectViewerZoomControl(controlId, viewer)
+            {
+                // A cross browser utility to get the object by id.
+                function getObj(id) { return document.getElementById ? document.getElementById(id) : document.all[id]; }
+
+                // Set the button styles (colors) based on current zoom/scroll direction settings of the Javascript ChartViewer
+                function syncButtons()
+                {
+                    getObj(controlId + "_Xmode").className = (viewer.getZoomDirection() == JsChartViewer.Horizontal) ?
+                        "chartPushButtonSelected" : "chartPushButton";
+                    getObj(controlId + "_XYmode").className = (viewer.getZoomDirection() == JsChartViewer.HorizontalVertical) ?
+                        "chartPushButtonSelected" : "chartPushButton";
+                }
+                syncButtons();
+
+                // Run syncButtons whenever the Javascript ChartViewer is updated
+                viewer.attachHandler("PostUpdate", syncButtons);
+
+                // Set the Javascript ChartViewer zoom/scroll direction if a button is clicked.
+                function setViewerDirection(d)
+                {
+                    viewer.setScrollDirection(d);
+                    viewer.setZoomDirection(d);
+                    syncButtons();
+                }
+                getObj(controlId + "_Xmode").onclick = function() { setViewerDirection(JsChartViewer.Horizontal); }
+                getObj(controlId + "_XYmode").onclick = function() { setViewerDirection(JsChartViewer.HorizontalVertical); }
+            }
+            &lt;/script&gt;
+            &lt;div style="font-size:9pt; margin:15px 5px 0px; font-family:Verdana"&gt;
+                &lt;b&gt;Start Time&lt;/b&gt;&lt;br /&gt;
+                &lt;table cellspacing="0" cellpadding="0" border="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="font-size:8pt; font-family:Arial"&gt;Year&lt;/td&gt;
+                        &lt;td style="font-size:8pt; font-family:Arial"&gt;Mon&lt;/td&gt;
+                        &lt;td style="font-size:8pt; font-family:Arial"&gt;Day&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;&lt;select id="StartYear" name="StartYear" style="width:60"&gt;
+                            $startYearSelectOptions
+                        &lt;/select&gt;&lt;/td&gt;
+                        &lt;td&gt;&lt;select id="StartMonth" name="StartMonth" style="width:40"&gt;
+                            $startMonthSelectOptions
+                        &lt;/select&gt;&lt;/td&gt;
+                        &lt;td&gt;&lt;select id="StartDay" name="StartDay" style="width:40"&gt;
+                            $startDaySelectOptions
+                        &lt;/select&gt;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/div&gt;
+            &lt;div style="font-size:9pt; margin:15px 5px 0px; font-family:Verdana"&gt;
+                &lt;b&gt;End Time&lt;/b&gt;&lt;br /&gt;
+                &lt;table cellspacing="0" cellpadding="0" border="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="font-size:8pt; font-family:Arial"&gt;Year&lt;/td&gt;
+                        &lt;td style="font-size:8pt; font-family:Arial"&gt;Mon&lt;/td&gt;
+                        &lt;td style="font-size:8pt; font-family:Arial"&gt;Day&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;&lt;select id="EndYear" name="EndYear" style="width:60"&gt;
+                            $endYearSelectOptions
+                        &lt;/select&gt;&lt;/td&gt;
+                        &lt;td&gt;&lt;select id="EndMonth" name="EndMonth" style="width:40"&gt;
+                            $endMonthSelectOptions
+                        &lt;/select&gt;&lt;/td&gt;
+                        &lt;td&gt;&lt;select id="EndDay" name="EndDay" style="width:40"&gt;
+                            $endDaySelectOptions
+                        &lt;/select&gt;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/div&gt;
+            &lt;script type="text/javascript"&gt;
+            // A utility to validate the day of month for the start date / end date HTML controls.
+            // It sets the day of month select so that it only shows the legal range.
+            function validateYMDControls(yearObj, monthObj, dayObj)
+            {
+                // Get the number of days in a month
+                var noOfDays = [31, (parseInt(yearObj.value) % 4 == 0) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+                    [monthObj.selectedIndex];
+
+                // Ensure the selected day of month is not bigger than the days in month
+                dayObj.selectedIndex = Math.min(noOfDays - 1, dayObj.selectedIndex);
+
+                // Extend/Shrink the day of month select box to ensure it covers the legal day range
+                for (var i = dayObj.options.length; i &lt; noOfDays; ++i)
+                    dayObj.options[i] = new Option(i + 1, i + 1);
+                for (var j = dayObj.options.length; j &gt; noOfDays; --j)
+                    dayObj.remove(j - 1);
+            }
+            // Initialize the HTML select controls for selecting dates
+            function initYMDControls(yearId, monthId, dayId)
+            {
+                // A cross browser utility to get the object by id.
+                var getObj = function(id) { return document.getElementById ? document.getElementById(id) : document.all[id]; }
+
+                // Connect the onchange event to validateYMDControls
+                getObj(yearId).onchange = getObj(yearId).validate = getObj(monthId).onchange = getObj(monthId).validate =
+                    function() { validateYMDControls(getObj(yearId), getObj(monthId), getObj(dayId)); };
+
+                // Validate once immediately
+                getObj(yearId).validate();
+            }
+            // Connnect the start date / end date HTML select controls
+            initYMDControls('StartYear', 'StartMonth', 'StartDay');
+            initYMDControls('EndYear', 'EndMonth', 'EndDay');
+            &lt;/script&gt;
+            &lt;div style="margin-top:20px; font-family:Verdana; font-size:9pt; text-align:center"&gt;
+                &lt;input type="submit" id="SubmitButton" name="SubmitButton" value="Update Chart"&gt;&lt;/input&gt;
+            &lt;/div&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+            &lt;div style="font-weight:bold; font-size:20pt; margin:5px 0px 0px 5px; font-family:Arial"&gt;
+                ChartDirector Zoom and Scroll Demonstration
+            &lt;/div&gt;
+            &lt;hr style="border:solid 1px #000080" /&gt;
+            &lt;div style="padding:0px 5px 0px 10px"&gt;
+                &lt;!-- ****** Here is the chart image ****** --&gt;
+                @{[$viewer-&gt;renderHTML()]}
+            &lt;/div&gt;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+EndOfHTML
+;</pre></tr></td></table></div><br>
+<hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div></body>
+</HTML>

@@ -1,0 +1,115 @@
+<HTML>
+<HEAD>
+<Title>3D Pyramid Chart</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">3D Pyramid Chart</p>
+<hr class="separator">
+<div class="content">
+<img src="images/threedpyramid.png">
+<br><br>
+This example extends the <a href="simplepyramid.htm">Simple Pyramid Chart</a> example by viewing the pyramid in 3D, using custom colors, inserting gaps between pyramid layers, and adding labels to both the center and the right side of the pyramid layers.<br><br>
+<ul><li> Specify 3D viewing angles using <a href="PyramidChart.setViewAngle.htm">PyramidChart.setViewAngle</a>.<br><br>
+<li> Specify custom colors using <a href="BaseChart.setColors.htm">BaseChart.setColors</a>.<br><br>
+<li> Insert gaps between pyramid layers using <a href="PyramidChart.setLayerGap.htm">PyramidChart.setLayerGap</a><br><br>
+<li> Add labels to the center and to the right side of the pyramid layers using <a href="PyramidChart.setCenterLabel.htm">PyramidChart.setCenterLabel</a> and <a href="PyramidChart.setRightLabel.htm">PyramidChart.setRightLabel</a>.</ul>
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\threedpyramid.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# The data for the pyramid chart
+my $data = [156, 123, 211, 179];
+
+# The labels for the pyramid chart
+my $labels = ["Corporate Tax", "Working Capital", "Re-investment", "Dividend"];
+
+# The colors for the pyramid layers
+my $colors = [0x66aaee, 0xeebb22, 0xcccccc, 0xcc88ff];
+
+# Create a PyramidChart object of size 500 x 400 pixels
+my $c = new PyramidChart(500, 400);
+
+# Set the pyramid center at (200, 180), and width x height to 150 x 300 pixels
+$c-&gt;setPyramidSize(200, 180, 150, 300);
+
+# Set the elevation to 15 degrees
+$c-&gt;setViewAngle(15);
+
+# Set the pyramid data and labels
+$c-&gt;setData($data, $labels);
+
+# Set the layer colors to the given colors
+$c-&gt;setColors2($perlchartdir::DataColor, $colors);
+
+# Leave 1% gaps between layers
+$c-&gt;setLayerGap(0.01);
+
+# Add labels at the center of the pyramid layers using Arial Bold font. The labels
+# will show the percentage of the layers.
+$c-&gt;setCenterLabel("{percent}%", "arialbd.ttf");
+
+# Add labels at the right side of the pyramid layers using Arial Bold font. The
+# labels will have two lines showing the layer name and value.
+$c-&gt;setRightLabel("{label}\nUS\$ {value}M", "arialbd.ttf");
+
+# Output the chart
+$c-&gt;makeChart("threedpyramid.png")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\threedpyramid.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The data for the pyramid chart
+my $data = [156, 123, 211, 179];
+
+# The labels for the pyramid chart
+my $labels = ["Corporate Tax", "Working Capital", "Re-investment", "Dividend"];
+
+# The colors for the pyramid layers
+my $colors = [0x66aaee, 0xeebb22, 0xcccccc, 0xcc88ff];
+
+# Create a PyramidChart object of size 500 x 400 pixels
+my $c = new PyramidChart(500, 400);
+
+# Set the pyramid center at (200, 180), and width x height to 150 x 300 pixels
+$c-&gt;setPyramidSize(200, 180, 150, 300);
+
+# Set the elevation to 15 degrees
+$c-&gt;setViewAngle(15);
+
+# Set the pyramid data and labels
+$c-&gt;setData($data, $labels);
+
+# Set the layer colors to the given colors
+$c-&gt;setColors2($perlchartdir::DataColor, $colors);
+
+# Leave 1% gaps between layers
+$c-&gt;setLayerGap(0.01);
+
+# Add labels at the center of the pyramid layers using Arial Bold font. The labels
+# will show the percentage of the layers.
+$c-&gt;setCenterLabel("{percent}%", "arialbd.ttf");
+
+# Add labels at the right side of the pyramid layers using Arial Bold font. The
+# labels will have two lines showing the layer name and value.
+$c-&gt;setRightLabel("{label}\nUS\$ {value}M", "arialbd.ttf");
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

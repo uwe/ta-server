@@ -1,0 +1,40 @@
+<HTML>
+<HEAD>
+<Title>SurfaceChart.setData</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="SurfaceChart.htm">SurfaceChart</a>.setData</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setData(xData, yData, zData)
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the data for the surface chart.<br><br>
+ChartDirector supports both gridded and scattered data. If the data points are on a rectangular grid will no missing points, they will be handled as gridded data. Otherwise, they will be handled as scattered data.<br><br>
+For gridded data, you may provide the x and y values of the grid, and the z values of the data points. For a 10 x 15 grid, that means the x data series should have 10 values, the y data series should have 15 values, and the z data series should have 150 values. The x and y data series should be strictly monotonic (either strictly increasing or strictly decreasing).<br><br>
+For both gridded and scattered data, you may also provide the (x, y, z) values of the data points. For example, for 150 data points, the x, y and z data series should each have 150 values. ChartDirector will automatically detect if the data points are gridded or scattered.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>xData</td><td>(Mandatory)</td><td>An array of numbers representing the x data series.</td></tr><tr><td>yData</td><td>(Mandatory)</td><td>An array of numbers representing the y data series.</td></tr><tr><td>zData</td><td>(Mandatory)</td><td>An array of numbers representing the z data series.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

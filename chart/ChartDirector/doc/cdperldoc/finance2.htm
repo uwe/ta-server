@@ -1,0 +1,188 @@
+<HTML>
+<HEAD>
+<Title>Finance Chart (2)</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Finance Chart (2)</p>
+<hr class="separator">
+<div class="content">
+<img src="images/finance2.png">
+<br><br>
+This example demonstrate creating a full-featured finance chart, with candlesticks, moving averages, Donchian channel, volume bars, MACD and Stochastic indicators.<br><br>
+This example employs the <a href="FinanceChart.htm">FinanceChart</a> library add-on to allow complex financial charts to be composed easily. In this example, the key steps are:<br><br>
+<ul><li> Create a new <a href="FinanceChart.htm">FinanceChart</a> object<br><br>
+<li> Set data into the chart using <a href="FinanceChart.setData.htm">FinanceChart.setData</a><br><br>
+<li> Add a Slow Stochastic indicator chart as the top chart using <a href="FinanceChart.addSlowStochastic.htm">FinanceChart.addSlowStochastic</a><br><br>
+<li> Add the main chart using <a href="FinanceChart.addMainChart.htm">FinanceChart.addMainChart</a><br><br>
+<li> Add simple moving average lines to the main chart using <a href="FinanceChart.addSimpleMovingAvg.htm">FinanceChart.addSimpleMovingAvg</a><br><br>
+<li> Add candlestick symbols to the main chart using <a href="FinanceChart.addCandleStick.htm">FinanceChart.addCandleStick</a><br><br>
+<li> Add Donchian Channel to the main chart using <a href="FinanceChart.addDonchianChannel.htm">FinanceChart.addDonchianChannel</a><br><br>
+<li> Add volume bars to the main chart using <a href="FinanceChart.addVolBars.htm">FinanceChart.addVolBars</a><br><br>
+<li> Add an additional MACD indicator chart using <a href="FinanceChart.addMACD.htm">FinanceChart.addMACD</a></ul>
+For simplicity and to allow this example to run without connecting to a real database, a <a href="RanTable.htm">RanTable</a> object is used to simulate the data. <a href="RanTable.htm">RanTable</a> is a ChartDirector utility class used for creating tables with random numbers.
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\finance2.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use FinanceChart;
+
+# Create a finance chart demo containing 100 days of data
+my $noOfDays = 100;
+
+# To compute moving averages starting from the first day, we need to get extra data
+# points before the first day
+my $extraDays = 30;
+
+# In this exammple, we use a random number generator utility to simulate the data. We
+# set up the random table to create 6 cols x (noOfDays + extraDays) rows, using 9 as
+# the seed.
+my $rantable = new RanTable(9, 6, $noOfDays + $extraDays);
+
+# Set the 1st col to be the timeStamp, starting from Sep 4, 2002, with each row
+# representing one day, and counting week days only (jump over Sat and Sun)
+$rantable-&gt;setDateCol(0, perlchartdir::chartTime(2002, 9, 4), 86400, 1);
+
+# Set the 2nd, 3rd, 4th and 5th columns to be high, low, open and close data. The
+# open value starts from 100, and the daily change is random from -5 to 5.
+$rantable-&gt;setHLOCCols(1, 100, -5, 5);
+
+# Set the 6th column as the vol data from 5 to 25 million
+$rantable-&gt;setCol(5, 50000000, 250000000);
+
+# Now we read the data from the table into arrays
+my $timeStamps = $rantable-&gt;getCol(0);
+my $highData = $rantable-&gt;getCol(1);
+my $lowData = $rantable-&gt;getCol(2);
+my $openData = $rantable-&gt;getCol(3);
+my $closeData = $rantable-&gt;getCol(4);
+my $volData = $rantable-&gt;getCol(5);
+
+# Create a FinanceChart object of width 640 pixels
+my $c = new FinanceChart(640);
+
+# Add a title to the chart
+$c-&gt;addTitle("Finance Chart Demonstration");
+
+# Set the data into the finance chart object
+$c-&gt;setData($timeStamps, $highData, $lowData, $openData, $closeData, $volData,
+    $extraDays);
+
+# Add a slow stochastic chart (75 pixels high) with %K = 14 and %D = 3
+$c-&gt;addSlowStochastic(75, 14, 3, 0x006060, 0x606000);
+
+# Add the main chart with 240 pixels in height
+$c-&gt;addMainChart(240);
+
+# Add a 10 period simple moving average to the main chart, using brown color
+$c-&gt;addSimpleMovingAvg(10, 0x663300);
+
+# Add a 20 period simple moving average to the main chart, using purple color
+$c-&gt;addSimpleMovingAvg(20, 0x9900ff);
+
+# Add an HLOC symbols to the main chart, using green/red for up/down days
+$c-&gt;addCandleStick(0x00ff00, 0xff0000);
+
+# Add 20 days donchian channel to the main chart, using light blue (9999ff) as the
+# border and semi-transparent blue (c06666ff) as the fill color
+$c-&gt;addDonchianChannel(20, 0x9999ff, 0xc06666ff);
+
+# Add a 75 pixels volume bars sub-chart to the bottom of the main chart, using
+# green/red/grey for up/down/flat days
+$c-&gt;addVolBars(75, 0x99ff99, 0xff9999, 0x808080);
+
+# Append a MACD(26, 12) indicator chart (75 pixels high) after the main chart, using
+# 9 days for computing divergence.
+$c-&gt;addMACD(75, 26, 12, 9, 0x0000ff, 0xff00ff, 0x008000);
+
+# Output the chart
+$c-&gt;makeChart("finance2.png")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\finance2.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use FinanceChart;
+
+# Create a finance chart demo containing 100 days of data
+my $noOfDays = 100;
+
+# To compute moving averages starting from the first day, we need to get extra data
+# points before the first day
+my $extraDays = 30;
+
+# In this exammple, we use a random number generator utility to simulate the data. We
+# set up the random table to create 6 cols x (noOfDays + extraDays) rows, using 9 as
+# the seed.
+my $rantable = new RanTable(9, 6, $noOfDays + $extraDays);
+
+# Set the 1st col to be the timeStamp, starting from Sep 4, 2002, with each row
+# representing one day, and counting week days only (jump over Sat and Sun)
+$rantable-&gt;setDateCol(0, perlchartdir::chartTime(2002, 9, 4), 86400, 1);
+
+# Set the 2nd, 3rd, 4th and 5th columns to be high, low, open and close data. The
+# open value starts from 100, and the daily change is random from -5 to 5.
+$rantable-&gt;setHLOCCols(1, 100, -5, 5);
+
+# Set the 6th column as the vol data from 5 to 25 million
+$rantable-&gt;setCol(5, 50000000, 250000000);
+
+# Now we read the data from the table into arrays
+my $timeStamps = $rantable-&gt;getCol(0);
+my $highData = $rantable-&gt;getCol(1);
+my $lowData = $rantable-&gt;getCol(2);
+my $openData = $rantable-&gt;getCol(3);
+my $closeData = $rantable-&gt;getCol(4);
+my $volData = $rantable-&gt;getCol(5);
+
+# Create a FinanceChart object of width 640 pixels
+my $c = new FinanceChart(640);
+
+# Add a title to the chart
+$c-&gt;addTitle("Finance Chart Demonstration");
+
+# Set the data into the finance chart object
+$c-&gt;setData($timeStamps, $highData, $lowData, $openData, $closeData, $volData,
+    $extraDays);
+
+# Add a slow stochastic chart (75 pixels high) with %K = 14 and %D = 3
+$c-&gt;addSlowStochastic(75, 14, 3, 0x006060, 0x606000);
+
+# Add the main chart with 240 pixels in height
+$c-&gt;addMainChart(240);
+
+# Add a 10 period simple moving average to the main chart, using brown color
+$c-&gt;addSimpleMovingAvg(10, 0x663300);
+
+# Add a 20 period simple moving average to the main chart, using purple color
+$c-&gt;addSimpleMovingAvg(20, 0x9900ff);
+
+# Add an HLOC symbols to the main chart, using green/red for up/down days
+$c-&gt;addCandleStick(0x00ff00, 0xff0000);
+
+# Add 20 days donchian channel to the main chart, using light blue (9999ff) as the
+# border and semi-transparent blue (c06666ff) as the fill color
+$c-&gt;addDonchianChannel(20, 0x9999ff, 0xc06666ff);
+
+# Add a 75 pixels volume bars sub-chart to the bottom of the main chart, using
+# green/red/grey for up/down/flat days
+$c-&gt;addVolBars(75, 0x99ff99, 0xff9999, 0x808080);
+
+# Append a MACD(26, 12) indicator chart (75 pixels high) after the main chart, using
+# 9 days for computing divergence.
+$c-&gt;addMACD(75, 26, 12, 9, 0x0000ff, 0xff00ff, 0x008000);
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

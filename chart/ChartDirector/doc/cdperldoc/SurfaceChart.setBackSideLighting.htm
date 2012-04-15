@@ -1,0 +1,39 @@
+<HTML>
+<HEAD>
+<Title>SurfaceChart.setBackSideLighting</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="SurfaceChart.htm">SurfaceChart</a>.setBackSideLighting</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setBackSideLighting(ambientIntensity, diffuseIntensity, specularIntensity, shininess)
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the Phong lighting parameters for the back side of the surface.<br><br>
+The surface of a surface chart has two sides. The side that is facing the positive z direction of the plot region is the front side. The side that is facing the negative z direction of the plot region is the back side.<br><br>
+ChartDirector uses the Phong lighting model to adjust the brightness of the surface to make it look realistic. The default lighting parameters for the back side is half the brightness of those for the front side. This method may be used to set alternative lighting parameters for the back side.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>ambientIntensity</td><td>(Mandatory)</td><td>The ambient reflection coefficient of the Phong lighting model.</td></tr><tr><td>diffuseIntensity</td><td>(Mandatory)</td><td>The diffuse reflection coefficient of the Phong lighting model.</td></tr><tr><td>specularIntensity</td><td>(Mandatory)</td><td>The specular reflection coefficient of the Phong lighting model.</td></tr><tr><td>shininess</td><td>(Mandatory)</td><td>The shininess coefficient of the Phong lighting model.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

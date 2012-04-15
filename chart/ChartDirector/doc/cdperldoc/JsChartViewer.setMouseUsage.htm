@@ -1,0 +1,59 @@
+<HTML>
+<HEAD>
+<Title>JsChartViewer.setMouseUsage</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="JsChartViewer.htm">JsChartViewer</a>.setMouseUsage</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setMouseUsage(mouseUsage)
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the mouse usage mode of the control.<br><br>
+The following table describes the supported mouse usage modes and the mouse behaviour in each mode.<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="19%">Constant<th width="19%%">Value<th width="60%">Description
+<tr><td>JsChartViewer.Default<td>0<td>This represents the default mouse behaviour, which is to support tool tips and hot spot events as defined by the image map.<br><br>
+See <a href="BaseChart.getHTMLImageMap.htm">BaseChart.getHTMLImageMap</a> on how to define an image map for a chart.
+<tr><td>JsChartViewer.Scroll<td>2<td>The mouse is used for drag scrolling the chart.<br><br>
+When the mouse drags on the plot area, the mouse cursor will change to a scroll cursor, and a selection rectangle representing the shifted plot area will be displayed to reflect the amount dragged. When the mouse is released, the view port coordinates will be updated to reflect the amount dragged, and a <a href="JsChartViewer.ViewPortChanged.htm">JsChartViewer.ViewPortChanged</a> event will be fired.<br><br>
+If the mouse is not dragging inside the plot area, its behaviour is the same as the default mouse behaviour.
+<tr><td>JsChartViewer.ZoomIn<td>3<td>The mouse is used for zoom in actions.<br><br>
+When the mouse is inside the plot area, the following behaviour will apply:<br><br>
+<ul>
+<li>The mouse cursor will change to a zoom in cursor (a magnifying glass cursor with a '+' sign inside).<br><br>
+<li>When the mouse drags on the plot area, a selection rectangle will be visible. When the mouse button is subsequently released, the view port coordinates will be updated to reflect the selection rectangle, and a <a href="JsChartViewer.ViewPortChanged.htm">JsChartViewer.ViewPortChanged</a> event will be fired.<br><br>
+<li>When the mouse clicks on the plot area without dragging, the view port will be updated to reflect zooming into the clicked point by a ratio specified in <a href="JsChartViewer.setZoomInRatio.htm">JsChartViewer.setZoomInRatio</a>, and a <a href="JsChartViewer.ViewPortChanged.htm">JsChartViewer.ViewPortChanged</a> event will be fired. </ul>
+If the mouse is not inside the plot area, its behaviour is the same as the default mouse behaviour.
+<tr><td>JsChartViewer.ZoomOut<td>4<td>The mouse is used for zoom out actions.<br><br>
+When the mouse is inside the plot area, the following behaviour will apply:<br><br>
+<ul>
+<li>The mouse cursor will change to a zoom out cursor (a magnifying glass cursor with a '-' sign inside).<br><br>
+<li>When the mouse clicks on the plot area , the view port will be updated to reflect zooming out from the clicked point by a ratio specified in <a href="JsChartViewer.setZoomOutRatio.htm">JsChartViewer.setZoomOutRatio</a>, and a <a href="JsChartViewer.ViewPortChanged.htm">JsChartViewer.ViewPortChanged</a> event will be fired. </ul>
+If the mouse is not inside the plot area, its behaviour is the same as the default mouse behaviour.
+</table><br>
+<b>Note:</b> It is known that mouse cursors for scrolling and zooming work on IE 6.0 or above, and FireFox. Due to the different capabilities of the various browsers, the mouse cursors may or may not appear in other browsers.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>mouseUsage</td><td>(Mandatory)</td><td>The mouse usage mode of the control, which must be one of the predefined constants as shown in the table above.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

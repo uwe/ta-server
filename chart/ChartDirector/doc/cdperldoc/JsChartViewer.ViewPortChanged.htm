@@ -1,0 +1,30 @@
+<HTML>
+<HEAD>
+<Title>JsChartViewer.ViewPortChanged</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="JsChartViewer.htm">JsChartViewer</a>.ViewPortChanged</p>
+<hr class="separator">
+<p class="heading2a">Description</p>
+
+<div class="content">
+This event occurs when the view port is changed through mouse actions (see <a href="JsChartViewer.setMouseUsage.htm">JsChartViewer.setMouseUsage</a>).<br><br>
+Use <a href="JsChartViewer.attachHandler.htm">JsChartViewer.attachHandler</a> with the event id "ViewPortChanged" to attach a handler to this event.<br><br>
+If the browser supports partial chart update (that is, AJAX request - see <a href="JsChartViewer.canSupportPartialUpdate.htm">JsChartViewer.canSupportPartialUpdate</a>), the <a href="JsChartViewer.partialUpdate.htm">JsChartViewer.partialUpdate</a> method can be attached to this event, so a partial chart update will occur when the view port changes. If the browser does not support partial chart update, a function to perform a full page update may be attached to this event.<br><br>
+For example, the following is some typical code used after the web page is loaded (typically in the onLoad event handler of the &lt;BODY&gt; tag).<br><br>
+<div style="background-color:#cccccc;width:99%;padding:5px"><pre>// Detect if browser is capable of support partial update (AJAX chart update)
+if (JsChartViewer.canSupportPartialUpdate())
+    // Can support partial update, use partialUpdate when view port changed
+    viewer.attachHandler("ViewPortChanged", viewer.partialUpdate);
+else
+    // Cannot support support partial update, so use full page update (in this
+    // example, we assume this can be by submitting a form in the web page)
+    viewer.attachHandler("ViewPortChanged", function() { document.forms[0].submit(); });</pre></div>
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

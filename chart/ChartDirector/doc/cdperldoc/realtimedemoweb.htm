@@ -1,0 +1,222 @@
+<HTML>
+<HEAD>
+<Title>Realtime Chart Demonstration</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Realtime Chart Demonstration</p>
+<hr class="separator">
+<div class="content"><img src="images/realtime_web.png"><br><br>
+This sample program demonstrates a realtime chart with configurable chart update rate. The chart is being updated without the entire page refreshing.<br><br>
+The code consists of two parts - the containing web page and the charting page.<br><br>
+The containing web page is in HTML, with  an &lt;IMG&gt; tag for displaying the chart. A browser side Javascript periodically refreshes the &lt;IMG&gt; tag. This causes new requests to the charting page, which will return updated charts. So the chart appears to update in periodically.<br><br>
+The container web page can easily be implemented using standard browser side Javascript without any third party library at all. However, in this example, we demonstrate using the JsChartViewer library for refreshing the &lt;IMG&gt;, as it offers several advantages like double buffering (to avoid flickering), handling of overlapping updates, better error handling and cache avoidance. See <a href="JsChartViewer.streamUpdate.htm">JsChartViewer.streamUpdate</a> for more details.<br><br>
+<div style="background-color:#cccccc;width:99%;padding:10px">
+<b><font color="#FF0000">NOTE:</font></b> This sample script uses "cdjcv.js". When developing your own script using this sample code as a template, please ensure you copy "cdjcv.js" to the proper directory and reference it using the proper path.
+</div><br>
+</div><p class="heading1a">Source Code Listing</p><div class="content">
+<b>[CGI Version]</b> perldemo_cgi\realtimedemo.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+#
+# In this demo, the generated web page needs to load the "cdjcv.js" Javascript file. For ease of
+# installation, we put "cdjcv.js" in the same directory as this script. However, if this script is
+# installed in a CGI only directory (such as cgi-bin), the web server would not allow the browser to
+# access this non-CGI file.
+#
+# To get around this potential issue, a special load resource script is used to load these files.
+# Instead of using:
+#
+#    &lt;SCRIPT SRC="cdjcv.js"&gt;
+#
+# we now use:
+#
+#    &lt;SCRIPT SRC="loadresource.pl?file=cdjcv.js"&gt;
+#
+# If this script is not in a CGI only directory, you may replace the following loadResource string
+# with an empty string "" to improve performance.
+#
+my $loadResource = "loadresource.pl?file=";
+
+print "Content-type: text/html\n\n";
+print &lt;&lt;EndOfHTML
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;ChartDirector Realtime Chart Demonstration&lt;/title&gt;
+    &lt;script type="text/javascript" src="${loadResource}cdjcv.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body style="margin:0px"&gt;
+&lt;table cellspacing="0" cellpadding="0" border="0"&gt;
+    &lt;tr&gt;
+        &lt;td align="right" colspan="2" style="background:#000088"&gt;
+            &lt;div style="padding-bottom:2px; padding-right:3px; font-weight:bold; font-size:10pt; font-style:italic; font-family:Arial;"&gt;
+                &lt;a style="color:#FFFF00; text-decoration:none" href="http://www.advsofteng.com/"&gt;Advanced Software Engineering&lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr valign="top"&gt;
+        &lt;td style="width:150px; background:#c0c0ff; border-left:black 1px solid; border-right:black 1px solid; border-bottom:black 1px solid;"&gt;
+            &lt;br /&gt;&lt;br /&gt;
+            &lt;div style="padding:10px; font-size:9pt; font-family:Verdana"&gt;
+                &lt;b&gt;Update Period&lt;/b&gt;&lt;br /&gt;
+                &lt;select id="UpdatePeriod" style="width:130px"&gt;
+                    &lt;option value="5"&gt;5 seconds&lt;/option&gt;
+                    &lt;option value="10" selected="selected"&gt;10 seconds&lt;/option&gt;
+                    &lt;option value="20"&gt;20 seconds&lt;/option&gt;
+                    &lt;option value="30"&gt;30 seconds&lt;/option&gt;
+                    &lt;option value="60"&gt;60 seconds&lt;/option&gt;
+                &lt;/select&gt;
+            &lt;/div&gt;
+            &lt;div style="padding:10px; font-size:9pt; font-family:Verdana"&gt;
+                &lt;b&gt;Time Remaining&lt;/b&gt;&lt;br /&gt;
+                &lt;div style="width:130px; border:#888888 1px inset;"&gt;
+                    &lt;div style="margin:3px" id="TimeRemaining"&gt;&nbsp;&lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+            &lt;div style="font-weight:bold; font-size:20pt; margin:5px 0px 0px 5px; font-family:Arial"&gt;
+                ChartDirector Realtime Chart Demonstration
+            &lt;/div&gt;
+            &lt;hr style="border:solid 1px #000080" /&gt;
+            &lt;div style="padding:0px 5px 0px 10px"&gt;
+                &lt;!-- ****** Here is the image tag for the chart image ****** --&gt;
+                &lt;img id="ChartImage1" src="realtimechart.pl?chartId=demoChart1"&gt;
+            &lt;/div&gt;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+&lt;script type="text/javascript"&gt;
+// The followings is executed once every second
+function updateDisplay()
+{
+    // Utility to get an object by id that works with most browsers
+    var getObj = function(id) {    return document.getElementById ? document.getElementById(id) : document.all[id]; }
+
+    // Get the configured update period
+    var updatePeriodObj = getObj("UpdatePeriod");
+    var updatePeriod = parseInt(updatePeriodObj.value);
+
+    // Subtract 1 second for the remaining time - reload the counter if remaining time is 0
+    if (!updatePeriodObj.timeLeft || (updatePeriodObj.timeLeft &lt;= 0))
+        updatePeriodObj.timeLeft = updatePeriod - 1;
+    else
+        updatePeriodObj.timeLeft = Math.min(updatePeriod, updatePeriodObj.timeLeft) - 1;
+
+    // Update the chart if configured time has elasped
+    if ((updatePeriodObj.timeLeft &lt;= 0) && window.JsChartViewer)
+        JsChartViewer.get('ChartImage1').streamUpdate();
+
+    // Update the display to show remaining time
+    getObj("TimeRemaining").innerHTML = updatePeriodObj.timeLeft + ((updatePeriodObj.timeLeft &gt; 1) ? " seconds" : " second");
+}
+window.setInterval("updateDisplay()", 1000);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+EndOfHTML
+;</pre></tr></td></table><br>
+<b>[CGI Version]</b> perldemo_cgi\realtimechart.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+#
+# Data to draw the chart. In this demo, the data buffer will be filled by a random
+# data generator. In real life, the data is probably stored in a buffer (eg. a
+# database table, a text file, or some global memory) and updated by other means.
+#
+
+# We use a data buffer to emulate the last 240 samples.
+my $sampleSize = 240;
+my $dataSeries1 = [(0) x $sampleSize];
+my $dataSeries2 = [(0) x $sampleSize];
+my $dataSeries3 = [(0) x $sampleSize];
+my $timeStamps = [(0) x $sampleSize];
+
+# Our pseudo random number generator
+my $firstDate = perlchartdir::chartTime2(time()) - scalar(@$timeStamps);
+for(my $i = 0; $i &lt; scalar(@$timeStamps); ++$i) {
+    my $p = $firstDate + $i;
+    $timeStamps-&gt;[$i] = $p;
+    $dataSeries1-&gt;[$i] = cos($p * 7 * 18463) * 10 + 1 / (cos($p) * cos($p) + 0.01) +
+        20;
+    $dataSeries2-&gt;[$i] = 100 * sin($p / 27.7) * sin($p / 10.1) + 150;
+    $dataSeries3-&gt;[$i] = 100 * cos($p / 6.7) * cos($p / 11.9) + 150;
+}
+
+# Create an XYChart object 600 x 270 pixels in size, with light grey (f4f4f4)
+# background, black (000000) border, 1 pixel raised effect, and with a rounded frame.
+my $c = new XYChart(600, 270, 0xf4f4f4, 0x000000, 0);
+$c-&gt;setRoundedFrame();
+
+# Set the plotarea at (55, 62) and of size 520 x 175 pixels. Use white (ffffff)
+# background. Enable both horizontal and vertical grids by setting their colors to
+# grey (cccccc). Set clipping mode to clip the data lines to the plot area.
+$c-&gt;setPlotArea(55, 62, 520, 175, 0xffffff, -1, -1, 0xcccccc, 0xcccccc);
+$c-&gt;setClipping();
+
+# Add a title to the chart using 15 pts Times New Roman Bold Italic font, with a
+# light grey (dddddd) background, black (000000) border, and a glass like raised
+# effect.
+$c-&gt;addTitle("Zooming and Scrolling Demonstration", "timesbi.ttf", 15
+    )-&gt;setBackground(0xdddddd, 0x000000, perlchartdir::glassEffect());
+
+# Add a legend box at the top of the plot area with 9pts Arial Bold font. We set the
+# legend box to the same width as the plot area and use grid layout (as opposed to
+# flow or top/down layout). This distributes the 3 legend icons evenly on top of the
+# plot area.
+my $b = $c-&gt;addLegend2(55, 33, 3, "arialbd.ttf", 9);
+$b-&gt;setBackground($perlchartdir::Transparent, $perlchartdir::Transparent);
+$b-&gt;setWidth(520);
+
+# Configure the y-axis with a 10pts Arial Bold axis title
+$c-&gt;yAxis()-&gt;setTitle("Price (USD)", "arialbd.ttf", 10);
+
+# Configure the x-axis to auto-scale with at least 75 pixels between major tick and
+# 15 pixels between minor ticks. This shows more minor grid lines on the chart.
+$c-&gt;xAxis()-&gt;setTickDensity(75, 15);
+
+# Set the axes width to 2 pixels
+$c-&gt;xAxis()-&gt;setWidth(2);
+$c-&gt;yAxis()-&gt;setWidth(2);
+
+# Set the x-axis label format
+$c-&gt;xAxis()-&gt;setLabelFormat("{value|hh:nn:ss}");
+
+# Create a line layer to plot the lines
+my $layer = $c-&gt;addLineLayer2();
+
+# The x-coordinates are the timeStamps.
+$layer-&gt;setXData($timeStamps);
+
+# The 3 data series are used to draw 3 lines. Here we put the latest data values as
+# part of the data set name, so you can see them updated in the legend box.
+$layer-&gt;addDataSet($dataSeries1, 0xff0000, $c-&gt;formatValue($dataSeries1-&gt;[scalar(@
+    $dataSeries1) - 1], "Software: &lt;*bgColor=FFCCCC*&gt; {value|2} "));
+$layer-&gt;addDataSet($dataSeries2, 0x00cc00, $c-&gt;formatValue($dataSeries2-&gt;[scalar(@
+    $dataSeries2) - 1], "Hardware: &lt;*bgColor=CCFFCC*&gt; {value|2} "));
+$layer-&gt;addDataSet($dataSeries3, 0x0000ff, $c-&gt;formatValue($dataSeries3-&gt;[scalar(@
+    $dataSeries3) - 1], "Services: &lt;*bgColor=CCCCFF*&gt; {value|2} "));
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table></div><br>
+<hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div></body>
+</HTML>

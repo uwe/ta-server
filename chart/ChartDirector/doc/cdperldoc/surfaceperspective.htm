@@ -1,0 +1,147 @@
+<HTML>
+<HEAD>
+<Title>Surface Perspective</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Surface Perspective</p>
+<hr class="separator">
+<div class="content">
+<img src="images/surfaceperspective0.jpg">&nbsp;&nbsp;<img src="images/surfaceperspective1.jpg">&nbsp;&nbsp;<img src="images/surfaceperspective2.jpg">&nbsp;&nbsp;<img src="images/surfaceperspective3.jpg">&nbsp;&nbsp;<img src="images/surfaceperspective4.jpg">&nbsp;&nbsp;<img src="images/surfaceperspective5.jpg">
+<br><br>
+This example demonstrates the effects of various perspective depth, configured using <a href="SurfaceChart.setPerspective.htm">SurfaceChart.setPerspective</a>.
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\surfaceperspective.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+sub createChart
+{
+    my $img = shift;
+
+    # The x and y coordinates of the grid
+    my $dataX = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
+    my $dataY = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
+
+    # The values at the grid points. In this example, we will compute the values
+    # using the formula z = sin((x - 0.5) * 2 * pi) * sin((y - 0.5) * 2 * pi)
+    my $dataZ = [(0) x (scalar(@$dataX) * scalar(@$dataY))];
+    for(my $yIndex = 0; $yIndex &lt; scalar(@$dataY); ++$yIndex) {
+        my $y = ($dataY-&gt;[$yIndex] - 0.5) * 2 * 3.1416;
+        for(my $xIndex = 0; $xIndex &lt; scalar(@$dataX); ++$xIndex) {
+            my $x = ($dataX-&gt;[$xIndex] - 0.5) * 2 * 3.1416;
+            $dataZ-&gt;[$yIndex * scalar(@$dataX) + $xIndex] = sin($x) * sin($y);
+        }
+    }
+
+    # the perspective level
+    my $perspective = int($img) * 12;
+
+    # Create a SurfaceChart object of size 360 x 360 pixels, with white (ffffff)
+    # background and grey (888888) border.
+    my $c = new SurfaceChart(360, 360, 0xffffff, 0x888888);
+
+    # Set the perspective level
+    $c-&gt;setPerspective($perspective);
+    $c-&gt;addTitle("Perspective = $perspective");
+
+    # Set the center of the plot region at (195, 165), and set width x depth x height
+    # to 200 x 200 x 150 pixels
+    $c-&gt;setPlotRegion(195, 165, 200, 200, 150);
+
+    # Set the plot region wall thichness to 5 pixels
+    $c-&gt;setWallThickness(5);
+
+    # Set the elevation and rotation angles to 30 and 30 degrees
+    $c-&gt;setViewAngle(30, 30);
+
+    # Set the data to use to plot the chart
+    $c-&gt;setData($dataX, $dataY, $dataZ);
+
+    # Spline interpolate data to a 40 x 40 grid for a smooth surface
+    $c-&gt;setInterpolation(40, 40);
+
+    # Use smooth gradient coloring.
+    $c-&gt;colorAxis()-&gt;setColorGradient();
+
+    # Output the chart
+    $c-&gt;makeChart("surfaceperspective$img.jpg")
+}
+
+createChart(0);
+createChart(1);
+createChart(2);
+createChart(3);
+createChart(4);
+createChart(5);</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\surfaceperspective.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# Get HTTP query parameters
+use CGI;
+my $query = new CGI;
+
+# The x and y coordinates of the grid
+my $dataX = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
+my $dataY = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
+
+# The values at the grid points. In this example, we will compute the values using
+# the formula z = sin((x - 0.5) * 2 * pi) * sin((y - 0.5) * 2 * pi)
+my $dataZ = [(0) x (scalar(@$dataX) * scalar(@$dataY))];
+for(my $yIndex = 0; $yIndex &lt; scalar(@$dataY); ++$yIndex) {
+    my $y = ($dataY-&gt;[$yIndex] - 0.5) * 2 * 3.1416;
+    for(my $xIndex = 0; $xIndex &lt; scalar(@$dataX); ++$xIndex) {
+        my $x = ($dataX-&gt;[$xIndex] - 0.5) * 2 * 3.1416;
+        $dataZ-&gt;[$yIndex * scalar(@$dataX) + $xIndex] = sin($x) * sin($y);
+    }
+}
+
+# the perspective level
+my $perspective = int($query-&gt;param("img")) * 12;
+
+# Create a SurfaceChart object of size 360 x 360 pixels, with white (ffffff)
+# background and grey (888888) border.
+my $c = new SurfaceChart(360, 360, 0xffffff, 0x888888);
+
+# Set the perspective level
+$c-&gt;setPerspective($perspective);
+$c-&gt;addTitle("Perspective = $perspective");
+
+# Set the center of the plot region at (195, 165), and set width x depth x height to
+# 200 x 200 x 150 pixels
+$c-&gt;setPlotRegion(195, 165, 200, 200, 150);
+
+# Set the plot region wall thichness to 5 pixels
+$c-&gt;setWallThickness(5);
+
+# Set the elevation and rotation angles to 30 and 30 degrees
+$c-&gt;setViewAngle(30, 30);
+
+# Set the data to use to plot the chart
+$c-&gt;setData($dataX, $dataY, $dataZ);
+
+# Spline interpolate data to a 40 x 40 grid for a smooth surface
+$c-&gt;setInterpolation(40, 40);
+
+# Use smooth gradient coloring.
+$c-&gt;colorAxis()-&gt;setColorGradient();
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/jpeg\n\n";
+print $c-&gt;makeChart2($perlchartdir::JPG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

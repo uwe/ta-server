@@ -1,0 +1,239 @@
+<HTML>
+<HEAD>
+<Title>Inter-Line Coloring</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Inter-Line Coloring</p>
+<hr class="separator">
+<div class="content">
+<img src="images/linefill.png">
+<br><br>
+This example demonstrates filling the area between two lines or curves.<br><br>
+In ChartDirector, an <a href="InterLineLayer.htm">InterLineLayer</a> can be used to fill the region between any two lines. The lines can be from a <a href="LineLayer.htm">LineLayer</a>, <a href="StepLineLayer.htm">StepLineLayer</a>, <a href="SplineLayer.htm">SplineLayer</a>, <a href="TrendLayer.htm">TrendLayer</a>, or from an axis <a href="Mark.htm">Mark</a>. Two colors can be used for filling, depending on which line is on top.<br><br>
+In this example, an InterLineLayer is used to fill the region between a normal line and a spline curve. Another InterLineLayer is used to fill the region between a normal line and a mark line. The fill color differs depending on which line is on top.
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\linefill.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# The data for the line chart
+my $data0 = [70, 73, 80, 90, 95, 93, 82, 77, 82, 101, 111, 115];
+my $data1 = [90, 96, 89, 77, 82, 96, 109, 109, 99, 108, 96, 91];
+my $data2 = [58, 34, 25, 49, 64, 10, 16, 40, 25, 49, 40, 22];
+
+# The labels for the line chart
+my $labels = ["2008-01", "2008-02", "2008-03", "2008-04", "2008-05", "2008-06",
+    "2008-07", "2008-08", "2008-09", "2008-10", "2008-11", "2008-12"];
+
+# Create a XYChart object of size 450 x 450 pixels
+my $c = new XYChart(450, 450);
+
+# Add a title to the chart using 15 pts Arial Italic font.
+my $title = $c-&gt;addTitle("Inter-line Coloring", "ariali.ttf", 15);
+
+# Add a legend box where the top-center is anchored to the horizontal center of the
+# chart, just under the title. Use horizontal layout and 10 points Arial Bold font,
+# and transparent background and border. Use line style legend key.
+my $legendBox = $c-&gt;addLegend($c-&gt;getWidth() / 2, $title-&gt;getHeight(), 0,
+    "arialbi.ttf", 10);
+$legendBox-&gt;setBackground($perlchartdir::Transparent, $perlchartdir::Transparent);
+$legendBox-&gt;setAlignment($perlchartdir::TopCenter);
+$legendBox-&gt;setLineStyleKey();
+
+# Tentatively set the plotarea at (70, 65) and of (chart_width - 100) x (chart_height
+# - 110) in size. Use light grey (c0c0c0) border and horizontal and vertical grid
+# lines.
+my $plotArea = $c-&gt;setPlotArea(70, 65, $c-&gt;getWidth() - 100, $c-&gt;getHeight() - 110,
+    -1, -1, 0xc0c0c0, 0xc0c0c0, -1);
+
+# Add a title to the y axis using 12 pts Arial Bold Italic font
+$c-&gt;yAxis()-&gt;setTitle("Axis Title Placeholder", "arialbi.ttf", 12);
+
+# Add a title to the x axis using 12 pts Arial Bold Italic font
+$c-&gt;xAxis()-&gt;setTitle("Axis Title Placeholder", "arialbi.ttf", 12);
+
+# Set the axes line width to 3 pixels
+$c-&gt;xAxis()-&gt;setWidth(3);
+$c-&gt;yAxis()-&gt;setWidth(3);
+
+# Set the labels on the x axis.
+$c-&gt;xAxis()-&gt;setLabels($labels);
+
+# Use 8 points Arial rotated by 90 degrees as the x-axis label font
+$c-&gt;xAxis()-&gt;setLabelStyle("Arial", 8, $perlchartdir::TextColor, 90);
+
+# Add a spline curve to the chart
+my $layer0 = $c-&gt;addSplineLayer($data0, 0xff0000, "Data Set 0");
+$layer0-&gt;setLineWidth(2);
+
+# Add a normal line to the chart
+my $layer1 = $c-&gt;addLineLayer($data1, 0x008800, "Data Set 1");
+$layer1-&gt;setLineWidth(2);
+
+# Color the region between the above spline curve and normal line. Use the
+# semi-transparent red (80ff000000) if the spline curve is higher than the normal
+# line, otherwise use semi-transparent green (80008800)
+$c-&gt;addInterLineLayer($layer0-&gt;getLine(), $layer1-&gt;getLine(), 0x80ff0000, 0x80008800)
+    ;
+
+# Add another normal line to the chart
+my $layer2 = $c-&gt;addLineLayer($data2, 0x0000ff, "Data Set 2");
+$layer2-&gt;setLineWidth(2);
+
+# Add a horizontal mark line to the chart at y = 40
+my $mark = $c-&gt;yAxis()-&gt;addMark(40, -1, "Threshold");
+$mark-&gt;setLineWidth(2);
+
+# Set the mark line to purple (880088) dash line. Use white (ffffff) for the mark
+# label.
+$mark-&gt;setMarkColor($c-&gt;dashLineColor(0x880088), 0xffffff);
+
+# Put the mark label at the left side of the mark, with a purple (880088) background.
+$mark-&gt;setAlignment($perlchartdir::Left);
+$mark-&gt;setBackground(0x880088);
+
+# Color the region between the above normal line and mark line. Use the
+# semi-transparent blue (800000ff) if the normal line is higher than the mark line,
+# otherwise use semi-transparent purple (80880088)
+$c-&gt;addInterLineLayer($layer2-&gt;getLine(), $mark-&gt;getLine(), 0x800000ff, 0x80880088);
+
+# Layout the legend box, so we can get its height
+$c-&gt;layoutLegend();
+
+# Adjust the plot area size, such that the bounding box (inclusive of axes) is 10
+# pixels from the left edge, just under the legend box, 25 pixels from the right
+# edge, and 10 pixels from the bottom edge.
+$c-&gt;packPlotArea(10, $legendBox-&gt;getTopY() + $legendBox-&gt;getHeight(), $c-&gt;getWidth()
+     - 25, $c-&gt;getHeight() - 10);
+
+# After determining the exact plot area position, we may adjust the legend box and
+# the title positions so that they are centered relative to the plot area (instead of
+# the chart)
+$legendBox-&gt;setPos($plotArea-&gt;getLeftX() + ($plotArea-&gt;getWidth() -
+    $legendBox-&gt;getWidth()) / 2, $legendBox-&gt;getTopY());
+$title-&gt;setPos($plotArea-&gt;getLeftX() + ($plotArea-&gt;getWidth() - $title-&gt;getWidth()) /
+    2, $title-&gt;getTopY());
+
+# Output the chart
+$c-&gt;makeChart("linefill.png")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\linefill.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The data for the line chart
+my $data0 = [70, 73, 80, 90, 95, 93, 82, 77, 82, 101, 111, 115];
+my $data1 = [90, 96, 89, 77, 82, 96, 109, 109, 99, 108, 96, 91];
+my $data2 = [58, 34, 25, 49, 64, 10, 16, 40, 25, 49, 40, 22];
+
+# The labels for the line chart
+my $labels = ["2008-01", "2008-02", "2008-03", "2008-04", "2008-05", "2008-06",
+    "2008-07", "2008-08", "2008-09", "2008-10", "2008-11", "2008-12"];
+
+# Create a XYChart object of size 450 x 450 pixels
+my $c = new XYChart(450, 450);
+
+# Add a title to the chart using 15 pts Arial Italic font.
+my $title = $c-&gt;addTitle("Inter-line Coloring", "ariali.ttf", 15);
+
+# Add a legend box where the top-center is anchored to the horizontal center of the
+# chart, just under the title. Use horizontal layout and 10 points Arial Bold font,
+# and transparent background and border. Use line style legend key.
+my $legendBox = $c-&gt;addLegend($c-&gt;getWidth() / 2, $title-&gt;getHeight(), 0,
+    "arialbi.ttf", 10);
+$legendBox-&gt;setBackground($perlchartdir::Transparent, $perlchartdir::Transparent);
+$legendBox-&gt;setAlignment($perlchartdir::TopCenter);
+$legendBox-&gt;setLineStyleKey();
+
+# Tentatively set the plotarea at (70, 65) and of (chart_width - 100) x (chart_height
+# - 110) in size. Use light grey (c0c0c0) border and horizontal and vertical grid
+# lines.
+my $plotArea = $c-&gt;setPlotArea(70, 65, $c-&gt;getWidth() - 100, $c-&gt;getHeight() - 110,
+    -1, -1, 0xc0c0c0, 0xc0c0c0, -1);
+
+# Add a title to the y axis using 12 pts Arial Bold Italic font
+$c-&gt;yAxis()-&gt;setTitle("Axis Title Placeholder", "arialbi.ttf", 12);
+
+# Add a title to the x axis using 12 pts Arial Bold Italic font
+$c-&gt;xAxis()-&gt;setTitle("Axis Title Placeholder", "arialbi.ttf", 12);
+
+# Set the axes line width to 3 pixels
+$c-&gt;xAxis()-&gt;setWidth(3);
+$c-&gt;yAxis()-&gt;setWidth(3);
+
+# Set the labels on the x axis.
+$c-&gt;xAxis()-&gt;setLabels($labels);
+
+# Use 8 points Arial rotated by 90 degrees as the x-axis label font
+$c-&gt;xAxis()-&gt;setLabelStyle("Arial", 8, $perlchartdir::TextColor, 90);
+
+# Add a spline curve to the chart
+my $layer0 = $c-&gt;addSplineLayer($data0, 0xff0000, "Data Set 0");
+$layer0-&gt;setLineWidth(2);
+
+# Add a normal line to the chart
+my $layer1 = $c-&gt;addLineLayer($data1, 0x008800, "Data Set 1");
+$layer1-&gt;setLineWidth(2);
+
+# Color the region between the above spline curve and normal line. Use the
+# semi-transparent red (80ff000000) if the spline curve is higher than the normal
+# line, otherwise use semi-transparent green (80008800)
+$c-&gt;addInterLineLayer($layer0-&gt;getLine(), $layer1-&gt;getLine(), 0x80ff0000, 0x80008800)
+    ;
+
+# Add another normal line to the chart
+my $layer2 = $c-&gt;addLineLayer($data2, 0x0000ff, "Data Set 2");
+$layer2-&gt;setLineWidth(2);
+
+# Add a horizontal mark line to the chart at y = 40
+my $mark = $c-&gt;yAxis()-&gt;addMark(40, -1, "Threshold");
+$mark-&gt;setLineWidth(2);
+
+# Set the mark line to purple (880088) dash line. Use white (ffffff) for the mark
+# label.
+$mark-&gt;setMarkColor($c-&gt;dashLineColor(0x880088), 0xffffff);
+
+# Put the mark label at the left side of the mark, with a purple (880088) background.
+$mark-&gt;setAlignment($perlchartdir::Left);
+$mark-&gt;setBackground(0x880088);
+
+# Color the region between the above normal line and mark line. Use the
+# semi-transparent blue (800000ff) if the normal line is higher than the mark line,
+# otherwise use semi-transparent purple (80880088)
+$c-&gt;addInterLineLayer($layer2-&gt;getLine(), $mark-&gt;getLine(), 0x800000ff, 0x80880088);
+
+# Layout the legend box, so we can get its height
+$c-&gt;layoutLegend();
+
+# Adjust the plot area size, such that the bounding box (inclusive of axes) is 10
+# pixels from the left edge, just under the legend box, 25 pixels from the right
+# edge, and 10 pixels from the bottom edge.
+$c-&gt;packPlotArea(10, $legendBox-&gt;getTopY() + $legendBox-&gt;getHeight(), $c-&gt;getWidth()
+     - 25, $c-&gt;getHeight() - 10);
+
+# After determining the exact plot area position, we may adjust the legend box and
+# the title positions so that they are centered relative to the plot area (instead of
+# the chart)
+$legendBox-&gt;setPos($plotArea-&gt;getLeftX() + ($plotArea-&gt;getWidth() -
+    $legendBox-&gt;getWidth()) / 2, $legendBox-&gt;getTopY());
+$title-&gt;setPos($plotArea-&gt;getLeftX() + ($plotArea-&gt;getWidth() - $title-&gt;getWidth()) /
+    2, $title-&gt;getTopY());
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

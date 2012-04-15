@@ -1,0 +1,159 @@
+<HTML>
+<HEAD>
+<Title>Zooming and Scrolling Framework</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Zooming and Scrolling Framework</p>
+<hr class="separator">
+<p class="heading1aa">Introduction</p><div class="content">
+When talking about "zooming", it is common to think about zooming like a digital photograph, in which everything is magnified, but is otherwise exactly the same. The zoom ratio is usually a few times and the same data (the photograph) are used at all zoom levels.<br><br>
+There is a much more powerful type of zooming, like zooming in a map. For example, one may start with a world map, and zoom all the way down to seeing the streets and buildings within a city. The zoom ratio can be in the order of 500000 - 1000000 times. Different presentation method may be used at different scales. For example, the world map may show only terrain information, while at highest zoom ratio the map may show the names of individual streets.<br><br>
+The ChartDirector Zooming and Scrolling Framework is designed based on the second model of zooming. The key features are:<br><br>
+<ul>
+<li>Virtually unlimited zoom ratio.<br><br>
+For example, one can zoom from 10 years down to 1 second (a zoom ratio of 315 million times).<br><br>
+<li>Allows different chart types and data grouping methods at different scales.<br><br>
+For example, to plot temperature for 1 day, one may be interested hourly temperature. On the other hand, to plot the temperature for 1 year, one may be interested in the daily high-low range (eg. using two lines for high and low daily temperatures and fill the region in between) rather than the hourly temperatures.<br><br>
+<li>Click and drag to control zooming and scrolling.<br><br>
+The browser side Javascript chart viewer control (<a href="JsChartViewer.htm">JsChartViewer</a>)  implements zoom/scroll controls via mouse actions. One may use the mouse to drag to scroll, drag to select a region to zoom into, click to zoom in, and click to zoom out depending on the mouse usage mode (set using <a href="JsChartViewer.setMouseUsage.htm">JsChartViewer.setMouseUsage</a>).<br><br>
+<li>Allows external controls for zooming and scrolling.<br><br>
+In many applications, it may be desirable to have several controls to control zooming and scrolling. For example, for a time based chart, in addition to use "drag to scroll" and "drag to zoom", one may want to allow users to select the start and end dates on the axis using drop down list boxes or other controls.<br><br>
+</ul>
+</div><p class="heading1a">The View Port</p><div class="content">
+The ChartDirector Zooming and Scrolling framework is based on the concept of a view port.<br><br>
+A view port can be imagined as a rectangular window of an underlying rectangular surface. For example, a chart that has 10 years of data can be imagined as a very long chart. If one only displays one of the year, we can say the view port covers only 10% of the underlying chart.<br><br>
+With the view port concept, scrolling can be handled as moving the view port, while zooming in and out can be handled as changing the view port size.
+</div><p class="heading1a">WebChartViewer and JsChartViewer</p><div class="content">
+The ChartDirector Zooming and Scrolling Framework for web applications is based on two controls:<br><br>
+<ul>
+<li><a href="JsChartViewer.htm">JsChartViewer</a> : This is a browser side Javascript control that manages the view port. It allows the view port coordinates to be modified by mouse actions, such as drag to scroll, drag to select a region to zoom into, click to zoom in, and click to zoom out.<br><br>
+<li><a href="WebChartViewer.htm">WebChartViewer</a> : This is the server side counterpart of JsChartViewer. It acts as a "proxy" to JsChartViewer. Properties of the browser side JsChartViewer will be accessible as properties of the WebChartViewer, and vice versa.<br><br>
+</ul>
+In a typical web page with a zoomable and scrollable chart, the operation is like:<br><br>
+<ul>
+<li>The browser sends a request to the server for the web page.<br><br>
+<li>On the server side, the chart is created and set into the WebChartViewer. The WebChartViewer may also be configured with the initial state of the JsChartViewer. The WebChartViewer may then generated the HTML tags for the chart image and the JsChartViewer state. These tags may be inserted into the web page to be sent to the browser.<br><br>
+<li>On the browser side, the user can then see the chart, and can use the mouse actions to zoom or scroll the chart.<br><br>
+<li>When a zooming or scrolling action occurs, the JsChartViewer will update its view port coordinates and send the updated state to the server.<br><br>
+<li>On the server side, the WebChartViewer can be used to retrieve the updated view port coordinates. An updated chart can then be created and set into the WebChartViewer, which will then be sent back to the browser side JsChartViewer for display.<br><br>
+</ul>
+The last three steps may then repeat many times.
+</div><p class="heading1a">Partial Chart Update and Full Page Update</p><div class="content">
+ChartDirector supports using AJAX (Asynchronous Javascript And XML) methods for the communication between the JsChartViewer and WebChartViewer. So the chart can be updated without refreshing the web page. In ChartDirector terminology, this is called a partial chart update.<br><br>
+The vast majority of the browsers nowadays support AJAX. However, it is still possible a user may be using a non-AJAX supporting browser. To handle these cases, ChartDirector also supports using traditional full page update  method. In this method, the JsChartViewer updates the WebChartViewer by using HTTP POST or GET, and the WebChartViewer updates the browser display by updating the entire page.<br><br>
+<a href="JsChartViewer.canSupportPartialUpdate.htm">JsChartViewer.canSupportPartialUpdate</a> can be used to dynamically detect if a browser supports AJAX or not, so the JsChartViewer can determine which method to use to communicate with the WebChartViewer.
+</div><p class="heading1a">Integration with External Controls</p><div class="content">
+It is not uncommon for a web page to be designed with multiple ways to control the axis range of the chart. For example, in a time based chart, in addition to using "drag to scroll" and "drag to select region" to select the time range of the chart, there may be text fields or drop down list boxes to allow the user to select the start time and end time directly.<br><br>
+Although the text fields or drop down list boxes are not part of the JsChartViewer, it would be ideal if these external controls can also use partial chart updates (AJAX requests), so the chart can be updated without the web page refreshing.<br><br>
+Also, if a user drags to scroll the chart using JsChartViewer, in addition to updating the chart, the text fields or drop down list boxes may also need to be updated to show the new time range.<br><br>
+To support external controls, JsChartViewer and WebChartViewer support custom attributes. Like other properties of JsChartViewer and WebChartViewer, custom attributes set on the browser side JsChartViewer will be accessible from the server side WebChartViewer, and vice versa.<br><br>
+For example, in the above case with external text fields for entering the start and end dates, the operation may be like:<br><br>
+<ul>
+<li>Suppose the user enters the start and end dates directly using text fields and then press the "OK button". In the onClick event handler of the button, <a href="JsChartViewer.setCustomAttr.htm">JsChartViewer.setCustomAttr</a> may be used to copy the text fields into the JsChartViewer as custom attributes. Then <a href="JsChartViewer.partialUpdate.htm">JsChartViewer.partialUpdate</a> may be used to sent a partial chart update request to the server.<br><br>
+<li>On the server side, <a href="WebChartViewer.getCustomAttr.htm">WebChartViewer.getCustomAttr</a> may be used to get back the text field data. The server side script may then validate the user input, create an updated chart, and set it into the WebChartViewer. If the text fields are updated (eg., after user input validation, the text fields may have changed), they may be modified using <a href="WebChartViewer.setCustomAttr.htm">WebChartViewer.setCustomAttr</a>. The updated chart and text field data will then be sent back to the browser.<br><br>
+<li>On the browser side, upon receiving the response, JsChartViewer will display the updated chart. To update the text fields, a <a href="JsChartViewer.PostUpdate.htm">JsChartViewer.PostUpdate</a> event handler may be used to copy the custom attributes (get using <a href="JsChartViewer.getCustomAttr.htm">JsChartViewer.getCustomAttr</a>) to the text fields.<br><br>
+</ul>
+</div><p class="heading1a">Persistent State Storage</p><div class="content">
+Apart from supporting external controls, another usage of custom attributes is to provide a persistent state storage across multiple chart update requests.<br><br>
+In a zoomable and scrollable, whenever the view port is updated, there will be a request sent to the server for an updated chart. It is often useful to have a storage that is persistent across multiple chart update requests. In other words, data set in a chart update request can be retrieved in subsequent chart update requests.<br><br>
+Custom attributes can serve this role because attributes set on the server side WebChartViewer will be transported to the browser side JsChartViewer. During chart update requests, these attributes will be transported back to the server side. So these custom attributes are preserved across chart update requests from both the server side and browser side point of view.
+</div><p class="heading1a">Typical Server Side Code Structure</p><div class="content">
+The server side code may need to handle the following types of requests from the browser:<br><br>
+<ul>
+<li><b>Initial page request</b>: This occurs when the page is accessed for the first time by a browser. The server side script should set the initial state of the JsChartViewer (through the WebChartViewer), and generate the entire web page including the chart.<br><br>
+<li><b>Partial chart update (AJAX chart update)</b>: This occurs when the JsChartViewer sends a partial chart update requests to the server. The WebChartViewer may be used to process the request and to send an updated chart and as response.<br><br>
+<a href="WebChartViewer.isPartialUpdateRequest.htm">WebChartViewer.isPartialUpdateRequest</a> may be used to detect if the current HTTP request is a partial update request.<br><br>
+<li><b>Full page update</b>: This occurs when the browser sends a traditional HTTP POST or GET request to the server. The request may be due to zoom or scroll mouse actions, or it can be submitted by external controls.<br><br>
+<a href="WebChartViewer.isFullUpdateRequest.htm">WebChartViewer.isFullUpdateRequest</a> may be used to detect if the current HTTP request is a full update request.<br><br>
+</ul>
+Note that one may always design a web page that only uses partial chart update or full page update, in which case only the corresponding request type needs to be implemented.<br><br>
+If a page only supports partial chart update, then very old browsers that do not support AJAX may be unable to zoom or scroll the chart, but they can still see the initial chart.<br><br>
+If a page only supports full page update, then it will work with all browsers, but each zooming or scrolling requests will result in updating the entire web page.<br><br>
+The typical code structure will be like:<br><br>
+<ul>
+<li>For the initial page request, initialize the overall range and visible range of the chart. For example, for a time based chart, one may set the overall range to be 5 years, and the initial visible range to be 1 year.<br><br>
+If the initial chart is designed to display all available data, one may use the auto-scaled axis range (obtain using <a href="Axis.getMaxValue.htm">Axis.getMaxValue</a> and <a href="Axis.getMinValue.htm">Axis.getMinValue</a> after creating the chart) as the overall range.<br><br>
+The overall range and visible range may then be used to compute the initial view port position and size.<br><br>
+The overall range is needed in subsequent chart update requests. It may be stored as custom attributes using <a href="WebChartViewer.setCustomAttr.htm">WebChartViewer.setCustomAttr</a>, so it can be retrieved in subsequent chart update requests.<br><br>
+<li>In subsequent chart update requests, use the view port settings and the overall range to determine the visible range.<br><br>
+<li>Retrieve the necessary data based on the visible range.<br><br>
+If the number of data points are small, you may also retrieve all data without regarding the visible range. ChartDirector will automatically clip the data to the view port. On the other hand, if there are many data points (which is typical of charts that need to zoom and scroll), it is recommended you retrieve only the necessary data to improve charting performance.<br><br>
+For charts that need to zoom or scroll, it is not uncommon to have data series with thousands or even millions of points. However, considering a typical plot area is less than a thousand pixels in width, for most chart types, it is not necessary to plot that many points.<br><br>
+Plotting too many data points will reduce the effective resolution of the chart rather than increasing it. It is like drawing a world map on the screen by drawing each street in each city in detail. Instead of getting a very detail map, one probably get a not too useful map.<br><br>
+In general, for most chart types, the best chart is obtained when the number of data points is about the same as the number of pixels in width. As a rule of thumb, one may try to aggregate the data points together so that the number of points is 50% to 100% of the number of pixels in width.<br><br>
+Aggregation means to group multiple data points together into one point. Common aggregation methods include using averaging, resampling, peak value, summation, etc. The exact method to use depends on your chart type and the nature of the data. For example, in a line chart, one may use averaging as the aggregation method, while for an area chart, one may use the peak value as the aggregation method.<br><br>
+Sometimes, it may be meaningful to aggregate one data series into multiple data series. For example, suppose we have a data series representing the hourly temperature, and we need to plot it for a year (365 x 24 = 8760 points). Instead of plotting the data directly, we may aggregate the data into 3 daily series, representing the maximum, minimum and average temperature of a day. We may even use a color to fill the region between the maximum and minimum lines. The resulting chart will be much for elegant and useful than using the raw data directly.<br><br>
+If the data come from a SQL database, one can often aggregate the data by using the GROUP BY clause in SQL statements. This may make the database query much faster, as the query result set will have much less records.<br><br>
+ChartDirector includes a utility method <a href="ArrayMath.aggregate.htm">ArrayMath.aggregate</a> that can be used to conveniently aggregate data. This is useful for non-SQL data sources that do not support aggregate statements.<br><br>
+<li>Draw the chart with the given data.<br><br>
+There are plenty of sample code elsewhere in this documentation on how to draw various charts with ChartDirector. A special point to note is that the charting code may need to configure the axis scale as according to the view port, except for the initial chart which may use auto-scaling.<br><br>
+The created chart may be stored in a temporary file using <a href="BaseChart.makeTmpFile.htm">BaseChart.makeTmpFile</a>. The URL to retrieve the chart should be set to the WebChartViewer using <a href="WebChartViewer.setImageUrl.htm">WebChartViewer.setImageUrl</a>. If an image map is available for the chart, it should be set to the WebChartViewer using <a href="WebChartViewer.setImageMap.htm">WebChartViewer.setImageMap</a>.<br><br>
+<li>Return the output to the the browser.<br><br>
+For partial chart update request, <a href="WebChartViewer.partialUpdateChart.htm">WebChartViewer.partialUpdateChart</a> should be use to return the response to the browser.<br><br>
+For the initial page request or full page updates, <a href="WebChartViewer.renderHTML.htm">WebChartViewer.renderHTML</a> should be used to create the HTML tags that represent the chart. These tags may then be inserted in the HTML web page to be sent to the browser.<br><br>
+</ul>
+</div><p class="heading1a">Typical Browser Side Code Structure</p><div class="content">
+On the browser side, the typical code structure will be like:<br><br>
+<ul>
+<li>Include the JsChartViewer script file "cdjcv.js" in the HTML. This is typically achieved by using the following code in the &lt;HEAD&gt; block of the HTML web page.<br><br>
+<div style="margin-left:25;font-family:courier new,courier"> &lt;SCRIPT SRC='/path/to/cdjcv.js'&gt;&lt;/SCRIPT&gt; </div><br>
+Note that the above assumes the "cdjcv.js" is in the directory "/path/to". Please modify the path if the "cdjcv.js" is in other directory.<br><br>
+<b><font color="red">Note:</font></b> If you are using a cgi-bin subdirectory for your scripts, please note that "cdjcv.js" is not a CGI script file, but is a Javascript file. It cannot be put in a "cgi-bin" subdirectory. It needs to be located in under your web document directory.<br><br>
+<li>Include code to initialize the JsChartViewer after the web page has loaded. This is typically done by call the initialization function in the onload event handler of the &lt;BODY&gt; tag, like:<br><br>
+<div style="margin-left:25;font-family:courier new,courier"> &lt;BODY onload="initJsChartViewer()"&gt; </div><br>
+Typically things that need to be done in the initialization function includes:<br><br>
+<ul>
+<li>Add an event handler for the <a href="JsChartViewer.ViewPortChanged.htm">JsChartViewer.ViewPortChanged</a> event to either perform a partial chart update, or to perform a full page update using traditional FORM submit. This may depend on whether the browser can support AJAX or not (can be detected using <a href="JsChartViewer.canSupportPartialUpdate.htm">JsChartViewer.canSupportPartialUpdate</a>).<br><br>
+<li>Connect the JsChartViewer to HTML controls that may be used to configure its properties on the browser side, such as HTML buttons for configuring its mouse usage mode (see <a href="JsChartViewer.setMouseUsage.htm">JsChartViewer.setMouseUsage</a>).<br><br>
+<li>Set up <a href="JsChartViewer.PreUpdate.htm">JsChartViewer.PreUpdate</a> and <a href="JsChartViewer.PostUpdate.htm">JsChartViewer.PostUpdate</a> event handlers if necessary to copy HTML control states to and from custom attributes. These allow external controls to send their states to the server and receive updates from the server during partial chart updates (AJAX requests).<br><br>
+</ul>
+A template of the typical initialization function is as shown below.<br><br>
+<div style="background-color:#cccccc;width:99%;padding:5px"><pre>// Initialize browser side Javascript controls
+function initJsChartViewer()
+{
+    // Check if the Javascript ChartViewer library is loaded
+    if (!window.JsChartViewer)
+        return;
+
+    // Get the Javascript ChartViewer object (please replace idOfChartViewer below with
+    // the real id used in your code)
+    var viewer = JsChartViewer.get('idOfChartViewer');
+
+    // TODO: Put code to connect the JsChartViewer to HTML controls that may be used to
+    // configure its properties.
+    //
+    // ........................................
+    //
+
+    // Detect if browser is capable of support partial update (AJAX request)
+    if (JsChartViewer.canSupportPartialUpdate())
+    {
+        // Browser can support partial update, so connect the view port change event to
+        // trigger a partial update
+        viewer.attachHandler("ViewPortChanged", viewer.partialUpdate);
+
+        // TODO: Attach PreUpdate and/or PostUpdate event handlers if there are HTML
+        // controls that need to send their states or receive updates from the server
+        // during partial chart updates (AJAX requests)
+        //
+        // ........................................
+        //
+    }
+
+    else
+        // Browser cannot support partial update - so use full page update (in this
+        // example, we assume this can be by submitting a form in the web page)
+        viewer.attachHandler("ViewPortChanged", function() { document.forms[0].submit(); });
+
+}</pre></div><br>
+</div><p class="heading1a">Library Files Required for Zoomable/Scrollable Charts</p><div class="content">
+A zoomable/scrollable chart requires the following files. Please ensure you copy the necessary files to the proper directories and reference them using the proper paths.<br><br>
+For example, if your web server distinguishes between CGI directories and web document directories, the "getchart.pl" should be copied to a CGI directory (probably the same directory as your script), while the Javascript, GIF and CUR files should be copied to a web document directory.<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="24%">File<th width="74%">Description
+<tr><td>getchart.pl<td>The standard utility script used in the image url for retrieving the chart image from a temporary file (see <a href="BaseChart.makeTmpFile.htm">BaseChart.makeTmpFile</a>).
+<tr><td>cdjcv.js<br>zoomin.cur<br>zoomout.cur<br>nozoom.cur<br>wait.gif<td>The script file for <a href="JsChartViewer.htm">JsChartViewer</a>, and the supporting cursor and image files. These files must be in the same directory.
+</table></div><br>
+<hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div></body>
+</HTML>

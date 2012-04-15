@@ -1,0 +1,42 @@
+<HTML>
+<HEAD>
+<Title>JsChartViewer.get</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="JsChartViewer.htm">JsChartViewer</a>.get</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+get(id)
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Gets a JsChartViewer object that binds to the given &lt;IMG&gt; tag for chart display.<br><br>
+<div style="background-color:#cccccc;width:99%;padding:10px">
+<b>Note:</b> This method is a static method (class method). It should be accessed as JsChartViewer.get, not <i>objName</i>.get.
+</div><br>
+The id argument specifies the id attribute of the &lt;IMG&gt; tag that the JsChartViewer binds to. If no such JsChartViewer exists, a new JsChartViewer will be created.<br><br>
+The id is also used as the id of the JsChartViewer itself for communications with the server side <a href="WebChartViewer.htm">WebChartViewer</a>.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>id</td><td>(Mandatory)</td><td>The id of the &lt;IMG&gt; tag that the JsChartViewer binds to, which is the same as the id of the JsChartViewer itself.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+A JsChartViewer object that binds to the &lt;IMG&gt; tag.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

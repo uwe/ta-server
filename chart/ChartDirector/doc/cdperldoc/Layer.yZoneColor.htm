@@ -1,0 +1,40 @@
+<HTML>
+<HEAD>
+<Title>Layer.yZoneColor</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="Layer.htm">Layer</a>.yZoneColor</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+yZoneColor(threshold, belowColor, aboveColor [, yAxis ])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Creates a y-zone color. A y-zone will change from one color to another depending on a threshold value on the y-axis.<br><br>
+For example, if a y-zone color is used as the fill color in an area layer, the area will switch from one color to another when its value is higher than a certain value on the y-axis.<br><br>
+The two colors used in a y-zone color can be other dynamic colors. You may create y-zone colors with more than 2 zones by cascading multiple y-zone colors.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>threshold</td><td>(Mandatory)</td><td>The y value serving as the threshold for switching between two colors.</td></tr><tr><td>belowColor</td><td>(Mandatory)</td><td>The color to use when the y-axis value of the pixel is smaller than the threshold.</td></tr><tr><td>aboveColor</td><td>(Mandatory)</td><td>The color to use when the y-axis value of the pixel is greater than the threshold.</td></tr><tr><td>yAxis</td><td>[Null]</td><td>The y-axis to use to determine the pixel coordinates of data values. The y-axis may be obtained using <a href="XYChart.yAxis.htm">XYChart.yAxis</a>, <a href="XYChart.yAxis2.htm">XYChart.yAxis2</a> or <a href="XYChart.addAxis.htm">XYChart.addAxis</a>. The default is to use the primary y-axis.<br><br>
+For backward compatibility, the axis argument can also be a boolean value. A true (non-zero) value means the primary y-axis. A false (zero) value means the secondary y-axis.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+A 32-bit integer representing the y-zone color.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

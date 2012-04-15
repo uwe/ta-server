@@ -1,0 +1,38 @@
+<HTML>
+<HEAD>
+<Title>Axis.setLabelStep</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="Axis.htm">Axis</a>.setLabelStep</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setLabelStep(majorTickStep [, minorTickStep [, majorTickOffset [, minorTickOffset ]]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Shows a regularly spaced subset of the axis labels on the axis.<br><br>
+This method is typically used in conjunction with <a href="Axis.setLabels.htm">Axis.setLabels</a> or <a href="Axis.setLabels2.htm">Axis.setLabels2</a>. These two methods define the full set of labels on the axis, one for each data point in a data set. In many cases, there may be too many labels and the axis may become overcrowded with labels. The setLabelStep method will cause the axis to show a regularly spaced subset of labels instead all labels.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>majorTickStep</td><td>(Mandatory)</td><td>The spacing between visible labels (major ticks). For example, a value of 10 means displaying 1 label for every 10 labels.</td></tr><tr><td>minorTickStep</td><td>0</td><td>For labels that are not displayed, ChartDirector can optionally put a minor tick in its place. The argument specifies the spacing between minor ticks. For example, a value of 5 means displaying 1 minor tick for every 5 labels. 0 means no minor tick is used.</td></tr><tr><td>majorTickOffset</td><td>0</td><td>The offset used for selecting the labels. For example, if majorTickStep is set to 10, by default, ChartDirector will select the labels with index 0, 10, 20, 30 and so on. If the majorTickOffset argument is set to 3, then ChartDirector will select labels with index 3, 13, 23, 33 and so on.</td></tr><tr><td>minorTickOffset</td><td>-7fffffff</td><td>The offset used for selecting minor tick points. The usage is the same as the majorTickOffset argument, except it applies to minor tick points. The default is to use the same value as majorTickOffset.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

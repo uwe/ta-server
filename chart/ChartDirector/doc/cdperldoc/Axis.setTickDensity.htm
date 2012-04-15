@@ -1,0 +1,39 @@
+<HTML>
+<HEAD>
+<Title>Axis.setTickDensity</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="Axis.htm">Axis</a>.setTickDensity</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setTickDensity(majorTickSpacing [, minorTickSpacing ])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the density of the axis ticks.<br><br>
+Tick density is the desired distance between two ticks in pixels. When ChartDirector performs auto-scaling, it will decide how many ticks to put on the axis based on tick density.<br><br>
+Note that the actual tick density chosen in auto-scaling may not be exactly the same as the desired tick density. It is because ChartDirector may have other constraints in choosing the ticks, such as the ticks and axis range should be neat numbers, and the axis must contain an integral number of ticks, etc. ChartDirector may use a tick distance that is larger than suggested, but never smaller.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>majorTickSpacing</td><td>(Mandatory)</td><td>Specify the desired distance between two major ticks in pixels.</td></tr><tr><td>minorTickSpacing</td><td>-1</td><td>Specify the desired distance between two minor ticks in pixels. -1 means minor ticks are not used.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

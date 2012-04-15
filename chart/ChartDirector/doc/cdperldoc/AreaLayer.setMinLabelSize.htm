@@ -1,0 +1,41 @@
+<HTML>
+<HEAD>
+<Title>AreaLayer.setMinLabelSize</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="AreaLayer.htm">AreaLayer</a>.setMinLabelSize</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setMinLabelSize(size)
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the minimum height (or width if the x-axis and y-axis are swapped with <a href="XYChart.swapXY.htm">XYChart.swapXY</a>) of an area below which data labels will be hidden.<br><br>
+In ChartDirector, for an area layer, data labels (<a href="Layer.setDataLabelStyle.htm">Layer.setDataLabelStyle</a>) are drawn internal to the area, while the aggregate labels (<a href="Layer.setAggregateLabelStyle.htm">Layer.setAggregateLabelStyle</a>) are drawn external to the area.<br><br>
+ChartDirector will disable data labels if the area height (or width if the x- axis and y-axis are swapped with <a href="XYChart.swapXY.htm">XYChart.swapXY</a>) is too small to contain the data label.<br><br>
+By default, ChartDirector will automatically determine what is meant by "too small". The setMinLabelSize method can be used to manually defined the threshold for "too small".<br><br>
+Sometimes it may be desirable to display the data label even though it cannot be contained within the area. In this case, the setMinLabelSize can be used to set the threshold to 0.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>size</td><td>(Mandatory)</td><td>The minimum height (or width if the x-axis and y-axis are swapped with <a href="XYChart.swapXY.htm">XYChart.swapXY</a>) of an area below which data labels will be hidden.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

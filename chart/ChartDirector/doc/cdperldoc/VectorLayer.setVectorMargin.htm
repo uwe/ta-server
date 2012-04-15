@@ -1,0 +1,39 @@
+<HTML>
+<HEAD>
+<Title>VectorLayer.setVectorMargin</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="VectorLayer.htm">VectorLayer</a>.setVectorMargin</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setVectorMargin(startMargin [, endMargin ])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the margins to shorten the vectors.<br><br>
+By default, vectors will be drawn from the given start points to the given end points.<br><br>
+In some cases, it may be desirable to shorten the vectors so that they do not start exactly at the start points and/or end exactly at the end points. For example, the vectors may be used to point to some circular symbols created by a <a href="ScatterLayer.htm">ScatterLayer</a>. The vectors may need to point to the perimeter of the circles, rather than their centers. This can be achieved by shortening the vectors by the radius of the circles.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>startMargin</td><td>(Mandatory)</td><td>The length to shorten at the start of the vector in pixels.</td></tr><tr><td>endMargin</td><td><a href="perlchartdir.NoValue.htm">NoValue</a></td><td>The length to shorten at the end of the vector in pixels. <a href="perlchartdir.NoValue.htm">NoValue</a> means the length is the same as <b>startMargin</b>.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

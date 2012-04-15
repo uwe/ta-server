@@ -1,0 +1,175 @@
+<HTML>
+<HEAD>
+<Title>Text Styles and Colors</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Text Styles and Colors</p>
+<hr class="separator">
+<div class="content">
+<img src="images/fontpie.jpg">
+<br><br>
+This example demonstrates various text styles, text colors, background colors and text box border effects.<br><br>
+In the chart above, 3 different pattern colors (wallpapers) are used for the chart background, legend box background and chart title background. In addition, the chart title, sector labels, and legends all have different fonts, text colors, background colors, and border styles.<br><br>
+<ul><li> <a href="BaseChart.patternColor2.htm">BaseChart.patternColor2</a> is used to load the wallpaper images and return integers that represent the pattern colors created from the images.<br><br>
+<li> The pattern colors are then used in <a href="BaseChart.setBackground.htm">BaseChart.setBackground</a>, and also the <a href="Box.setBackground.htm">Box.setBackground</a> methods of the <a href="LegendBox.htm">LegendBox</a> object and title <a href="TextBox.htm">TextBox</a> object to set the various background colors.<br><br>
+<li> The title text and font are specified using <a href="BaseChart.addTitle.htm">BaseChart.addTitle</a>.<br><br>
+<li> The legend box font is specified using <a href="BaseChart.addLegend.htm">BaseChart.addLegend</a>. It returns a <a href="LegendBox.htm">LegendBox</a> object to support further legend box configuration. In this example, the <a href="Box.setBackground.htm">Box.setBackground</a> method of this object is used to set the background color and 3D border effects of the legend box.<br><br>
+<li> The default sector label font is specified using <a href="PieChart.setLabelStyle.htm">PieChart.setLabelStyle</a>.<br><br>
+<li> The sector label font of individual sector is specified using <a href="Sector.setLabelStyle.htm">Sector.setLabelStyle</a>.<br><br>
+<li> The sector label's background color, border color and 3D border effects are specified by first obtaining the <a href="TextBox.htm">TextBox</a> object that represents the sector label using <a href="Sector.setLabelStyle.htm">Sector.setLabelStyle</a>, then calling its <a href="Box.setBackground.htm">Box.setBackground</a> method.</ul>
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\fontpie.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# The data for the pie chart
+my $data = [25, 18, 15, 12, 8, 30, 35];
+
+# The labels for the pie chart
+my $labels = ["Labor", "Licenses", "Taxes", "Legal", "Insurance", "Facilities",
+    "Production"];
+
+# Create a PieChart object of size 480 x 300 pixels
+my $c = new PieChart(480, 300);
+
+# Use a blue marble pattern as the background wallpaper, with a black border, and 1
+# pixel 3D border effect
+$c-&gt;setBackground($c-&gt;patternColor("marble.png"), 0x000000, 1);
+
+# Set the center of the pie at (150, 150) and the radius to 100 pixels
+$c-&gt;setPieSize(150, 150, 100);
+
+# Add a title to the pie chart using Times Bold Italic/15 points/deep blue (0x000080)
+# as font, with a wood pattern as the title background
+$c-&gt;addTitle("Project Cost Breakdown", "timesbi.ttf", 15, 0x000080)-&gt;setBackground(
+    $c-&gt;patternColor("wood.png"));
+
+# Draw the pie in 3D
+$c-&gt;set3D();
+
+# Add a legend box using Arial Bold Italic/11 points font. Use a pink marble pattern
+# as the background wallpaper, with a 1 pixel 3D border. The legend box is top-right
+# aligned relative to the point (465, 70)
+my $b = $c-&gt;addLegend(465, 70, 1, "arialbi.ttf", 11);
+$b-&gt;setBackground($c-&gt;patternColor("marble2.png"), $perlchartdir::Transparent, 1);
+$b-&gt;setAlignment($perlchartdir::TopRight);
+
+# Set the default font for all sector labels to Arial Bold/8 pts/dark green
+# (0x008000).
+$c-&gt;setLabelStyle("arialbd.ttf", 8, 0x008000);
+
+# Set the pie data and the pie labels
+$c-&gt;setData($data, $labels);
+
+# Explode the 3rd sector
+$c-&gt;setExplode(2, 40);
+
+# Use Arial Bold/12 pts/red as label font for the 3rd sector
+$c-&gt;sector(2)-&gt;setLabelStyle("arialbd.ttf", 12, 0xff0000);
+
+# Use Arial/8 pts/deep blue as label font for the 5th sector. Add a background box
+# using the sector fill color (SameAsMainColor), with a black (0x000000) edge and 2
+# pixel 3D border.
+$c-&gt;sector(4)-&gt;setLabelStyle("arial.ttf", 8, 0x000080)-&gt;setBackground(
+    $perlchartdir::SameAsMainColor, 0x000000, 2);
+
+# Use Arial Italic/8 pts/light red (0xff9999) as label font for the 6th sector. Add a
+# dark blue (0x000080) background box with a 2 pixel 3D border.
+$c-&gt;sector(0)-&gt;setLabelStyle("ariali.ttf", 8, 0xff9999)-&gt;setBackground(0x000080,
+    $perlchartdir::Transparent, 2);
+
+# Use Times Bold Italic/8 pts/deep green (0x008000) as label font for 7th sector. Add
+# a yellow (0xFFFF00) background box with a black (0x000000) edge.
+$c-&gt;sector(6)-&gt;setLabelStyle("timesbi.ttf", 8, 0x008000)-&gt;setBackground(0xffff00,
+    0x000000);
+
+# Output the chart
+$c-&gt;makeChart("fontpie.jpg")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\fontpie.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The data for the pie chart
+my $data = [25, 18, 15, 12, 8, 30, 35];
+
+# The labels for the pie chart
+my $labels = ["Labor", "Licenses", "Taxes", "Legal", "Insurance", "Facilities",
+    "Production"];
+
+# Create a PieChart object of size 480 x 300 pixels
+my $c = new PieChart(480, 300);
+
+#Set directory for loading images to current script directory
+#Need when running under Microsoft IIS
+$c-&gt;setSearchPath(dirname($0));
+
+# Use a blue marble pattern as the background wallpaper, with a black border, and 1
+# pixel 3D border effect
+$c-&gt;setBackground($c-&gt;patternColor("marble.png"), 0x000000, 1);
+
+# Set the center of the pie at (150, 150) and the radius to 100 pixels
+$c-&gt;setPieSize(150, 150, 100);
+
+# Add a title to the pie chart using Times Bold Italic/15 points/deep blue (0x000080)
+# as font, with a wood pattern as the title background
+$c-&gt;addTitle("Project Cost Breakdown", "timesbi.ttf", 15, 0x000080)-&gt;setBackground(
+    $c-&gt;patternColor("wood.png"));
+
+# Draw the pie in 3D
+$c-&gt;set3D();
+
+# Add a legend box using Arial Bold Italic/11 points font. Use a pink marble pattern
+# as the background wallpaper, with a 1 pixel 3D border. The legend box is top-right
+# aligned relative to the point (465, 70)
+my $b = $c-&gt;addLegend(465, 70, 1, "arialbi.ttf", 11);
+$b-&gt;setBackground($c-&gt;patternColor("marble2.png"), $perlchartdir::Transparent, 1);
+$b-&gt;setAlignment($perlchartdir::TopRight);
+
+# Set the default font for all sector labels to Arial Bold/8 pts/dark green
+# (0x008000).
+$c-&gt;setLabelStyle("arialbd.ttf", 8, 0x008000);
+
+# Set the pie data and the pie labels
+$c-&gt;setData($data, $labels);
+
+# Explode the 3rd sector
+$c-&gt;setExplode(2, 40);
+
+# Use Arial Bold/12 pts/red as label font for the 3rd sector
+$c-&gt;sector(2)-&gt;setLabelStyle("arialbd.ttf", 12, 0xff0000);
+
+# Use Arial/8 pts/deep blue as label font for the 5th sector. Add a background box
+# using the sector fill color (SameAsMainColor), with a black (0x000000) edge and 2
+# pixel 3D border.
+$c-&gt;sector(4)-&gt;setLabelStyle("arial.ttf", 8, 0x000080)-&gt;setBackground(
+    $perlchartdir::SameAsMainColor, 0x000000, 2);
+
+# Use Arial Italic/8 pts/light red (0xff9999) as label font for the 6th sector. Add a
+# dark blue (0x000080) background box with a 2 pixel 3D border.
+$c-&gt;sector(0)-&gt;setLabelStyle("ariali.ttf", 8, 0xff9999)-&gt;setBackground(0x000080,
+    $perlchartdir::Transparent, 2);
+
+# Use Times Bold Italic/8 pts/deep green (0x008000) as label font for 7th sector. Add
+# a yellow (0xFFFF00) background box with a black (0x000000) edge.
+$c-&gt;sector(6)-&gt;setLabelStyle("timesbi.ttf", 8, 0x008000)-&gt;setBackground(0xffff00,
+    0x000000);
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/jpeg\n\n";
+print $c-&gt;makeChart2($perlchartdir::JPG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

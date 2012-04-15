@@ -1,0 +1,141 @@
+<HTML>
+<HEAD>
+<Title>Cylinder Bar Shading</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Cylinder Bar Shading</p>
+<hr class="separator">
+<div class="content">
+<img src="images/cylinderlightbar.jpg">
+<br><br>
+This example demonstrates using cylinder shading effect for bars. It also demonstrates brushed metal background, rounded frame, and axis labels on both sides of the plot area.<br><br>
+<ul><li> The brushed silver background is achieved by using <a href="perlchartdir.brushedSilverColor.htm">perlchartdir::brushedSilverColor</a> to create the brushed silver color, then use it in <a href="XYChart.XYChart.htm">XYChart.XYChart</a> as the chart background color.<br><br>
+<li> The rounded frame is configured using <a href="BaseChart.setRoundedFrame.htm">BaseChart.setRoundedFrame</a>.<br><br>
+<li> The cylinder shading effect is configured by using <a href="BarLayer.setBarShape.htm">BarLayer.setBarShape</a> with <a href="perlchartdir.CircleShape.htm">CircleShape</a>.<br><br>
+<li> <a href="XYChart.syncYAxis.htm">XYChart.syncYAxis</a> is used to show two synchronized y-axes on both sides of the plot area.<br><br>
+<li> <a href="Axis.setColors.htm">Axis.setColors</a> is used to set the y-axes to <a href="perlchartdir.Transparent.htm">Transparent</a>, so only the axis labels are visible.<br><br>
+<li> The axis label font is set to Arial Bold using <a href="Axis.setLabelStyle.htm">Axis.setLabelStyle</a>.</ul>
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\cylinderlightbar.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# The data for the bar chart
+my $data = [450, 560, 630, 800, 1100, 1350, 1600, 1950, 2300, 2700];
+
+# The labels for the bar chart
+my $labels = ["1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004",
+    "2005"];
+
+# Create a XYChart object of size 600 x 380 pixels. Set background color to brushed
+# silver, with a 2 pixel 3D border. Use rounded corners of 20 pixels radius.
+my $c = new XYChart(600, 380, perlchartdir::brushedSilverColor(),
+    $perlchartdir::Transparent, 2);
+
+# Add a title to the chart using 18pts Times Bold Italic font. Set top/bottom margins
+# to 8 pixels.
+$c-&gt;addTitle("Annual Revenue for Star Tech", "timesbi.ttf", 18)-&gt;setMargin2(0, 0, 8,
+    8);
+
+# Set the plotarea at (70, 55) and of size 460 x 280 pixels. Use transparent border
+# and black grid lines. Use rounded frame with radius of 20 pixels.
+$c-&gt;setPlotArea(70, 55, 460, 280, -1, -1, $perlchartdir::Transparent, 0x000000);
+$c-&gt;setRoundedFrame(0xffffff, 20);
+
+# Add a multi-color bar chart layer using the supplied data. Set cylinder bar shape.
+$c-&gt;addBarLayer3($data)-&gt;setBarShape($perlchartdir::CircleShape);
+
+# Set the labels on the x axis.
+$c-&gt;xAxis()-&gt;setLabels($labels);
+
+# Show the same scale on the left and right y-axes
+$c-&gt;syncYAxis();
+
+# Set the left y-axis and right y-axis title using 10pt Arial Bold font
+$c-&gt;yAxis()-&gt;setTitle("USD (millions)", "arialbd.ttf", 10);
+$c-&gt;yAxis2()-&gt;setTitle("USD (millions)", "arialbd.ttf", 10);
+
+# Set y-axes to transparent
+$c-&gt;yAxis()-&gt;setColors($perlchartdir::Transparent);
+$c-&gt;yAxis2()-&gt;setColors($perlchartdir::Transparent);
+
+# Disable ticks on the x-axis by setting the tick color to transparent
+$c-&gt;xAxis()-&gt;setTickColor($perlchartdir::Transparent);
+
+# Set the label styles of all axes to 8pt Arial Bold font
+$c-&gt;xAxis()-&gt;setLabelStyle("arialbd.ttf", 8);
+$c-&gt;yAxis()-&gt;setLabelStyle("arialbd.ttf", 8);
+$c-&gt;yAxis2()-&gt;setLabelStyle("arialbd.ttf", 8);
+
+# Output the chart
+$c-&gt;makeChart("cylinderlightbar.jpg")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\cylinderlightbar.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The data for the bar chart
+my $data = [450, 560, 630, 800, 1100, 1350, 1600, 1950, 2300, 2700];
+
+# The labels for the bar chart
+my $labels = ["1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004",
+    "2005"];
+
+# Create a XYChart object of size 600 x 380 pixels. Set background color to brushed
+# silver, with a 2 pixel 3D border. Use rounded corners of 20 pixels radius.
+my $c = new XYChart(600, 380, perlchartdir::brushedSilverColor(),
+    $perlchartdir::Transparent, 2);
+
+# Add a title to the chart using 18pts Times Bold Italic font. Set top/bottom margins
+# to 8 pixels.
+$c-&gt;addTitle("Annual Revenue for Star Tech", "timesbi.ttf", 18)-&gt;setMargin2(0, 0, 8,
+    8);
+
+# Set the plotarea at (70, 55) and of size 460 x 280 pixels. Use transparent border
+# and black grid lines. Use rounded frame with radius of 20 pixels.
+$c-&gt;setPlotArea(70, 55, 460, 280, -1, -1, $perlchartdir::Transparent, 0x000000);
+$c-&gt;setRoundedFrame(0xffffff, 20);
+
+# Add a multi-color bar chart layer using the supplied data. Set cylinder bar shape.
+$c-&gt;addBarLayer3($data)-&gt;setBarShape($perlchartdir::CircleShape);
+
+# Set the labels on the x axis.
+$c-&gt;xAxis()-&gt;setLabels($labels);
+
+# Show the same scale on the left and right y-axes
+$c-&gt;syncYAxis();
+
+# Set the left y-axis and right y-axis title using 10pt Arial Bold font
+$c-&gt;yAxis()-&gt;setTitle("USD (millions)", "arialbd.ttf", 10);
+$c-&gt;yAxis2()-&gt;setTitle("USD (millions)", "arialbd.ttf", 10);
+
+# Set y-axes to transparent
+$c-&gt;yAxis()-&gt;setColors($perlchartdir::Transparent);
+$c-&gt;yAxis2()-&gt;setColors($perlchartdir::Transparent);
+
+# Disable ticks on the x-axis by setting the tick color to transparent
+$c-&gt;xAxis()-&gt;setTickColor($perlchartdir::Transparent);
+
+# Set the label styles of all axes to 8pt Arial Bold font
+$c-&gt;xAxis()-&gt;setLabelStyle("arialbd.ttf", 8);
+$c-&gt;yAxis()-&gt;setLabelStyle("arialbd.ttf", 8);
+$c-&gt;yAxis2()-&gt;setLabelStyle("arialbd.ttf", 8);
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/jpeg\n\n";
+print $c-&gt;makeChart2($perlchartdir::JPG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

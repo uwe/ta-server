@@ -1,0 +1,38 @@
+<HTML>
+<HEAD>
+<Title>RanTable.setHLOCCols</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="RanTable.htm">RanTable</a>.setHLOCCols</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setHLOCCols(i, startValue, minDelta, maxDelta [, lowerLimit [, upperLimit ]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Fill 4 columns in the RanTable with random high, low, open and close records.<br><br>
+The 4 columns will meet the constraints that for each record, the high value will be greater than or equal to the low value, and both the open and close values will be in between the high and low values.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>i</td><td>(Mandatory)</td><td>The column number of the "high" column. The next column will be assumed to be "low", followed by "open" and "close". The column number starts at 0. The first column is 0. The nth column is (n - 1).</td></tr><tr><td>startValue</td><td>(Mandatory)</td><td>The initial "open" value.</td></tr><tr><td>minDelta</td><td>(Mandatory)</td><td>The minimum change allowed for between the current "open" and the previous "close" value, as well as between the current "close" value and the current "open" value. This parameter is usually negative.</td></tr><tr><td>maxDelta</td><td>(Mandatory)</td><td>The maximum change allowed for between the current "open" and the previous "close" value, as well as between the current "close" value and the current "open" value.</td></tr><tr><td>lowerLimit</td><td>0</td><td>The minimum value for "high", "low", "open" and "close".</td></tr><tr><td>upperLimit</td><td>[+Infinity]</td><td>The maximum value for "high", "low", "open" and "close".</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

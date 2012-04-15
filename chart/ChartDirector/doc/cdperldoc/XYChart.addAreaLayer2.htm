@@ -1,0 +1,42 @@
+<HTML>
+<HEAD>
+<Title>XYChart.addAreaLayer2</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="XYChart.htm">XYChart</a>.addAreaLayer2</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+addAreaLayer2([ dataCombineMethod [, depth ]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Adds an empty area chart layer to the XYChart.<br><br>
+This method is typically used to add multiple data sets to a single bar layer. First an empty area chart layer is created, then the data sets can be added using <a href="Layer.addDataSet.htm">Layer.addDataSet</a>.<br><br>
+The <b>dataCombineMethod</b> parameter specifies how to combine the data sets together in the area layer. The followings methods are supported:<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="19%">Constant<th width="19%%">Value<th width="60%">Description <tr><td><a href="perlchartdir.Stack.htm">Stack</a><td>1<td>The data sets are combined by stacking up the areas.
+<tr><td><a href="perlchartdir.Percentage.htm">Percentage</a><td>4<td>The data sets are combined similar to stacked area, except that the data are scaled so that the area always stacked up to 100. An area strip within the stacked area therefore represents the percentage of the data item relative to sum of all the data items in the stacked area.
+</table>
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>dataCombineMethod</td><td><a href="perlchartdir.Stack.htm">Stack</a></td><td>The method to combine the data sets together in the area layer.</td></tr><tr><td>depth</td><td>0</td><td>The 3D depth of the area layer.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+An <a href="AreaLayer.htm">AreaLayer</a> object representing the area layer created.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

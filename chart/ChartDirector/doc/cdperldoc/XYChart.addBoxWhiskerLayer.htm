@@ -1,0 +1,45 @@
+<HTML>
+<HEAD>
+<Title>XYChart.addBoxWhiskerLayer</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="XYChart.htm">XYChart</a>.addBoxWhiskerLayer</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+addBoxWhiskerLayer(boxTop, boxBottom [, maxData [, minData [, midData [, fillColor [, whiskerColor [, edgeColor ]]]]]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Adds a box-whisker layer to the XYChart, and specify the data sets to use for drawing the layer.<br><br>
+A standard box-whisker symbol represents 5 values. In this documentation, they are called <b>maxData</b>, <b>boxTop</b>, <b>midData</b>, <b>boxBottom</b> and <b>minData</b>. The 5 values should be in descending order. The symbol consists of a line joining the <b>maxData</b> and <b>minData</b>, a box from <b>boxTop</b> to <b>boxBottom</b>, and 3 mark lines at <b>maxData</b>, <b>midData</b> and <b>minData</b>.<br><br>
+You may use empty arrays to disable showing some parts of the box-whisker symbol.<br><br>
+For example, to show the box only, simply set the <b>maxData</b>, <b>minData</b> and <b>midData</b> to empty arrays.<br><br>
+Similarly, if the <b>boxTop</b>, <b>boxBottom</b> and <b>midData</b> are set to empty arrays, only the maxData and minData mark lines and the joining lines are visible. This symbol is often used to represent "error bands" together with other chart layers.<br><br>
+In addition to <b>maxData</b>, <b>midData</b> and <b>minData</b> mark lines, you may add additional mark lines by adding more data sets using <a href="Layer.addDataSet.htm">Layer.addDataSet</a>.<br><br>
+By default, the box-whisker symbol will be drawn using the colors specified in the <b>fillColor</b>, <b>whiskerColor</b> and <b>edgeColor</b> argument. The <b>fillColor</b> and <b>edgeColor</b> are used as the fill and border colors of the box, while the <b>whiskerColor</b> is used as the color of the center line and the mark lines.<br><br>
+Internally, ChartDirector maps the colors of different parts of the box-whisker symbol to data set colors as shown in the following table. You may control the colors of the box-whisker symbol in more details by setting the data set colors directly. The data set objects can be obtained using <a href="Layer.getDataSet.htm">Layer.getDataSet</a>, and the colors can be changed using <a href="DataSet.setDataColor.htm">DataSet.setDataColor</a>.<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="38%">Box-Whisker Symbol Color<th width="60%">Data Set Color <tr><td>Fill color of the box<td>Data Color for the first data set (index = 0) <tr><td>Border color of the box<td>Edge Color for the first data set (index = 0) <tr><td>Center line color<td>Data Color for the second data set (index = 1) <tr><td>Maximum value mark line color<td>Data Color for the third data set (index = 2) <tr><td>Minimum value mark line color<td>Data Color for the fourth data set (index = 3) <tr><td>Middle value mark line color<td>Data Color for the fifth data set (index = 4) <tr><td>Mark line color for additional mark lines<td>Data Color for the data set representing the additional mark line </table>
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>boxTop</td><td>(Mandatory)</td><td>An array of numbers representing the top edge of the box.</td></tr><tr><td>boxBottom</td><td>(Mandatory)</td><td>An array of numbers representing the bottom edge of the box.</td></tr><tr><td>maxData</td><td>[Empty_Array]</td><td>An array of numbers representing the maximum value mark lines.</td></tr><tr><td>minData</td><td>[Empty_Array]</td><td>An array of numbers representing the minimum value mark lines.</td></tr><tr><td>midData</td><td>[Empty_Array]</td><td>An array of numbers representing the middle value mark lines.</td></tr><tr><td>fillColor</td><td>-1</td><td>The color used to fill the box. -1 means that the color is automatically selected from the palette.</td></tr><tr><td>whiskerColor</td><td><a href="perlchartdir.LineColor.htm">LineColor</a></td><td>The color used to draw the central line and mark lines.</td></tr><tr><td>edgeColor</td><td><a href="perlchartdir.LineColor.htm">LineColor</a></td><td>The color used to draw the border of the box.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+A <a href="BoxWhiskerLayer.htm">BoxWhiskerLayer</a> object representing the box-whisker layer created.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

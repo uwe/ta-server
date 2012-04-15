@@ -1,0 +1,44 @@
+<HTML>
+<HEAD>
+<Title>DrawArea.setPaletteMode</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="DrawArea.htm">DrawArea</a>.setPaletteMode</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setPaletteMode(p)
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the palette mode to use when writing the image in PNG format.<br><br>
+The PNG format supports both palette based images and true color images. Palette based images can only have 256 colors, but is smaller in size.<br><br>
+The palette mode must be one of the following predefined constants.<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="19%">Constant<th width="19%%">Value<th width="60%">Description
+<tr><td><a href="perlchartdir.TryPalette.htm">TryPalette</a><td>0<td>Use palette mode if the image contains less than 256 colors, otherwise use true color mode. This is the default.
+<tr><td><a href="perlchartdir.ForcePalette.htm">ForcePalette</a><td>1<td>Use palette mode. If the image contains more than 256 colors, reduce it to 256 colors using dithering (see <a href="DrawArea.setDitherMethod.htm">DrawArea.setDitherMethod</a>).
+<tr><td><a href="perlchartdir.NoPalette.htm">NoPalette</a><td>2<td>Use true color mode.
+</table>
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>p</td><td>(Mandatory)</td><td>The palette mode for PNG images.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

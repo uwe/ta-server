@@ -1,0 +1,42 @@
+<HTML>
+<HEAD>
+<Title>perlchartdir.cylinderEffect</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="perlchartdir.htm">perlchartdir</a>.cylinderEffect</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+cylinderEffect([ orientation [, ambientIntensity, diffuseIntensity, specularIntensity, shininess ]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+A special shading effect that emulates the lighting of a cylinder surface.<br><br>
+This effect adjusts the brightness of the color of a rectangular box to make it look like cylindrical. The brightness is adjusted as according to the Phong lighting model, in which the light source is from the viewer direction and is far away.<br><br>
+The cylinderEffect method returns an integer representing this effect. The integer can be used as the third argument to <a href="Box.setBackground.htm">Box.setBackground</a> to apply the effect to <a href="Box.htm">Box</a> objects (including derived objects such as <a href="TextBox.htm">TextBox</a> objects).<br><br>
+This effect is automatically used for cylindrical bars in a <a href="BarLayer.htm">BarLayer</a>. You may use this method to adjust the lighting parameters by using its return value as the second argument to <a href="Layer.setBorderColor.htm">Layer.setBorderColor</a>.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>orientation</td><td><a href="perlchartdir.Center.htm">Center</a></td><td>The orientation of the cylinder.<br><br>
+A value of <a href="perlchartdir.Top.htm">Top</a> or <a href="perlchartdir.Bottom.htm">Bottom</a> means the cylinder is vertical. A value of <a href="perlchartdir.Left.htm">Left</a> or <a href="perlchartdir.Right.htm">Right</a> means the cylinder is horizontal.<br><br>
+A value of <a href="perlchartdir.Center.htm">Center</a> means the orientation is automatically determined. For a <a href="BarLayer.htm">BarLayer</a>, the orientation will be the same as the orientation of the bars. For other objects (eg. <a href="TextBox.htm">TextBox</a> objects), if the object height is bigger than its width, the cylinder will be treated as vertical, otherwise it will be treated as horizontal.</td></tr><tr><td>ambientIntensity</td><td>0.5</td><td>The ambient reflection coefficient of the Phong lighting model.</td></tr><tr><td>diffuseIntensity</td><td>0.5</td><td>The diffuse reflection coefficient of the Phong lighting model.</td></tr><tr><td>specularIntensity</td><td>0.75</td><td>The specular reflection coefficient of the Phong lighting model.</td></tr><tr><td>shininess</td><td>8</td><td>The shininess coefficient of the Phong lighting model.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+An integer representing the cylinder effect.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

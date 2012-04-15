@@ -1,0 +1,172 @@
+<HTML>
+<HEAD>
+<Title>Surface Chart Axis Types</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Surface Chart Axis Types</p>
+<hr class="separator">
+<div class="content">
+<img src="images/surfaceaxis.jpg">
+<br><br>
+The example demonstrates different axis scale types for the surface charts.<br><br>
+Like an <a href="XYChart.htm">XYChart</a>, in a <a href="SurfaceChart.htm">SurfaceChart</a>, the axis scale can represent numbers, date/time or labels. In this example, the x-axis uses a date/time scale, the y-axis uses a label based scale, and the z-axis uses a numeric scale.
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\surfaceaxis.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# The x and y coordinates of the grid
+my $dataX = [perlchartdir::chartTime(2008, 9, 1), perlchartdir::chartTime(2008, 9, 2
+    ), perlchartdir::chartTime(2008, 9, 3), perlchartdir::chartTime(2008, 9, 4),
+    perlchartdir::chartTime(2008, 9, 5), perlchartdir::chartTime(2008, 9, 6)];
+my $dataY = ["Low", "Medium", "High"];
+
+# The data series
+my $lowData = [24, 38, 33, 25, 28, 36];
+my $mediumData = [49, 42, 34, 47, 53, 50];
+my $highData = [44, 51, 38, 33, 47, 42];
+
+# Create a SurfaceChart object of size 760 x 500 pixels
+my $c = new SurfaceChart(760, 500);
+
+# Add a title to the chart using 18 points Arial font
+$c-&gt;addTitle("Surface Chart Axis Types", "Arial", 18);
+
+# Set the center of the plot region at (385, 240), and set width x depth x height to
+# 480 x 240 x 240 pixels
+$c-&gt;setPlotRegion(385, 240, 480, 240, 240);
+
+# Set the elevation and rotation angles to 30 and -10 degrees
+$c-&gt;setViewAngle(30, -10);
+
+# Set the data to use to plot the chart. As the y-data are text strings (enumerated),
+# we will use an empty array for the y-coordinates. For the z data series, they are
+# just the concatenation of the individual data series.
+$c-&gt;setData($dataX, undef, new ArrayMath($lowData)-&gt;insert($mediumData)-&gt;insert(
+    $highData)-&gt;result());
+
+# Set the y-axis labels
+$c-&gt;yAxis()-&gt;setLabels($dataY);
+
+# Set x-axis tick density to 75 pixels. ChartDirector auto-scaling will use this as
+# the guideline when putting ticks on the x-axis.
+$c-&gt;xAxis()-&gt;setTickDensity(75);
+
+# Spline interpolate data to a 80 x 40 grid for a smooth surface
+$c-&gt;setInterpolation(80, 40);
+
+# Set surface grid lines to semi-transparent black (cc000000).
+$c-&gt;setSurfaceAxisGrid(0xcc000000);
+
+# Set contour lines to the same color as the fill color at the contour level
+$c-&gt;setContourColor($perlchartdir::SameAsMainColor);
+
+# Add a color axis (the legend) in which the top right corner is anchored at (95,
+# 100). Set the length to 160 pixels and the labels on the left side.
+my $cAxis = $c-&gt;setColorAxis(95, 100, $perlchartdir::TopRight, 160,
+    $perlchartdir::Left);
+
+# Add a bounding box with light grey (eeeeee) background and grey (888888) border.
+$cAxis-&gt;setBoundingBox(0xeeeeee, 0x888888);
+
+# Set label style to Arial bold for all axes
+$c-&gt;xAxis()-&gt;setLabelStyle("arialbd.ttf");
+$c-&gt;yAxis()-&gt;setLabelStyle("arialbd.ttf");
+$c-&gt;zAxis()-&gt;setLabelStyle("arialbd.ttf");
+$c-&gt;colorAxis()-&gt;setLabelStyle("arialbd.ttf");
+
+# Set the x, y and z axis titles using deep blue (000088) 15 points Arial font
+$c-&gt;xAxis()-&gt;setTitle("Date/Time Axis", "ariali.ttf", 15, 0x000088);
+$c-&gt;yAxis()-&gt;setTitle("Label\nBased\nAxis", "ariali.ttf", 15, 0x000088);
+$c-&gt;zAxis()-&gt;setTitle("Numeric Axis", "ariali.ttf", 15, 0x000088);
+
+# Output the chart
+$c-&gt;makeChart("surfaceaxis.jpg")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\surfaceaxis.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The x and y coordinates of the grid
+my $dataX = [perlchartdir::chartTime(2008, 9, 1), perlchartdir::chartTime(2008, 9, 2
+    ), perlchartdir::chartTime(2008, 9, 3), perlchartdir::chartTime(2008, 9, 4),
+    perlchartdir::chartTime(2008, 9, 5), perlchartdir::chartTime(2008, 9, 6)];
+my $dataY = ["Low", "Medium", "High"];
+
+# The data series
+my $lowData = [24, 38, 33, 25, 28, 36];
+my $mediumData = [49, 42, 34, 47, 53, 50];
+my $highData = [44, 51, 38, 33, 47, 42];
+
+# Create a SurfaceChart object of size 760 x 500 pixels
+my $c = new SurfaceChart(760, 500);
+
+# Add a title to the chart using 18 points Arial font
+$c-&gt;addTitle("Surface Chart Axis Types", "Arial", 18);
+
+# Set the center of the plot region at (385, 240), and set width x depth x height to
+# 480 x 240 x 240 pixels
+$c-&gt;setPlotRegion(385, 240, 480, 240, 240);
+
+# Set the elevation and rotation angles to 30 and -10 degrees
+$c-&gt;setViewAngle(30, -10);
+
+# Set the data to use to plot the chart. As the y-data are text strings (enumerated),
+# we will use an empty array for the y-coordinates. For the z data series, they are
+# just the concatenation of the individual data series.
+$c-&gt;setData($dataX, undef, new ArrayMath($lowData)-&gt;insert($mediumData)-&gt;insert(
+    $highData)-&gt;result());
+
+# Set the y-axis labels
+$c-&gt;yAxis()-&gt;setLabels($dataY);
+
+# Set x-axis tick density to 75 pixels. ChartDirector auto-scaling will use this as
+# the guideline when putting ticks on the x-axis.
+$c-&gt;xAxis()-&gt;setTickDensity(75);
+
+# Spline interpolate data to a 80 x 40 grid for a smooth surface
+$c-&gt;setInterpolation(80, 40);
+
+# Set surface grid lines to semi-transparent black (cc000000).
+$c-&gt;setSurfaceAxisGrid(0xcc000000);
+
+# Set contour lines to the same color as the fill color at the contour level
+$c-&gt;setContourColor($perlchartdir::SameAsMainColor);
+
+# Add a color axis (the legend) in which the top right corner is anchored at (95,
+# 100). Set the length to 160 pixels and the labels on the left side.
+my $cAxis = $c-&gt;setColorAxis(95, 100, $perlchartdir::TopRight, 160,
+    $perlchartdir::Left);
+
+# Add a bounding box with light grey (eeeeee) background and grey (888888) border.
+$cAxis-&gt;setBoundingBox(0xeeeeee, 0x888888);
+
+# Set label style to Arial bold for all axes
+$c-&gt;xAxis()-&gt;setLabelStyle("arialbd.ttf");
+$c-&gt;yAxis()-&gt;setLabelStyle("arialbd.ttf");
+$c-&gt;zAxis()-&gt;setLabelStyle("arialbd.ttf");
+$c-&gt;colorAxis()-&gt;setLabelStyle("arialbd.ttf");
+
+# Set the x, y and z axis titles using deep blue (000088) 15 points Arial font
+$c-&gt;xAxis()-&gt;setTitle("Date/Time Axis", "ariali.ttf", 15, 0x000088);
+$c-&gt;yAxis()-&gt;setTitle("Label\nBased\nAxis", "ariali.ttf", 15, 0x000088);
+$c-&gt;zAxis()-&gt;setTitle("Numeric Axis", "ariali.ttf", 15, 0x000088);
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/jpeg\n\n";
+print $c-&gt;makeChart2($perlchartdir::JPG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

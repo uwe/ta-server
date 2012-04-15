@@ -1,0 +1,39 @@
+<HTML>
+<HEAD>
+<Title>perlchartdir.testFont</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="perlchartdir.htm">perlchartdir</a>.testFont</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+testFont(font, fontIndex, fontHeight, fontWidth, angle)
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+A diagnostic function to perform a font loading test.<br><br>
+From experience, the most common issue for font loading is unable to access server side fonts using anonymous user account for a web application, probably due to security restrictions. This diagnostic function can return the cause of problem to aid trouble-shooting.<br><br>
+Other uses of this function is to trace out where does ChartDirector search for the fonts, and the substitution font in case the request font is not available.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>font</td><td>(Mandatory)</td><td>The font name. See <a href="fontspec.htm">Font Specification</a> for details on various font attributes.</td></tr><tr><td>fontIndex</td><td>(Mandatory)</td><td>The font index if the font name refers to a font collection. An index of 0 means the first font.</td></tr><tr><td>fontHeight</td><td>(Mandatory)</td><td>The font height in points. This parameter will not affect font loading if the exact font exists, but will affect which substitution font to use if the font does not exist.</td></tr><tr><td>fontWidth</td><td>(Mandatory)</td><td>The font width in points. This parameter will not affect font loading if the exact font exists, but will affect which substitution font to use if the font does not exist.</td></tr><tr><td>angle</td><td>(Mandatory)</td><td>The rotation angle of the text. The angle is measured in degrees in clockwise direction. This parameter will not affect font loading if the exact font exists, but will affect which substitution font to use if the font does not exist.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+A text string showing the result of the font loading test.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

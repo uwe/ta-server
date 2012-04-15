@@ -1,0 +1,115 @@
+<HTML>
+<HEAD>
+<Title>Bar Gap</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Bar Gap</p>
+<hr class="separator">
+<div class="content">
+<img src="images/gapbar0.png">&nbsp;&nbsp;<img src="images/gapbar1.png">&nbsp;&nbsp;<img src="images/gapbar2.png">&nbsp;&nbsp;<img src="images/gapbar3.png">&nbsp;&nbsp;<img src="images/gapbar4.png">&nbsp;&nbsp;<img src="images/gapbar5.png">
+<br><br>
+This example demonstrates the effects of different bar gaps configured using <a href="BarLayer.setBarGap.htm">BarLayer.setBarGap</a>.
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\gapbar.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+sub createChart
+{
+    my $img = shift;
+
+    my $bargap = int($img) * 0.25 - 0.25;
+
+    # The data for the bar chart
+    my $data = [100, 125, 245, 147, 67];
+
+    # The labels for the bar chart
+    my $labels = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+
+    # Create a XYChart object of size 150 x 150 pixels
+    my $c = new XYChart(150, 150);
+
+    # Set the plotarea at (27, 20) and of size 120 x 100 pixels
+    $c-&gt;setPlotArea(27, 20, 120, 100);
+
+    # Set the labels on the x axis
+    $c-&gt;xAxis()-&gt;setLabels($labels);
+
+    if ($bargap &gt;= 0) {
+        # Add a title to display to bar gap using 8 pts Arial font
+        $c-&gt;addTitle("      Bar Gap = $bargap", "arial.ttf", 8);
+    } else {
+        # Use negative value to mean TouchBar
+        $c-&gt;addTitle("      Bar Gap = TouchBar", "arial.ttf", 8);
+        $bargap = $perlchartdir::TouchBar;
+    }
+
+    # Add a bar chart layer using the given data and set the bar gap
+    $c-&gt;addBarLayer($data)-&gt;setBarGap($bargap);
+
+    # Output the chart
+    $c-&gt;makeChart("gapbar$img.png")
+}
+
+createChart(0);
+createChart(1);
+createChart(2);
+createChart(3);
+createChart(4);
+createChart(5);</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\gapbar.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# Get HTTP query parameters
+use CGI;
+my $query = new CGI;
+
+my $bargap = int($query-&gt;param("img")) * 0.25 - 0.25;
+
+# The data for the bar chart
+my $data = [100, 125, 245, 147, 67];
+
+# The labels for the bar chart
+my $labels = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+
+# Create a XYChart object of size 150 x 150 pixels
+my $c = new XYChart(150, 150);
+
+# Set the plotarea at (27, 20) and of size 120 x 100 pixels
+$c-&gt;setPlotArea(27, 20, 120, 100);
+
+# Set the labels on the x axis
+$c-&gt;xAxis()-&gt;setLabels($labels);
+
+if ($bargap &gt;= 0) {
+    # Add a title to display to bar gap using 8 pts Arial font
+    $c-&gt;addTitle("      Bar Gap = $bargap", "arial.ttf", 8);
+} else {
+    # Use negative value to mean TouchBar
+    $c-&gt;addTitle("      Bar Gap = TouchBar", "arial.ttf", 8);
+    $bargap = $perlchartdir::TouchBar;
+}
+
+# Add a bar chart layer using the given data and set the bar gap
+$c-&gt;addBarLayer($data)-&gt;setBarGap($bargap);
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

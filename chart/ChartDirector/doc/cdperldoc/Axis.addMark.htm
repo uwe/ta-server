@@ -1,0 +1,41 @@
+<HTML>
+<HEAD>
+<Title>Axis.addMark</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="Axis.htm">Axis</a>.addMark</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+addMark(value, lineColor [, text [, font [, fontSize ]]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Adds a mark line to the chart.<br><br>
+A mark line is a line drawn on the plot area. This line is usually used to indicate some special values, such as a "target value", "threshold value", "target date", etc.<br><br>
+A mark line attached to the horizontal axis will be vertical across the plot area. A mark line drawn using the vertical axis will be horizontal across the plot area. In either case, the mark line label will be added to the axis at the mark line position.<br><br>
+The location of the mark line label can be changed by using <a href="TextBox.setAlignment.htm">TextBox.setAlignment</a>. For example, by setting the alignment to <a href="perlchartdir.TopCenter.htm">TopCenter</a>, the mark line label will be drawn on the top center of the mark line.<br><br>
+By default, the mark line is drawn at the front of the chart layers. You may change it to draw at the back of the plot area (that is, like grid lines) using <a href="Mark.setDrawOnTop.htm">Mark.setDrawOnTop</a>.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>value</td><td>(Mandatory)</td><td>The value on the axis to draw the mark line.</td></tr><tr><td>lineColor</td><td>(Mandatory)</td><td>The color of the mark line.</td></tr><tr><td>text</td><td>""</td><td>The text label for the mark line. An empty string means there is no text label. By default, the text label and the tick on the axis will be drawn using the same color as the mark line. You can modify the colors by using the <a href="Mark.setMarkColor.htm">Mark.setMarkColor</a> method.</td></tr><tr><td>font</td><td>""</td><td>The font used to draw the text label.</td></tr><tr><td>fontSize</td><td>8</td><td>The font size used to draw the text label in points.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+A <a href="Mark.htm">Mark</a> object representing the mark line added. You may use this object to fine- tune the appearance of the mark.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

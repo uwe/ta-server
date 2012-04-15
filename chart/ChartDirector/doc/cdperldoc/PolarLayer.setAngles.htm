@@ -1,0 +1,39 @@
+<HTML>
+<HEAD>
+<Title>PolarLayer.setAngles</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="PolarLayer.htm">PolarLayer</a>.setAngles</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setAngles(angles)
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the angular coordinates of the data points.<br><br>
+Note that the angular coordinates are measured using the scale of the angular axis, which may not be in degrees or radians. See <a href="AngularAxis.setLabels.htm">AngularAxis.setLabels</a> and <a href="AngularAxis.setLinearScale.htm">AngularAxis.setLinearScale</a> on how the angular axis scale is defined.<br><br>
+If this method is not called, the first data point is assumed to have an angular coordinate of 0, and the nth data point is assumed to have an angular coordinate of (n - 1). This is common for radar charts, in which enumerated scale is used for the angular axis (see <a href="AngularAxis.setLabels.htm">AngularAxis.setLabels</a>).
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>angles</td><td>(Mandatory)</td><td>An array of numbers representing the angular coordinates of the data points.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

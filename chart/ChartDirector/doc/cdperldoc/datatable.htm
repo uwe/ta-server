@@ -1,0 +1,272 @@
+<HTML>
+<HEAD>
+<Title>Data Table (1)</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Data Table (1)</p>
+<hr class="separator">
+<div class="content">
+<img src="images/datatable.png">
+<br><br>
+This example demonstrates putting a data table under the x-axis.<br><br>
+In ChartDirector, the labels in a label based x-axis (that is, axis configured with <a href="Axis.setLabels.htm">Axis.setLabels</a> or <a href="Axis.setLabels2.htm">Axis.setLabels2</a>) can be converted to a table using <a href="Axis.makeLabelTable.htm">Axis.makeLabelTable</a>.<br><br>
+<div style="background-color:#cccccc;width:99%;padding:10px">
+<b>Note:</b> <a href="Axis.makeLabelTable.htm">Axis.makeLabelTable</a> is only supported on a label based axis with no label stepping. You should not use this method with other axis configuration.</div><br><br>
+The <a href="Axis.makeLabelTable.htm">Axis.makeLabelTable</a> returns a <a href="CDMLTable.htm">CDMLTable</a> object representing the table. It can be used to add more content to the table and to configure the appearance of the table.<br><br>
+In this example, 3 rows with alternating background colors are added to the table using <a href="CDMLTable.appendRow.htm">CDMLTable.appendRow</a>. The cells in the rows are filled with data values using <a href="CDMLTable.setText.htm">CDMLTable.setText</a>. A column is added to the left of the table using <a href="CDMLTable.insertCol.htm">CDMLTable.insertCol</a>, and filled with the legend icons obtained using <a href="Layer.getLegendIcon.htm">Layer.getLegendIcon</a>.
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\datatable.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# The data for the line chart
+my $data0 = [42, 49, 33, 38, 64, 56, 29, 41, 44, 57, 59, 42];
+my $data1 = [65, 75, 47, 34, 42, 49, 73, 62, 90, 69, 66, 78];
+my $data2 = [36, 28, 25, 28, 38, 20, 22, 30, 25, 33, 30, 24];
+my $labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct",
+    "Nov", "Dec"];
+
+# Create a XYChart object of size 600 x 400 pixels
+my $c = new XYChart(600, 400);
+
+# Add a title to the chart using 18 pts Times Bold Italic font
+my $title = $c-&gt;addTitle("Product Line Global Revenue", "timesbi.ttf", 18);
+
+# Tentatively set the plotarea at (50, 55) and of (chart_width - 100) x (chart_height
+# - 120) pixels in size. Use a vertical gradient color from sky blue (aaccff) t0
+# light blue (f9f9ff) as background. Set both horizontal and vertical grid lines to
+# dotted semi-transprent black (aa000000).
+my $plotArea = $c-&gt;setPlotArea(50, 55, $c-&gt;getWidth() - 100, $c-&gt;getHeight() - 120,
+    $c-&gt;linearGradientColor(0, 55, 0, 55 + $c-&gt;getHeight() - 120, 0xaaccff, 0xf9fcff
+    ), -1, -1, $c-&gt;dashLineColor(0xaa000000, $perlchartdir::DotLine), -1);
+
+# Add a legend box and anchored the top center at the horizontal center of the chart,
+# just under the title. Use 10pts Arial Bold as font, with transparent background and
+# border.
+my $legendBox = $c-&gt;addLegend($c-&gt;getWidth() / 2, $title-&gt;getHeight(), 0,
+    "arialbd.ttf", 10);
+$legendBox-&gt;setAlignment($perlchartdir::TopCenter);
+$legendBox-&gt;setBackground($perlchartdir::Transparent, $perlchartdir::Transparent);
+
+# Set y-axis title using 10 points Arial Bold Italic font, label style to 8 points
+# Arial Bold, and axis color to transparent
+$c-&gt;yAxis()-&gt;setTitle("Revenue (USD millions)", "arialbi.ttf", 10);
+$c-&gt;yAxis()-&gt;setLabelStyle("arialbd.ttf", 8);
+$c-&gt;yAxis()-&gt;setColors($perlchartdir::Transparent);
+
+# Set y-axis tick density to 30 pixels. ChartDirector auto-scaling will use this as
+# the guideline when putting ticks on the y-axis.
+$c-&gt;yAxis()-&gt;setTickDensity(30);
+
+# Add a line layer to the chart
+my $layer = $c-&gt;addLineLayer2();
+
+# Set the line width to 3 pixels
+$layer-&gt;setLineWidth(3);
+
+# Add the three data sets to the line layer, using circles, diamands and X shapes as
+# symbols
+$layer-&gt;addDataSet($data0, 0xff0000, "Quantum Computer")-&gt;setDataSymbol(
+    $perlchartdir::CircleSymbol, 9);
+$layer-&gt;addDataSet($data1, 0x00ff00, "Atom Synthesizer")-&gt;setDataSymbol(
+    $perlchartdir::DiamondSymbol, 11);
+$layer-&gt;addDataSet($data2, 0xff6600, "Proton Cannon")-&gt;setDataSymbol(
+    perlchartdir::Cross2Shape(), 11);
+
+# Set the x axis labels
+$c-&gt;xAxis()-&gt;setLabels($labels);
+
+# Convert the labels on the x-axis to a CDMLTable
+my $table = $c-&gt;xAxis()-&gt;makeLabelTable();
+
+# Set the default top/bottom margins of the cells to 3 pixels
+$table-&gt;getStyle()-&gt;setMargin2(0, 0, 3, 3);
+
+# Use Arial Bold as the font for the first row
+$table-&gt;getRowStyle(0)-&gt;setFontStyle("arialbd.ttf");
+
+#
+# We can add more information to the table. In this sample code, we add the data
+# series and the legend icons to the table.
+#
+
+# Add 3 more rows to the table. Set the background of the 1st and 3rd rows to light
+# grey (eeeeee).
+$table-&gt;appendRow()-&gt;setBackground(0xeeeeee, $perlchartdir::LineColor);
+$table-&gt;appendRow();
+$table-&gt;appendRow()-&gt;setBackground(0xeeeeee, $perlchartdir::LineColor);
+
+# Put the values of the 3 data series to the cells in the 3 rows
+for(my $i = 0; $i &lt; scalar(@$data0); ++$i) {
+    $table-&gt;setText($i, 1, $data0-&gt;[$i]);
+    $table-&gt;setText($i, 2, $data1-&gt;[$i]);
+    $table-&gt;setText($i, 3, $data2-&gt;[$i]);
+}
+
+# Insert a column on the left for the legend icons. Use 5 pixels left/right margins
+# and 3 pixels top/bottom margins for the cells in this column.
+$table-&gt;insertCol(0)-&gt;setMargin2(5, 5, 3, 3);
+
+# The top cell is set to transparent, so it is invisible
+$table-&gt;getCell(0, 0)-&gt;setBackground($perlchartdir::Transparent,
+    $perlchartdir::Transparent);
+
+# The other 3 cells are set to the legend icons of the 3 data series
+$table-&gt;setText(0, 1, $layer-&gt;getLegendIcon(0));
+$table-&gt;setText(0, 2, $layer-&gt;getLegendIcon(1));
+$table-&gt;setText(0, 3, $layer-&gt;getLegendIcon(2));
+
+# Layout legend box first, so we can get its size
+$c-&gt;layoutLegend();
+
+# Adjust the plot area size, such that the bounding box (inclusive of axes) is 2
+# pixels from the left, right and bottom edge, and is just under the legend box.
+$c-&gt;packPlotArea(2, $legendBox-&gt;getTopY() + $legendBox-&gt;getHeight(), $c-&gt;getWidth() -
+    3, $c-&gt;getHeight() - 3);
+
+# After determining the exact plot area position, we may adjust the legend box and
+# the title positions so that they are centered relative to the plot area (instead of
+# the chart)
+$legendBox-&gt;setPos($plotArea-&gt;getLeftX() + ($plotArea-&gt;getWidth() -
+    $legendBox-&gt;getWidth()) / 2, $legendBox-&gt;getTopY());
+$title-&gt;setPos($plotArea-&gt;getLeftX() + ($plotArea-&gt;getWidth() - $title-&gt;getWidth()) /
+    2, $title-&gt;getTopY());
+
+# Output the chart
+$c-&gt;makeChart("datatable.png")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\datatable.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The data for the line chart
+my $data0 = [42, 49, 33, 38, 64, 56, 29, 41, 44, 57, 59, 42];
+my $data1 = [65, 75, 47, 34, 42, 49, 73, 62, 90, 69, 66, 78];
+my $data2 = [36, 28, 25, 28, 38, 20, 22, 30, 25, 33, 30, 24];
+my $labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct",
+    "Nov", "Dec"];
+
+# Create a XYChart object of size 600 x 400 pixels
+my $c = new XYChart(600, 400);
+
+# Add a title to the chart using 18 pts Times Bold Italic font
+my $title = $c-&gt;addTitle("Product Line Global Revenue", "timesbi.ttf", 18);
+
+# Tentatively set the plotarea at (50, 55) and of (chart_width - 100) x (chart_height
+# - 120) pixels in size. Use a vertical gradient color from sky blue (aaccff) t0
+# light blue (f9f9ff) as background. Set both horizontal and vertical grid lines to
+# dotted semi-transprent black (aa000000).
+my $plotArea = $c-&gt;setPlotArea(50, 55, $c-&gt;getWidth() - 100, $c-&gt;getHeight() - 120,
+    $c-&gt;linearGradientColor(0, 55, 0, 55 + $c-&gt;getHeight() - 120, 0xaaccff, 0xf9fcff
+    ), -1, -1, $c-&gt;dashLineColor(0xaa000000, $perlchartdir::DotLine), -1);
+
+# Add a legend box and anchored the top center at the horizontal center of the chart,
+# just under the title. Use 10pts Arial Bold as font, with transparent background and
+# border.
+my $legendBox = $c-&gt;addLegend($c-&gt;getWidth() / 2, $title-&gt;getHeight(), 0,
+    "arialbd.ttf", 10);
+$legendBox-&gt;setAlignment($perlchartdir::TopCenter);
+$legendBox-&gt;setBackground($perlchartdir::Transparent, $perlchartdir::Transparent);
+
+# Set y-axis title using 10 points Arial Bold Italic font, label style to 8 points
+# Arial Bold, and axis color to transparent
+$c-&gt;yAxis()-&gt;setTitle("Revenue (USD millions)", "arialbi.ttf", 10);
+$c-&gt;yAxis()-&gt;setLabelStyle("arialbd.ttf", 8);
+$c-&gt;yAxis()-&gt;setColors($perlchartdir::Transparent);
+
+# Set y-axis tick density to 30 pixels. ChartDirector auto-scaling will use this as
+# the guideline when putting ticks on the y-axis.
+$c-&gt;yAxis()-&gt;setTickDensity(30);
+
+# Add a line layer to the chart
+my $layer = $c-&gt;addLineLayer2();
+
+# Set the line width to 3 pixels
+$layer-&gt;setLineWidth(3);
+
+# Add the three data sets to the line layer, using circles, diamands and X shapes as
+# symbols
+$layer-&gt;addDataSet($data0, 0xff0000, "Quantum Computer")-&gt;setDataSymbol(
+    $perlchartdir::CircleSymbol, 9);
+$layer-&gt;addDataSet($data1, 0x00ff00, "Atom Synthesizer")-&gt;setDataSymbol(
+    $perlchartdir::DiamondSymbol, 11);
+$layer-&gt;addDataSet($data2, 0xff6600, "Proton Cannon")-&gt;setDataSymbol(
+    perlchartdir::Cross2Shape(), 11);
+
+# Set the x axis labels
+$c-&gt;xAxis()-&gt;setLabels($labels);
+
+# Convert the labels on the x-axis to a CDMLTable
+my $table = $c-&gt;xAxis()-&gt;makeLabelTable();
+
+# Set the default top/bottom margins of the cells to 3 pixels
+$table-&gt;getStyle()-&gt;setMargin2(0, 0, 3, 3);
+
+# Use Arial Bold as the font for the first row
+$table-&gt;getRowStyle(0)-&gt;setFontStyle("arialbd.ttf");
+
+#
+# We can add more information to the table. In this sample code, we add the data
+# series and the legend icons to the table.
+#
+
+# Add 3 more rows to the table. Set the background of the 1st and 3rd rows to light
+# grey (eeeeee).
+$table-&gt;appendRow()-&gt;setBackground(0xeeeeee, $perlchartdir::LineColor);
+$table-&gt;appendRow();
+$table-&gt;appendRow()-&gt;setBackground(0xeeeeee, $perlchartdir::LineColor);
+
+# Put the values of the 3 data series to the cells in the 3 rows
+for(my $i = 0; $i &lt; scalar(@$data0); ++$i) {
+    $table-&gt;setText($i, 1, $data0-&gt;[$i]);
+    $table-&gt;setText($i, 2, $data1-&gt;[$i]);
+    $table-&gt;setText($i, 3, $data2-&gt;[$i]);
+}
+
+# Insert a column on the left for the legend icons. Use 5 pixels left/right margins
+# and 3 pixels top/bottom margins for the cells in this column.
+$table-&gt;insertCol(0)-&gt;setMargin2(5, 5, 3, 3);
+
+# The top cell is set to transparent, so it is invisible
+$table-&gt;getCell(0, 0)-&gt;setBackground($perlchartdir::Transparent,
+    $perlchartdir::Transparent);
+
+# The other 3 cells are set to the legend icons of the 3 data series
+$table-&gt;setText(0, 1, $layer-&gt;getLegendIcon(0));
+$table-&gt;setText(0, 2, $layer-&gt;getLegendIcon(1));
+$table-&gt;setText(0, 3, $layer-&gt;getLegendIcon(2));
+
+# Layout legend box first, so we can get its size
+$c-&gt;layoutLegend();
+
+# Adjust the plot area size, such that the bounding box (inclusive of axes) is 2
+# pixels from the left, right and bottom edge, and is just under the legend box.
+$c-&gt;packPlotArea(2, $legendBox-&gt;getTopY() + $legendBox-&gt;getHeight(), $c-&gt;getWidth() -
+    3, $c-&gt;getHeight() - 3);
+
+# After determining the exact plot area position, we may adjust the legend box and
+# the title positions so that they are centered relative to the plot area (instead of
+# the chart)
+$legendBox-&gt;setPos($plotArea-&gt;getLeftX() + ($plotArea-&gt;getWidth() -
+    $legendBox-&gt;getWidth()) / 2, $legendBox-&gt;getTopY());
+$title-&gt;setPos($plotArea-&gt;getLeftX() + ($plotArea-&gt;getWidth() - $title-&gt;getWidth()) /
+    2, $title-&gt;getTopY());
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

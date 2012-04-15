@@ -1,0 +1,44 @@
+<HTML>
+<HEAD>
+<Title>DrawArea.setDitherMethod</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="DrawArea.htm">DrawArea</a>.setDitherMethod</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setDitherMethod(m)
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the dithering method in case dithering is necessary.<br><br>
+Dithering is a process of reducing the colors of an image. It is required if an image has more colors than can be supported by the image format. For example, a GIF image can only have 256 colors. If the actual image contains more than 256 colors, dithering is needed to reduce the colors to less than 256.<br><br>
+The dithering method must be one of the following predefined constants.<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="19%">Constant<th width="19%%">Value<th width="60%">Description <tr><td><a href="perlchartdir.Quantize.htm">Quantize</a><td>0<td>ChartDirector will first compute an optimal 256-color palette based on colors on the actual image. It then replaces the color of each pixel with the nearest color in the palette. This is the default method and produces the best result in most cases.
+<tr><td><a href="perlchartdir.OrderedDither.htm">OrderedDither</a><td>1<td>Use the ordered dithering algorithm with a 4 x 4 matrix, and with the standard web-safe palette. The web-safe palette is a palette compatible with very old browsers (e.g. Netscape 1.x and 2.x browsers) on 256-color displays.<br><br>
+Web-safe palette is not an optimal palette. In most cases, this method is not as good as the Quantize method. Use this method only if you have to use the web-safe palette.
+<tr><td><a href="perlchartdir.ErrorDiffusion.htm">ErrorDiffusion</a><td>2<td>Similar to OrderedDither but use the Floyd and Steinberg error diffusion algorithm.
+</table>
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>m</td><td>(Mandatory)</td><td>The dithering method to use in case dithering is necessary.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

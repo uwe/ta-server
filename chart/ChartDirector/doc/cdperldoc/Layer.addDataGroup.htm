@@ -1,0 +1,41 @@
+<HTML>
+<HEAD>
+<Title>Layer.addDataGroup</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="Layer.htm">Layer</a>.addDataGroup</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+addDataGroup([ name ])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Open a new data group.<br><br>
+Currently, only stacked bar layers support data groups for creating "multi-stacked" bars.<br><br>
+In a normal stacked bar layer, all data sets are stacked on top of one another, creating one stacked bar per x-axis position. If data grouping is used, data sets within the same data group with be stacked up. So there may be multiple stacked bars in each x-axis position. These stacked bars are drawn side by side.<br><br>
+When you add a data set using <a href="Layer.addDataSet.htm">Layer.addDataSet</a>, the data set will belong to the current data group. The addDataGroup method can be used to open a new data group, so that subsequent data sets will belong to that new group.<br><br>
+You may associate a name with a data group. The name can then be used in data labels or image maps to identify the data group.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>name</td><td>""</td><td>Name of the data group.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

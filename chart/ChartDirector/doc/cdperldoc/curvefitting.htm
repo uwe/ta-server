@@ -1,0 +1,144 @@
+<HTML>
+<HEAD>
+<Title>General Curve Fitting</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">General Curve Fitting</p>
+<hr class="separator">
+<div class="content">
+<img src="images/curvefitting.png">
+<br><br>
+This example demonstrates the LOWESS general purpose curve fitting that is built into ChartDirector.<br><br>
+In regression curve fitting, a function type have to be chosen first, and the data are used to compute the best parameters of that function. For example, in polynomial regression, the function type is a polynomial of a given degree, and the data are used to determine the optimal polynomial coefficients.<br><br>
+However, in many applications, the function type is not known or not expressible in algebraic form. To handle these cases, ChartDirector supports a general curve fitting algorithm known as LOWESS. For details, please refer to <a href="ArrayMath.lowess.htm">ArrayMath.lowess</a> and <a href="ArrayMath.lowess2.htm">ArrayMath.lowess2</a>.<br><br>
+The LOWESS algorithm only adjusts the points to smoothen them. They still need to be joined together. In this example, the adjusted points are joined with a spline layer using <a href="XYChart.addSplineLayer.htm">XYChart.addSplineLayer</a>.
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\curvefitting.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# Use random table to generate a random series. The random table is set to 1 col x 51
+# rows, with 9 as the seed
+my $rantable = new RanTable(9, 1, 51);
+
+# Set the 1st column to start from 100, with changes between rows from -5 to +5
+$rantable-&gt;setCol(0, 100, -5, 5);
+
+# Get the 1st column of the random table as the data set
+my $data = $rantable-&gt;getCol(0);
+
+# Create a XYChart object of size 600 x 300 pixels
+my $c = new XYChart(600, 300);
+
+# Set the plotarea at (50, 35) and of size 500 x 240 pixels. Enable both the
+# horizontal and vertical grids by setting their colors to grey (0xc0c0c0)
+$c-&gt;setPlotArea(50, 35, 500, 240)-&gt;setGridColor(0xc0c0c0, 0xc0c0c0);
+
+# Add a title to the chart using 18 point Times Bold Itatic font.
+$c-&gt;addTitle("LOWESS Generic Curve Fitting Algorithm", "timesbi.ttf", 18);
+
+# Set the y axis line width to 3 pixels
+$c-&gt;yAxis()-&gt;setWidth(3);
+
+# Add a title to the x axis using 12 pts Arial Bold Italic font
+$c-&gt;xAxis()-&gt;setTitle("Server Load (TPS)", "arialbi.ttf", 12);
+
+# Set the x axis line width to 3 pixels
+$c-&gt;xAxis()-&gt;setWidth(3);
+
+# Set the x axis scale from 0 - 50, with major tick every 5 units and minor tick
+# every 1 unit
+$c-&gt;xAxis()-&gt;setLinearScale(0, 50, 5, 1);
+
+# Add a blue layer to the chart
+my $layer = $c-&gt;addLineLayer2();
+
+# Add a red (0x80ff0000) data set to the chart with square symbols
+$layer-&gt;addDataSet($data, 0x80ff0000)-&gt;setDataSymbol($perlchartdir::SquareSymbol);
+
+# Set the line width to 2 pixels
+$layer-&gt;setLineWidth(2);
+
+# Use lowess for curve fitting, and plot the fitted data using a spline layer with
+# line width set to 3 pixels
+$c-&gt;addSplineLayer(new ArrayMath($data)-&gt;lowess()-&gt;result(), 0x0000ff)-&gt;setLineWidth(
+    3);
+
+# Set zero affinity to 0 to make sure the line is displayed in the most detail scale
+$c-&gt;yAxis()-&gt;setAutoScale(0, 0, 0);
+
+# Output the chart
+$c-&gt;makeChart("curvefitting.png")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\curvefitting.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# Use random table to generate a random series. The random table is set to 1 col x 51
+# rows, with 9 as the seed
+my $rantable = new RanTable(9, 1, 51);
+
+# Set the 1st column to start from 100, with changes between rows from -5 to +5
+$rantable-&gt;setCol(0, 100, -5, 5);
+
+# Get the 1st column of the random table as the data set
+my $data = $rantable-&gt;getCol(0);
+
+# Create a XYChart object of size 600 x 300 pixels
+my $c = new XYChart(600, 300);
+
+# Set the plotarea at (50, 35) and of size 500 x 240 pixels. Enable both the
+# horizontal and vertical grids by setting their colors to grey (0xc0c0c0)
+$c-&gt;setPlotArea(50, 35, 500, 240)-&gt;setGridColor(0xc0c0c0, 0xc0c0c0);
+
+# Add a title to the chart using 18 point Times Bold Itatic font.
+$c-&gt;addTitle("LOWESS Generic Curve Fitting Algorithm", "timesbi.ttf", 18);
+
+# Set the y axis line width to 3 pixels
+$c-&gt;yAxis()-&gt;setWidth(3);
+
+# Add a title to the x axis using 12 pts Arial Bold Italic font
+$c-&gt;xAxis()-&gt;setTitle("Server Load (TPS)", "arialbi.ttf", 12);
+
+# Set the x axis line width to 3 pixels
+$c-&gt;xAxis()-&gt;setWidth(3);
+
+# Set the x axis scale from 0 - 50, with major tick every 5 units and minor tick
+# every 1 unit
+$c-&gt;xAxis()-&gt;setLinearScale(0, 50, 5, 1);
+
+# Add a blue layer to the chart
+my $layer = $c-&gt;addLineLayer2();
+
+# Add a red (0x80ff0000) data set to the chart with square symbols
+$layer-&gt;addDataSet($data, 0x80ff0000)-&gt;setDataSymbol($perlchartdir::SquareSymbol);
+
+# Set the line width to 2 pixels
+$layer-&gt;setLineWidth(2);
+
+# Use lowess for curve fitting, and plot the fitted data using a spline layer with
+# line width set to 3 pixels
+$c-&gt;addSplineLayer(new ArrayMath($data)-&gt;lowess()-&gt;result(), 0x0000ff)-&gt;setLineWidth(
+    3);
+
+# Set zero affinity to 0 to make sure the line is displayed in the most detail scale
+$c-&gt;yAxis()-&gt;setAutoScale(0, 0, 0);
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

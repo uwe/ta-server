@@ -1,0 +1,15 @@
+<HTML>
+<HEAD>
+<Title>Date/Time Specification</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Date/Time Specification</p>
+<hr class="separator">
+<div class="content"> 
+Many functions in the ChartDirector API accept dates/times as parameters, in which the dates/times are represented as the seconds elapsed since 1-1-0001 00:00:00.<br><br>
+ChartDirector provides a function <a href="perlchartdir.chartTime.htm">perlchartdir::chartTime</a> that returns a ChartDirector date/time (seconds elapsed since 1-1-0001 00:00:00) given the year, month, day, hour, minute and second components of a date.<br><br>
+A common date/time format used in some systems is to represent dates/times as seconds elapsed since 1-1-1970 00:00:00 GMT in 32-bit integers. ChartDirector does not use this time format because it cannot represent dates before the year 1970, which may be necessary for charting applications. Instead, ChartDirector provides a function <a href="perlchartdir.chartTime2.htm">perlchartdir::chartTime2</a> for converting this time format to ChartDirector's date/time format.</div><br>
+<hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div></body>
+</HTML>

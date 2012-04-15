@@ -1,0 +1,38 @@
+<HTML>
+<HEAD>
+<Title>BaseChart.addText</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="BaseChart.htm">BaseChart</a>.addText</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+addText(x, y, text [, font [, fontSize [, fontColor [, alignment [, angle [, vertical ]]]]]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Adds a text box to the chart.<br><br>
+By default, only the text is visible, the box is transparent. This method returns a <a href="TextBox.htm">TextBox</a> object that can be used to change the appearance of the text box.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>x</td><td>(Mandatory)</td><td>The x pixel coordinate of the left of the text box.</td></tr><tr><td>y</td><td>(Mandatory)</td><td>The y pixel coordinate of the top of the text box.</td></tr><tr><td>text</td><td>(Mandatory)</td><td>The text to shown in the text box. See <a href="cdml.htm">ChartDirector Mark Up Language</a> on how to embed special tags in the text for sophisticated formatting.</td></tr><tr><td>font</td><td>""</td><td>The font used to draw the text. See <a href="fontspec.htm">Font Specification</a> for details on various font attributes.</td></tr><tr><td>fontSize</td><td>8</td><td>The font size used to draw the text.</td></tr><tr><td>fontColor</td><td><a href="perlchartdir.TextColor.htm">TextColor</a></td><td>The color used to draw the text.</td></tr><tr><td>alignment</td><td><a href="perlchartdir.TopLeft.htm">TopLeft</a></td><td>The alignment of the text within the text box. See <a href="alignment.htm">Alignment Specification</a> for supported alignment types.</td></tr><tr><td>angle</td><td>0</td><td>The rotation angle of the text within the text box.</td></tr><tr><td>vertical</td><td>false (zero)</td><td>Indicate whether the text should be laid out vertically (from top to bottom) or horizontally (from left to right).</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+A <a href="TextBox.htm">TextBox</a> object representing the text box. This may be used to fine-tune the appearance of the text box.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

@@ -1,0 +1,40 @@
+<HTML>
+<HEAD>
+<Title>DrawArea.patternColor2</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="DrawArea.htm">DrawArea</a>.patternColor2</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+patternColor2(filename [, startX, startY ])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Creates a pattern color by loading the pattern from an image file.<br><br>
+A pattern color is a dynamic color that changes according to a 2D periodic pattern. When it is used to fill an area, the area will look like being tiled with a wallpaper pattern.<br><br>
+ChartDirector will automatically detect the image file format using the file extension, which must either png, jpg, jpeg, gif, wbmp or wmp (case insensitive).<br><br>
+Please refer to <a href="DrawArea.setSearchPath.htm">DrawArea.setSearchPath</a> on the directory that ChartDirector will search for the file.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>filename</td><td>(Mandatory)</td><td>An image file providing the pattern.</td></tr><tr><td>startX</td><td>0</td><td>The x coordinate of a reference point to align with the top-left corner the pattern.</td></tr><tr><td>startY</td><td>0</td><td>The y coordinate of a reference point to align with the top-left corner the pattern.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+A 32-bit integer representing the pattern color.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

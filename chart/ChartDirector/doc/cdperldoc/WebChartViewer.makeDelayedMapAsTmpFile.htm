@@ -1,0 +1,55 @@
+<HTML>
+<HEAD>
+<Title>WebChartViewer.makeDelayedMapAsTmpFile</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="WebChartViewer.htm">WebChartViewer</a>.makeDelayedMapAsTmpFile</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+makeDelayedMapAsTmpFile(dirname, imageMap [, compress [, lifeTime ]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Creates a delayed image map suitable for use in <a href="JsChartViewer.htm">JsChartViewer</a>.<br><br>
+Normally, for any web page with an image and an image map, the server will send the HTML part of the page to the browser first, which contains the &lt;IMG&gt; tag and the image map (&lt;MAP&gt; and &lt;AREA&gt; tags). The browser, after receiving the HTML, will use the URL in the &lt;IMG&gt; tag to get the image. That means the image map is delivered before the image.<br><br>
+For charts that have a lot of data points, the size of the image map can become significant. For example, a chart with 1000 hot spots, each with a tool tips text and clickable, can easily mean an image map of the order of 100 Kbytes (around 100 bytes per hot spot). Including the image map in the HTML may slow down loading of the web page and loading of the image.<br><br>
+The delayed image map is a new kind of image map delivery method. The image map is not included in the HTML web page, but instead is delivered by AJAX means after the HTML web page and the image are delivered. In this way, the entire web page can be displayed faster, with image map features (like tool tips) available later.<br><br>
+Another advantage of delayed image map is that it can be independently compressed.<br><br>
+Virtually all browsers today supports HTTP compressed web pages. Some web servers are configured to apply HTTP compression to web pages, but most servers nowadays are not configured to use HTTP compression at all.<br><br>
+On the other hand, image maps are usually very compressible. It is common to see compression ratio of the order of 10x (so 100 Kbytes will become 10 Kbytes). If your web server do not already compress HTTP contents, you may ask WebChartViewer to compress the delayed image map. The WebChartViewer will then check if the browser can support HTTP compression (by examining the HTTP headers sent from the browser), and compress the image map if the browser supports it.<br><br>
+In deciding whether to use delayed image map or not, one should compare the advantages of using delayed image map with the disadvantages:<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="49%">Advantages<th width="49%">Disadvantages <tr><td> The HTML web page and the image will display faster, because no image map is including in the HTML web page. <td> Server loading is increased because it needs to create the delayed image map, and to service an additional AJAX request for delayed image map delivery. Also, image map features may not be immediately available when the content is displayed. <tr><td> Image map compression may further improve network performance. <td> Image map compression will increase server CPU loading. </table><br>
+In general, if the browser to server connection is high speed (like in an intranet), or if the image map is not large compared to the network bandwidth, it is not necessary to use delayed image map.<br><br>
+On the other hand, if the browser to server connection can be low speed (like in locations where broadband is not common), and the image map is large compared to the network bandwidth, and it is acceptable to have the image map not immediately available when the content is displayed, then the delayed image map feature will be useful.<br><br>
+Because the delayed image map will be retrieved by the browser from a separate HTTP connection, it needs to be stored in some place that can persist across HTTP connections.<br><br>
+The makeDelayedMapAsTmpFile method stores the delayed image map in a temporary file in the directory specified by <b>dirname</b>, and returns the filename of the temporary file created. To avoid building up of too many temporary files, it will automatically remove all files older than a certain life time (default 600 seconds) in that directory.<br><br>
+If makeDelayedMapAsTmpFile is unsuccessful, an empty string will be returned. In this case, please check that the temporary directory exists, and is readable and writable by the web server anonymous user.<br><br>
+It is highly recommended you use a dedicated directory for storing temporary files created by ChartDirector. This is to avoid makeDelayedMapAsTmpFile from accidentally removing old files belonging to other applications.<br><br>
+Note that makeDelayedMapAsTmpFile expects a file system path of the directory, not a URL path. For example, the directory "/tmp/tmpcharts" means the directory as measured from the root of the hard disk, not the root of the web document directory.<br><br>
+The URL for retrieving the delayed image map should be passed to <a href="WebChartViewer.setImageMap.htm">WebChartViewer.setImageMap</a> for transferring to the browser. It should be trivial if the temporary directory is mapped to a web document directory. If the temporary directory is outside the web document directory, one may use the ChartDirector utility script "getchart.pl" to retrieve the file. For example:<br><br>
+<div style="margin-left:25;font-family:courier new,courier"> $viewer->setImageMap("getchart.pl?img=/tmp/tmpcharts/".<br> &nbsp;&nbsp;&nbsp;&nbsp;$viewer->makeDelayedMapAsTmpFile("/tmp/tmpcharts", $imageMap)); </div><br>
+Note that the above assumes the "getchart.pl" is located in the same directory as the web page. If it is in a different directory, you would need to modify the path to "getchart.pl".
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>dirname</td><td>(Mandatory)</td><td>The directory to store the temporary file and to remove old files.</td></tr><tr><td>imageMap</td><td>(Mandatory)</td><td>The image map to be converted to a delayed image map.</td></tr><tr><td>compress</td><td>false</td><td>Use HTTP compression if the browser supports it.</td></tr><tr><td>lifeTime</td><td>600</td><td>The life time of files in seconds. Older files will be deleted. A negative value disables automatic temporary file removal.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+The temporary file name (not including the path), or an empty string in case of failure.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

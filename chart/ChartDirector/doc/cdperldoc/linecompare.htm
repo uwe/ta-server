@@ -1,0 +1,206 @@
+<HTML>
+<HEAD>
+<Title>Line Comparison</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Line Comparison</p>
+<hr class="separator">
+<div class="content">
+<img src="images/linecompare.png">
+<br><br>
+This example demonstrates filling the area between two lines or curves, as well as a number of advanced chart formatting techniques.<br><br>
+ChartDirector supports filling the area between two lines. The lines can be from a <a href="LineLayer.htm">LineLayer</a>, <a href="SplineLayer.htm">SplineLayer</a>, <a href="StepLineLayer.htm">StepLineLayer</a>, <a href="TrendLayer.htm">TrendLayer</a> or from an axis <a href="Mark.htm">Mark</a>. Two colors can be used for filling, depending on which line is on top.<br><br>
+The effects in this example is achieved using the following methods:<br><br>
+<ul><li> Add the purple spline curve to the chart using <a href="XYChart.addSplineLayer.htm">XYChart.addSplineLayer</a>.<br><br>
+<li> Add the two green lines to the chart using <a href="XYChart.addLineLayer.htm">XYChart.addLineLayer</a> and <a href="Layer.addDataSet.htm">Layer.addDataSet</a>.<br><br>
+<li> Color the region between the two green lines with semi-transparent green using <a href="XYChart.addInterLineLayer.htm">XYChart.addInterLineLayer</a>.<br><br>
+<li> Color the region between the spline curve and the upper green line using <a href="XYChart.addInterLineLayer.htm">XYChart.addInterLineLayer</a>. The fill color is set to red if the spline line is above the upper green line, otherwise it is <a href="perlchartdir.Transparent.htm">Transparent</a>.<br><br>
+<li> Color the region between the spline curve and the lower green line using <a href="XYChart.addInterLineLayer.htm">XYChart.addInterLineLayer</a>. The fill color is set to blue if the spline line is below the lower green line, otherwise it is <a href="perlchartdir.Transparent.htm">Transparent</a>.</ul>
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\linecompare.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# The data for the upper and lower bounding lines
+my $upperY = [60, 60, 100, 100, 60, 60];
+my $lowerY = [40, 40, 80, 80, 40, 40];
+my $zoneX = [0, 2.5, 3.5, 5.5, 6.5, 10];
+
+# The data for the spline curve
+my $curveY = [50, 44, 54, 48, 58, 50, 90, 85, 104, 82, 96, 90, 74, 52, 35, 58, 46,
+    54, 48, 52, 50];
+my $curveX = [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5,
+    9, 9.5, 10];
+
+# Create a XYChart object of size 600 x 300 pixels, with a light grey (cccccc)
+# background, black border, and 1 pixel 3D border effect.
+my $c = new XYChart(600, 300, 0xcccccc, 0x000000, 1);
+
+# Set the plotarea at (55, 58) and of size 520 x 195 pixels, with white background.
+# Turn on both horizontal and vertical grid lines with light grey color (cccccc)
+$c-&gt;setPlotArea(55, 58, 520, 195, 0xffffff, -1, -1, 0xcccccc, 0xcccccc);
+
+# Add a legend box at (55, 32) (top of the chart) with horizontal layout. Use 9 pts
+# Arial Bold font. Set the background and border color to Transparent.
+$c-&gt;addLegend(55, 32, 0, "arialbd.ttf", 9)-&gt;setBackground($perlchartdir::Transparent)
+    ;
+
+# Add a title box to the chart using 15 pts Times Bold Italic font. The title is in
+# CDML and includes embedded images for highlight. The text is white (ffffff) on a
+# black background, with a 1 pixel 3D border.
+$c-&gt;addTitle(
+    "&lt;*block,valign=absmiddle*&gt;&lt;*img=star.png*&gt;&lt;*img=star.png*&gt; Performance ".
+    "Enhancer &lt;*img=star.png*&gt;&lt;*img=star.png*&gt;&lt;*/*&gt;", "timesbi.ttf", 15, 0xffffff
+    )-&gt;setBackground(0x000000, -1, 1);
+
+# Add a title to the y axis
+$c-&gt;yAxis()-&gt;setTitle("Temperature");
+
+# Add a title to the x axis using CMDL
+$c-&gt;xAxis()-&gt;setTitle(
+    "&lt;*block,valign=absmiddle*&gt;&lt;*img=clock.png*&gt;  Elapsed Time (hour)&lt;*/*&gt;");
+
+# Set the axes width to 2 pixels
+$c-&gt;xAxis()-&gt;setWidth(2);
+$c-&gt;yAxis()-&gt;setWidth(2);
+
+# Add a purple (800080) spline layer to the chart with a line width of 2 pixels
+my $splineLayer = $c-&gt;addSplineLayer($curveY, 0x800080, "Molecular Temperature");
+$splineLayer-&gt;setXData($curveX);
+$splineLayer-&gt;setLineWidth(2);
+
+# Add a line layer to the chart with two dark green (338033) data sets, and a line
+# width of 2 pixels
+my $lineLayer = $c-&gt;addLineLayer2();
+$lineLayer-&gt;addDataSet($upperY, 0x338033, "Target Zone");
+$lineLayer-&gt;addDataSet($lowerY, 0x338033);
+$lineLayer-&gt;setXData($zoneX);
+$lineLayer-&gt;setLineWidth(2);
+
+# Color the zone between the upper zone line and lower zone line as semi-transparent
+# light green (8099ff99)
+$c-&gt;addInterLineLayer($lineLayer-&gt;getLine(0), $lineLayer-&gt;getLine(1), 0x8099ff99,
+    0x8099ff99);
+
+# If the spline line gets above the upper zone line, color to area between the lines
+# red (ff0000)
+$c-&gt;addInterLineLayer($splineLayer-&gt;getLine(0), $lineLayer-&gt;getLine(0), 0xff0000,
+    $perlchartdir::Transparent);
+
+# If the spline line gets below the lower zone line, color to area between the lines
+# blue (0000ff)
+$c-&gt;addInterLineLayer($splineLayer-&gt;getLine(0), $lineLayer-&gt;getLine(1),
+    $perlchartdir::Transparent, 0x0000ff);
+
+# Add a custom CDML text at the bottom right of the plot area as the logo
+$c-&gt;addText(575, 250,
+    "&lt;*block,valign=absmiddle*&gt;&lt;*img=small_molecule.png*&gt; &lt;*block*&gt;".
+    "&lt;*font=timesbi.ttf,size=10,color=804040*&gt;Molecular\nEngineering&lt;*/*&gt;"
+    )-&gt;setAlignment($perlchartdir::BottomRight);
+
+# Output the chart
+$c-&gt;makeChart("linecompare.png")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\linecompare.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The data for the upper and lower bounding lines
+my $upperY = [60, 60, 100, 100, 60, 60];
+my $lowerY = [40, 40, 80, 80, 40, 40];
+my $zoneX = [0, 2.5, 3.5, 5.5, 6.5, 10];
+
+# The data for the spline curve
+my $curveY = [50, 44, 54, 48, 58, 50, 90, 85, 104, 82, 96, 90, 74, 52, 35, 58, 46,
+    54, 48, 52, 50];
+my $curveX = [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5,
+    9, 9.5, 10];
+
+# Create a XYChart object of size 600 x 300 pixels, with a light grey (cccccc)
+# background, black border, and 1 pixel 3D border effect.
+my $c = new XYChart(600, 300, 0xcccccc, 0x000000, 1);
+
+#Set directory for loading images to current script directory
+#Need when running under Microsoft IIS
+$c-&gt;setSearchPath(dirname($0));
+
+# Set the plotarea at (55, 58) and of size 520 x 195 pixels, with white background.
+# Turn on both horizontal and vertical grid lines with light grey color (cccccc)
+$c-&gt;setPlotArea(55, 58, 520, 195, 0xffffff, -1, -1, 0xcccccc, 0xcccccc);
+
+# Add a legend box at (55, 32) (top of the chart) with horizontal layout. Use 9 pts
+# Arial Bold font. Set the background and border color to Transparent.
+$c-&gt;addLegend(55, 32, 0, "arialbd.ttf", 9)-&gt;setBackground($perlchartdir::Transparent)
+    ;
+
+# Add a title box to the chart using 15 pts Times Bold Italic font. The title is in
+# CDML and includes embedded images for highlight. The text is white (ffffff) on a
+# black background, with a 1 pixel 3D border.
+$c-&gt;addTitle(
+    "&lt;*block,valign=absmiddle*&gt;&lt;*img=star.png*&gt;&lt;*img=star.png*&gt; Performance ".
+    "Enhancer &lt;*img=star.png*&gt;&lt;*img=star.png*&gt;&lt;*/*&gt;", "timesbi.ttf", 15, 0xffffff
+    )-&gt;setBackground(0x000000, -1, 1);
+
+# Add a title to the y axis
+$c-&gt;yAxis()-&gt;setTitle("Temperature");
+
+# Add a title to the x axis using CMDL
+$c-&gt;xAxis()-&gt;setTitle(
+    "&lt;*block,valign=absmiddle*&gt;&lt;*img=clock.png*&gt;  Elapsed Time (hour)&lt;*/*&gt;");
+
+# Set the axes width to 2 pixels
+$c-&gt;xAxis()-&gt;setWidth(2);
+$c-&gt;yAxis()-&gt;setWidth(2);
+
+# Add a purple (800080) spline layer to the chart with a line width of 2 pixels
+my $splineLayer = $c-&gt;addSplineLayer($curveY, 0x800080, "Molecular Temperature");
+$splineLayer-&gt;setXData($curveX);
+$splineLayer-&gt;setLineWidth(2);
+
+# Add a line layer to the chart with two dark green (338033) data sets, and a line
+# width of 2 pixels
+my $lineLayer = $c-&gt;addLineLayer2();
+$lineLayer-&gt;addDataSet($upperY, 0x338033, "Target Zone");
+$lineLayer-&gt;addDataSet($lowerY, 0x338033);
+$lineLayer-&gt;setXData($zoneX);
+$lineLayer-&gt;setLineWidth(2);
+
+# Color the zone between the upper zone line and lower zone line as semi-transparent
+# light green (8099ff99)
+$c-&gt;addInterLineLayer($lineLayer-&gt;getLine(0), $lineLayer-&gt;getLine(1), 0x8099ff99,
+    0x8099ff99);
+
+# If the spline line gets above the upper zone line, color to area between the lines
+# red (ff0000)
+$c-&gt;addInterLineLayer($splineLayer-&gt;getLine(0), $lineLayer-&gt;getLine(0), 0xff0000,
+    $perlchartdir::Transparent);
+
+# If the spline line gets below the lower zone line, color to area between the lines
+# blue (0000ff)
+$c-&gt;addInterLineLayer($splineLayer-&gt;getLine(0), $lineLayer-&gt;getLine(1),
+    $perlchartdir::Transparent, 0x0000ff);
+
+# Add a custom CDML text at the bottom right of the plot area as the logo
+$c-&gt;addText(575, 250,
+    "&lt;*block,valign=absmiddle*&gt;&lt;*img=small_molecule.png*&gt; &lt;*block*&gt;".
+    "&lt;*font=timesbi.ttf,size=10,color=804040*&gt;Molecular\nEngineering&lt;*/*&gt;"
+    )-&gt;setAlignment($perlchartdir::BottomRight);
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

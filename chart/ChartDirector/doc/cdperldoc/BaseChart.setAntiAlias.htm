@@ -1,0 +1,44 @@
+<HTML>
+<HEAD>
+<Title>BaseChart.setAntiAlias</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="BaseChart.htm">BaseChart</a>.setAntiAlias</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setAntiAlias([ shapeAntiAlias [, textAntiAlias ]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Controls whether anti-alias is used when drawing lines, shapes and text.<br><br>
+For anti-aliasing text, ChartDirector supports the following modes.<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="19%">Constant<th width="19%%">Value<th width="60%">Description <tr><td><a href="perlchartdir.NoAntiAlias.htm">NoAntiAlias</a><td>0<td>Disable anti-alias when drawing text
+<tr><td><a href="perlchartdir.AntiAlias.htm">AntiAlias</a><td>1<td>Always use anti-alias when drawing text
+<tr><td><a href="perlchartdir.AutoAntiAlias.htm">AutoAntiAlias</a><td>2<td>Automatically determine if anti-alias should be used for the text. This is the default.<br><br>
+Currently, ChartDirector will anti-alias only large or bold fonts. For small fonts, assuming it is of high quality, anti-alias is unnecessary. It is because high quality fonts are normally designed to be sharp and clear at low resolution. Anti-aliasing will blur the fonts and make them look worse.<br><br>
+However, for complicated fonts (e.g. some fonts with oriental characters), or for lower quality fonts (e.g. some freeware fonts), anti-alias may be necessary. In this case, it may be needed to force anti-aliasing of all fonts using <i>AntiAlias</i> mode.
+</table>
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>shapeAntiAlias</td><td>true (non-zero)</td><td>A true (non-zero) value enables anti-alias when drawing lines and shapes. A false (zero) value disables anti-alias when drawing lines and shapes</td></tr><tr><td>textAntiAlias</td><td><a href="perlchartdir.AutoAntiAlias.htm">AutoAntiAlias</a></td><td>The text anti-alias mode, which must be one of <a href="perlchartdir.AutoAntiAlias.htm">AutoAntiAlias</a>, <a href="perlchartdir.AntiAlias.htm">AntiAlias</a> or <a href="perlchartdir.NoAntiAlias.htm">NoAntiAlias</a>.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

@@ -1,0 +1,143 @@
+<HTML>
+<HEAD>
+<Title>Icon Pie Chart (1)</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Icon Pie Chart (1)</p>
+<hr class="separator">
+<div class="content">
+<img src="images/iconpie.png">
+<br><br>
+This example demonstrates using <a href="cdml.htm">CDML</a> and <a href="paramsub.htm">Parameter Substitution and Formatting</a> to include icons in sector labels. It also demonstrates gradient background color, glass shading effect for the title and rounded corners for the chart frame.<br><br>
+<ul><li> The gradient background color is created using <a href="perlchartdir.metalColor.htm">perlchartdir::metalColor</a>, with blue as the base color, and in vertical orientation.<br><br>
+<li> The rounded frame is configured using <a href="BaseChart.setRoundedFrame.htm">BaseChart.setRoundedFrame</a>.<br><br>
+<li> The glass shading effect of the title is defined using <a href="perlchartdir.glassEffect.htm">perlchartdir::glassEffect</a>, then applied to the title using <a href="Box.setBackground.htm">Box.setBackground</a> of the title <a href="TextBox.htm">TextBox</a> object.<br><br>
+<li> The icons file names are added to the chart as an extra field using <a href="BaseChart.addExtraField.htm">BaseChart.addExtraField</a>.<br><br>
+<li> The sector label format string is specified using <a href="cdml.htm">CDML</a> and <a href="paramsub.htm">Parameter Substitution and Formatting</a> as:<br><br>
+<div style="margin-left:25;font-family:courier new,courier"> &lt;*block,valign=absmiddle*&gt;&lt;*img={field0}*&gt; &lt;*block*&gt;{label}&lt;*br*&gt;{percent}%&lt;*/*&gt;&lt;*/*&gt; </div><br>
+This means that the sector label is a block, which contains an image followed by another text block. The image file is taken from the extra field. The text block contains two lines showing the sector name and percentage.<br><br>
+<li> The format string is applied to the chart using <a href="PieChart.setLabelFormat.htm">PieChart.setLabelFormat</a>.</ul>
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\iconpie.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# The data for the pie chart
+my $data = [72, 18, 15, 12];
+
+# The depths for the sectors
+my $depths = [30, 20, 10, 10];
+
+# The labels for the pie chart
+my $labels = ["Sunny", "Cloudy", "Rainy", "Snowy"];
+
+# The icons for the sectors
+my $icons = ["sun.png", "cloud.png", "rain.png", "snowy.png"];
+
+# Create a PieChart object of size 400 x 310 pixels, with a blue (CCCCFF) vertical
+# metal gradient background, black border, 1 pixel 3D border effect and rounded
+# corners
+my $c = new PieChart(400, 310, perlchartdir::metalColor(0xccccff, 0), 0x000000, 1);
+$c-&gt;setRoundedFrame();
+
+# Set the center of the pie at (200, 180) and the radius to 100 pixels
+$c-&gt;setPieSize(200, 180, 100);
+
+# Add a title box using 15 pts Times Bold Italic font, on a blue (CCCCFF) background
+# with glass effect
+$c-&gt;addTitle("Weather Profile in Wonderland", "timesbi.ttf", 15)-&gt;setBackground(
+    0xccccff, 0x000000, perlchartdir::glassEffect());
+
+# Set the pie data and the pie labels
+$c-&gt;setData($data, $labels);
+
+# Add icons to the chart as a custom field
+$c-&gt;addExtraField($icons);
+
+# Configure the sector labels using CDML to include the icon images
+$c-&gt;setLabelFormat(
+    "&lt;*block,valign=absmiddle*&gt;&lt;*img={field0}*&gt; &lt;*block*&gt;{label}\n{percent}%&lt;*/*&gt;".
+    "&lt;*/*&gt;");
+
+# Draw the pie in 3D with variable 3D depths
+$c-&gt;set3D2($depths);
+
+# Set the start angle to 225 degrees may improve layout when the depths of the sector
+# are sorted in descending order, because it ensures the tallest sector is at the
+# back.
+$c-&gt;setStartAngle(225);
+
+# Output the chart
+$c-&gt;makeChart("iconpie.png")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\iconpie.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The data for the pie chart
+my $data = [72, 18, 15, 12];
+
+# The depths for the sectors
+my $depths = [30, 20, 10, 10];
+
+# The labels for the pie chart
+my $labels = ["Sunny", "Cloudy", "Rainy", "Snowy"];
+
+# The icons for the sectors
+my $icons = ["sun.png", "cloud.png", "rain.png", "snowy.png"];
+
+# Create a PieChart object of size 400 x 310 pixels, with a blue (CCCCFF) vertical
+# metal gradient background, black border, 1 pixel 3D border effect and rounded
+# corners
+my $c = new PieChart(400, 310, perlchartdir::metalColor(0xccccff, 0), 0x000000, 1);
+$c-&gt;setRoundedFrame();
+
+#Set directory for loading images to current script directory
+#Need when running under Microsoft IIS
+$c-&gt;setSearchPath(dirname($0));
+
+# Set the center of the pie at (200, 180) and the radius to 100 pixels
+$c-&gt;setPieSize(200, 180, 100);
+
+# Add a title box using 15 pts Times Bold Italic font, on a blue (CCCCFF) background
+# with glass effect
+$c-&gt;addTitle("Weather Profile in Wonderland", "timesbi.ttf", 15)-&gt;setBackground(
+    0xccccff, 0x000000, perlchartdir::glassEffect());
+
+# Set the pie data and the pie labels
+$c-&gt;setData($data, $labels);
+
+# Add icons to the chart as a custom field
+$c-&gt;addExtraField($icons);
+
+# Configure the sector labels using CDML to include the icon images
+$c-&gt;setLabelFormat(
+    "&lt;*block,valign=absmiddle*&gt;&lt;*img={field0}*&gt; &lt;*block*&gt;{label}\n{percent}%&lt;*/*&gt;".
+    "&lt;*/*&gt;");
+
+# Draw the pie in 3D with variable 3D depths
+$c-&gt;set3D2($depths);
+
+# Set the start angle to 225 degrees may improve layout when the depths of the sector
+# are sorted in descending order, because it ensures the tallest sector is at the
+# back.
+$c-&gt;setStartAngle(225);
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

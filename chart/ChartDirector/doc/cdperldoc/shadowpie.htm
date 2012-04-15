@@ -1,0 +1,108 @@
+<HTML>
+<HEAD>
+<Title>3D Shadow Mode</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">3D Shadow Mode</p>
+<hr class="separator">
+<div class="content">
+<img src="images/shadowpie0.png">&nbsp;&nbsp;<img src="images/shadowpie1.png">&nbsp;&nbsp;<img src="images/shadowpie2.png">&nbsp;&nbsp;<img src="images/shadowpie3.png">
+<br><br>
+This example demonstrates an alternative 3D drawing method that uses shadows.<br><br>
+The standard way to draw a pie chart in 3D is to view the chart from an inclined angle. Using this method, the surface of a 3D pie will become an ellipse.<br><br>
+ChartDirector supports an alternative way to draw a pie chart in 3D - to draw the 3D portion like a shadow. The 3D pie will remain perfectly circular, and the sector areas will correctly reflect its percentages.<br><br>
+The 3D drawing method is configured using <a href="PieChart.set3D.htm">PieChart.set3D</a>.
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\shadowpie.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+sub createChart
+{
+    my $img = shift;
+
+    # the tilt angle of the pie
+    my $angle = int($img) * 90 + 45;
+
+    # The data for the pie chart
+    my $data = [25, 18, 15, 12, 8, 30, 35];
+
+    # Create a PieChart object of size 100 x 110 pixels
+    my $c = new PieChart(100, 110);
+
+    # Set the center of the pie at (50, 55) and the radius to 36 pixels
+    $c-&gt;setPieSize(50, 55, 36);
+
+    # Set the depth, tilt angle and 3D mode of the 3D pie (-1 means auto depth,
+    # "true" means the 3D effect is in shadow mode)
+    $c-&gt;set3D(-1, $angle, 1);
+
+    # Add a title showing the shadow angle
+    $c-&gt;addTitle("Shadow @ $angle deg", "arial.ttf", 8);
+
+    # Set the pie data
+    $c-&gt;setData($data);
+
+    # Disable the sector labels by setting the color to Transparent
+    $c-&gt;setLabelStyle("", 8, $perlchartdir::Transparent);
+
+    # Output the chart
+    $c-&gt;makeChart("shadowpie$img.png")
+}
+
+createChart(0);
+createChart(1);
+createChart(2);
+createChart(3);</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\shadowpie.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# Get HTTP query parameters
+use CGI;
+my $query = new CGI;
+
+# the tilt angle of the pie
+my $angle = int($query-&gt;param("img")) * 90 + 45;
+
+# The data for the pie chart
+my $data = [25, 18, 15, 12, 8, 30, 35];
+
+# Create a PieChart object of size 100 x 110 pixels
+my $c = new PieChart(100, 110);
+
+# Set the center of the pie at (50, 55) and the radius to 36 pixels
+$c-&gt;setPieSize(50, 55, 36);
+
+# Set the depth, tilt angle and 3D mode of the 3D pie (-1 means auto depth, "true"
+# means the 3D effect is in shadow mode)
+$c-&gt;set3D(-1, $angle, 1);
+
+# Add a title showing the shadow angle
+$c-&gt;addTitle("Shadow @ $angle deg", "arial.ttf", 8);
+
+# Set the pie data
+$c-&gt;setData($data);
+
+# Disable the sector labels by setting the color to Transparent
+$c-&gt;setLabelStyle("", 8, $perlchartdir::Transparent);
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

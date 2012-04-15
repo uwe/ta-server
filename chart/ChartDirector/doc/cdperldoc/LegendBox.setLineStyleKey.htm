@@ -1,0 +1,41 @@
+<HTML>
+<HEAD>
+<Title>LegendBox.setLineStyleKey</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="LegendBox.htm">LegendBox</a>.setLineStyleKey</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setLineStyleKey([ b ])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Determines whether to always use "line style legend keys" or not.<br><br>
+By default, ChartDirector will use a small colored square box as the legend key icon. This allows people to determine the colors for the data representations.<br><br>
+In some cases, colors alone cannot distinguish the data representations. For example, in a line chart with multiple lines, it is possible all lines are of the same color, and are distinguished by line styles (solid, dash, dotted, etc), etc), or the lines may be distinguished by data symbols (small circles, squares, etc) on the lines.<br><br>
+For charts with non-solid lines (eg. dash, dotted, etc) or lines with data symbols, ChartDirector will use "line style legend keys" for the lines. A line style legend key consist a of line with an optional data symbol, which reflects the line style and data symbol representing the data series.<br><br>
+This method can be used to force ChartDirector to always use the "line style legend keys".
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>b</td><td>true (non-zero)</td><td>A true (non-zero) value means to always use "line style legend keys". A false (zero) value means to automatically determined if "line style legend keys" should be used.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

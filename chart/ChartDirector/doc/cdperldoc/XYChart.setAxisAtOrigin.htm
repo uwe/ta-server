@@ -1,0 +1,43 @@
+<HTML>
+<HEAD>
+<Title>XYChart.setAxisAtOrigin</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="XYChart.htm">XYChart</a>.setAxisAtOrigin</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setAxisAtOrigin([ originMode [, symmetryMode ]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the chart into 4 quadrant mode. The axes may intersect at origin inside the plot area (as opposed to at the border of the plot area).<br><br>
+By default, ChartDirector puts the axes at the border of the plot area. This ensures the axes and the axes labels will not block the contents of the plot area.<br><br>
+However, in some cases, it may be desirable for the axes to intersect at the origin. The axes may need to move inside the plot area.<br><br>
+ChartDirector allows you to move the primary x-axis and/or y-axis to so that they intersect with the zero point of the other axis. The following constants represent different possibilities:<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="19%">Constant<th width="19%%">Value<th width="60%">Description <tr><td><a href="perlchartdir.XAxisAtOrigin.htm">XAxisAtOrigin</a><td>1<td> Move the x-axis so that it will intersect with the zero point of the y-axis, if that point exists. <tr><td><a href="perlchartdir.YAxisAtOrigin.htm">YAxisAtOrigin</a><td>2<td> Move the y-axis so that it will intersect with the zero point of the x-axis, if that point exists. <tr><td><a href="perlchartdir.XYAxisAtOrigin.htm">XYAxisAtOrigin</a><td>3<td> Move the x-axis so that it will intersect with the zero point of the y-axis, if that point exists. Move the y-axis so that it will intersect with the zero point of the x-axis, if that point exists. </table><br>
+In addition to ensure the axes intersects at the origin, ChartDirector allows you to control if the axes are symmetrical about the origin with the following flags. Multiple flags can be specified by "or" them together.<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="19%">Constant<th width="19%%">Value<th width="60%">Description <tr><td><a href="perlchartdir.XAxisSymmetric.htm">XAxisSymmetric</a><td>1<td> Adjust the x-axis so that it becomes symmetrical about the zero point, that is, the positive and negative part of the x-axis will be of the same length. <tr><td><a href="perlchartdir.XAxisSymmetricIfNeeded.htm">XAxisSymmetricIfNeeded</a><td>2<td> Adjust the x-axis will be symmetrical about the zero point if the axis scale needs both positive and negative values. <tr><td><a href="perlchartdir.YAxisSymmetric.htm">YAxisSymmetric</a><td>4<td> Adjust the y-axis so that it becomes symmetrical about the zero point, that is, the positive and negative part of the y-axis will be of the same length. <tr><td><a href="perlchartdir.YAxisSymmetricIfNeeded.htm">YAxisSymmetricIfNeeded</a><td>8<td> Adjust the y-axis will be symmetrical about the zero point if the axis scale needs both positive and negative values. <tr><td><a href="perlchartdir.XYAxisSymmetric.htm">XYAxisSymmetric</a><td>16<td> Adjust the x-axes and y-axes so that they become symmetrical about the zero point. The positive and negative parts of the x-axes and the y-axes will all be of the same length. <tr><td><a href="perlchartdir.XYAxisSymmetricIfNeeded.htm">XYAxisSymmetricIfNeeded</a><td>32<td> Adjust the x-axes and y-axes so that they become symmetrical about the zero point. However, if an axis does not need both positive and negative values, it will not be adjusted. </table>
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>originMode</td><td><a href="perlchartdir.XYAxisAtOrigin.htm">XYAxisAtOrigin</a></td><td>predefined constants to determine which axis needs to move to intersect with the zero point of the other axis.</td></tr><tr><td>symmetryMode</td><td>0</td><td>Flags to determine if the axes need to be symmetrical about the origin.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

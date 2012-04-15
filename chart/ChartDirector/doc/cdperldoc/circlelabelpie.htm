@@ -1,0 +1,163 @@
+<HTML>
+<HEAD>
+<Title>Circular Label Layout</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Circular Label Layout</p>
+<hr class="separator">
+<div class="content">
+<img src="images/circlelabelpie0.png">&nbsp;&nbsp;<img src="images/circlelabelpie1.png">
+<br><br>
+This example demonstrates label positioning in the "circular label layout" method.<br><br>
+By default, in "circular label layout", the sector labels will be external and close to the pie perimeter.<br><br>
+The <a href="PieChart.setLabelPos.htm">PieChart.setLabelPos</a> method can be used to control the distance between the labels and the pie perimeter, and add join lines to connect the labels to the sectors. The join lines are useful if the labels are far away from the pie perimeter.<br><br>
+The distance between the sector labels and the pie perimeter can be negative, in which case the labels will be internal to the pie.
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\circlelabelpie.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+sub createChart
+{
+    my $img = shift;
+
+    # The data for the pie chart
+    my $data = [42, 18, 8];
+
+    # The labels for the pie chart
+    my $labels = ["Agree", "Disagree", "Not Sure"];
+
+    # The colors to use for the sectors
+    my $colors = [0x66ff66, 0xff6666, 0xffff00];
+
+    # Create a PieChart object of size 300 x 300 pixels. Set the background to a
+    # gradient color from blue (aaccff) to sky blue (ffffff), with a grey (888888)
+    # border. Use rounded corners and soft drop shadow.
+    my $c = new PieChart(300, 300);
+    $c-&gt;setBackground($c-&gt;linearGradientColor(0, 0, 0, $c-&gt;getHeight() / 2, 0xaaccff,
+        0xffffff), 0x888888);
+    $c-&gt;setRoundedFrame();
+    $c-&gt;setDropShadow();
+
+    if ($img eq "0") {
+    #============================================================
+    #    Draw a pie chart where the label is on top of the pie
+    #============================================================
+
+        # Set the center of the pie at (150, 150) and the radius to 120 pixels
+        $c-&gt;setPieSize(150, 150, 120);
+
+        # Set the label position to -40 pixels from the perimeter of the pie (-ve
+        # means label is inside the pie)
+        $c-&gt;setLabelPos(-40);
+
+    } else {
+    #============================================================
+    #    Draw a pie chart where the label is outside the pie
+    #============================================================
+
+        # Set the center of the pie at (150, 150) and the radius to 80 pixels
+        $c-&gt;setPieSize(150, 150, 80);
+
+        # Set the sector label position to be 20 pixels from the pie. Use a join line
+        # to connect the labels to the sectors.
+        $c-&gt;setLabelPos(20, $perlchartdir::LineColor);
+
+    }
+
+    # Set the pie data and the pie labels
+    $c-&gt;setData($data, $labels);
+
+    # Set the sector colors
+    $c-&gt;setColors2($perlchartdir::DataColor, $colors);
+
+    # Use local gradient shading, with a 1 pixel semi-transparent black (bb000000)
+    # border
+    $c-&gt;setSectorStyle($perlchartdir::LocalGradientShading, 0xbb000000, 1);
+
+    # Output the chart
+    $c-&gt;makeChart("circlelabelpie$img.png")
+}
+
+createChart(0);
+createChart(1);</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\circlelabelpie.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# Get HTTP query parameters
+use CGI;
+my $query = new CGI;
+
+# The data for the pie chart
+my $data = [42, 18, 8];
+
+# The labels for the pie chart
+my $labels = ["Agree", "Disagree", "Not Sure"];
+
+# The colors to use for the sectors
+my $colors = [0x66ff66, 0xff6666, 0xffff00];
+
+# Create a PieChart object of size 300 x 300 pixels. Set the background to a gradient
+# color from blue (aaccff) to sky blue (ffffff), with a grey (888888) border. Use
+# rounded corners and soft drop shadow.
+my $c = new PieChart(300, 300);
+$c-&gt;setBackground($c-&gt;linearGradientColor(0, 0, 0, $c-&gt;getHeight() / 2, 0xaaccff,
+    0xffffff), 0x888888);
+$c-&gt;setRoundedFrame();
+$c-&gt;setDropShadow();
+
+if ($query-&gt;param("img") eq "0") {
+#============================================================
+#    Draw a pie chart where the label is on top of the pie
+#============================================================
+
+    # Set the center of the pie at (150, 150) and the radius to 120 pixels
+    $c-&gt;setPieSize(150, 150, 120);
+
+    # Set the label position to -40 pixels from the perimeter of the pie (-ve means
+    # label is inside the pie)
+    $c-&gt;setLabelPos(-40);
+
+} else {
+#============================================================
+#    Draw a pie chart where the label is outside the pie
+#============================================================
+
+    # Set the center of the pie at (150, 150) and the radius to 80 pixels
+    $c-&gt;setPieSize(150, 150, 80);
+
+    # Set the sector label position to be 20 pixels from the pie. Use a join line to
+    # connect the labels to the sectors.
+    $c-&gt;setLabelPos(20, $perlchartdir::LineColor);
+
+}
+
+# Set the pie data and the pie labels
+$c-&gt;setData($data, $labels);
+
+# Set the sector colors
+$c-&gt;setColors2($perlchartdir::DataColor, $colors);
+
+# Use local gradient shading, with a 1 pixel semi-transparent black (bb000000) border
+$c-&gt;setSectorStyle($perlchartdir::LocalGradientShading, 0xbb000000, 1);
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

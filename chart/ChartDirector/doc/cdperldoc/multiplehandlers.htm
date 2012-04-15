@@ -1,0 +1,20 @@
+<HTML>
+<HEAD>
+<Title>Using Multiple Click Handlers</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Using Multiple Click Handlers</p>
+<hr class="separator">
+<div class="content">When creating image maps with <a href="BaseChart.getHTMLImageMap.htm">BaseChart.getHTMLImageMap</a>, all data points will use the same image map handler.<br><br>
+For example, in a pie chart, if the image map is generated using <a href="BaseChart.getHTMLImageMap.htm">BaseChart.getHTMLImageMap</a> with "piestub.pl" as the handler, no matter which sector is clicked, "piestub.pl" will be invoked. The different sectors are distinguished by different HTTP query parameters.<br><br>
+If for some reasons, it is desirable that different sectors use different handlers, the followings are some of the methods:<br><br>
+<ul>
+<li>Produce the image map using <a href="BaseChart.getHTMLImageMap.htm">BaseChart.getHTMLImageMap</a>, with the same handler for all sectors. In the handler, redirect the HTTP request to the "real handler" based on the sector clicked. This is the simplest and recommended method.<br><br>
+<li>Use a client side Javascript function as the handler, where "{sector}" is used as the argument to indicate which sector is clicked. For example, "javascript:callMe({sector});" can be used as the handler. In the "callMe" function, the client side Javascript can instruct the browser to load the "real handler".<br><br>
+<li>Do not use <a href="BaseChart.getHTMLImageMap.htm">BaseChart.getHTMLImageMap</a>. Instead, use <a href="Sector.getImageCoor.htm">Sector.getImageCoor</a> and <a href="Sector.getLabelCoor.htm">Sector.getLabelCoor</a> to obtain the image map coordinates of individual sectors and sector labels. With these coordinates, one can create custom &lt;AREA&gt; tags for the individual sectors and can put any attributes in them. One can therefore use different "href" attributes for different sectors.<br><br>
+</ul>
+Although we use pie chart as an example above, the principles apply to other chart types as well.</div><br>
+<hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div></body>
+</HTML>

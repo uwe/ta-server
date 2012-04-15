@@ -1,0 +1,55 @@
+<HTML>
+<HEAD>
+<Title>PieChart.setSectorStyle</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="PieChart.htm">PieChart</a>.setSectorStyle</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setSectorStyle(shadingMethod [, edgeColor [, edgeWidth ]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the sector shading style, edge color and edge width.<br><br>
+This method affects all sectors. To set the sector shading style, edge color and edge width for one particular sector, use <a href="Sector.setStyle.htm">Sector.setStyle</a>.<br><br>
+ChartDirector supports various shading effects, which are best illustrated using examples.<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="38%">Example<th width="60%">Description
+<tr><td><a href="pieshading.htm">2D Pie Shading</a><td>Illustrates various shading effects for 2D pies.
+<tr><td><a href="threedpieshading.htm">3D Pie Shading</a><td>Illustrates various shading effects for 3D pies.
+<tr><td><a href="donutshading.htm">2D Donut Shading</a><td>Illustrates various shading effects for 2D donuts.
+<tr><td><a href="threeddonutshading.htm">3D Donut Shading</a><td>Illustrates various shading effects for 3D donuts.
+</table><br>
+The followings are textual descriptions of the shading effects.<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="19%">Constant<th width="19%%">Value<th width="60%">Description <tr><td><a href="perlchartdir.DefaultShading.htm">DefaultShading</a><td>0<td>This is the default shading method. The top surfaces are shaded with flat colors. For 3D sectors, the cylindrical surfaces are shaded with cylindrical lighting effects.
+<tr><td><a href="perlchartdir.FlatShading.htm">FlatShading</a><td>1<td>All surfaces are shaded with flat colors.
+<tr><td><a href="perlchartdir.LocalGradientShading.htm">LocalGradientShading</a><td>2<td>The top surfaces are shaded with linear gradient colors. For each sector, the gradient is from the bottom of the sector bounding box to the top of the sector bounding box, with the bottom side brighter and the top side darker. For 3D sectors, the cylindrical surfaces are shaded with cylindrical lighting effects.
+<tr><td><a href="perlchartdir.GlobalGradientShading.htm">GlobalGradientShading</a><td>3<td>The top surfaces are shaded with linear gradient colors. The gradient is from the bottom the pie bounding box to the top of the pie bounding box, with the bottom side brighter and the top side darker. For 3D sectors, the cylindrical surfaces are shaded with cylindrical lighting effects.
+<tr><td><a href="perlchartdir.ConcaveShading.htm">ConcaveShading</a><td>4<td>The top surfaces are shaded with a special effect so that they look concave, with the pie center appears to be depressed relative to the perimeter. For 3D sectors, the cylindrical surfaces are shaded with cylindrical lighting effects.
+<tr><td><a href="perlchartdir.RoundedEdgeShading.htm">RoundedEdgeShading</a><td>6<td>The top surfaces are shaded with a special effect so that the pie looks raised with a rounded raised edge at the perimeter.
+<tr><td><a href="perlchartdir.RadialShading.htm">RadialShading</a><td>7<td>The top surfaces are shaded with radial gradient colors, with the pie center brighter and the perimeter darker. For 3D sectors, the cylindrical surfaces are shaded with cylindrical lighting effects.
+<tr><td><a href="perlchartdir.RingShading.htm">RingShading</a><td>8<td>This effect is intended to be used with 2D donut charts only. The top surfaces are shaded with a special effect so that a 2D donut will look like a torus.
+</table>
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>shadingMethod</td><td>(Mandatory)</td><td>The sector shading style to use, which must be one of the constants in the table above. -1 means to keep the existing value unchanged.</td></tr><tr><td>edgeColor</td><td>-1</td><td>The edge color of the sectors. -1 means to keep the existing value unchanged.</td></tr><tr><td>edgeWidth</td><td>-1</td><td>The edge width of the sectors. -1 means to keep the existing value unchanged.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

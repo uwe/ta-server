@@ -1,0 +1,61 @@
+<HTML>
+<HEAD>
+<Title>The First CGI Project</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">The First CGI Project</p>
+<hr class="separator">
+<div class="content">The following is exactly the same as <a href="firstproject.htm">The First Project</a> in the previous section, except that instead of creating the chart image in a file, it "streams" the chart image directly to the browser.<br><br>
+This script is intended to be run as a CGI in a web server.<br><br>
+<b>[CGI Version]</b> perldemo_cgi\simplebar.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The data for the bar chart
+my $data = [85, 156, 179.5, 211, 123];
+
+# The labels for the bar chart
+my $labels = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+
+# Create a XYChart object of size 250 x 250 pixels
+my $c = new XYChart(250, 250);
+
+# Set the plotarea at (30, 20) and of size 200 x 200 pixels
+$c-&gt;setPlotArea(30, 20, 200, 200);
+
+# Add a bar chart layer using the given data
+$c-&gt;addBarLayer($data);
+
+# Set the labels on the x axis.
+$c-&gt;xAxis()-&gt;setLabels($labels);
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table><br>
+The code is almost identical to the code in <a href="firstproject.htm">The First Project</a>, so the details will not be further explained. The major difference is that instead of using <a href="BaseChart.makeChart.htm">BaseChart.makeChart</a> to output the chart as a PNG file, it outputs the chart as a binary string using <a href="BaseChart.makeChart2.htm">BaseChart.makeChart2</a> and streams the data directly to the browser.<br><br>
+Note that in the above code, the first few lines are:<br><br>
+<div style="background-color:#cccccc;width:99%;padding:5px"><pre>#Include current script directory in the module path (needed on Microsoft IIS).
+#This allows this script to work by copying ChartDirector to the same directory
+#as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;</pre></div><br>
+The above is to make sure the script can run on Microsoft web servers without installing ChartDirector in the Perl module search path (that is, by just copying ChartDirector to the script directory.) If you are not using Microsoft web servers, or you have install ChartDirector in your Perl module search path, the above code is not necessary.<br><br>
+The chart image is streamed to the browser using the following code:<br><br>
+<div style="background-color:#cccccc;width:99%;padding:5px"><pre>#output the chart in PNG format
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></div><br>
+The above code first sets STDOUT to binary mode using the Perl "binmode" statement. This is necessary on Windows as Windows handles text mode and binary mode outputs differently. The binmode command has no effect on Linux/FreeBSD/Solaris.<br><br>
+The "print" statement prints the MIME Content-type header, and then a binary string containing the image itself to STDOUT for delivery to the browser.</div><br>
+<hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div></body>
+</HTML>

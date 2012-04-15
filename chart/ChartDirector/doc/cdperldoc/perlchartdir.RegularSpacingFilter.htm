@@ -1,0 +1,38 @@
+<HTML>
+<HEAD>
+<Title>perlchartdir.RegularSpacingFilter</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="perlchartdir.htm">perlchartdir</a>.RegularSpacingFilter</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+RegularSpacingFilter([ labelStep [, initialMargin ]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Creates a data filter that matches 1 out of every N elements.<br><br>
+This method is typically used in <a href="Axis.setMultiFormat.htm">Axis.setMultiFormat</a> and <a href="Axis.setMultiFormat2.htm">Axis.setMultiFormat2</a> to select specific elements for formatting as axis labels.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>labelStep</td><td>1</td><td>Picks 1 out of every "labelStep" number of elements. For example, if this argument is 3, only 1 of every 3 elements will be selected.</td></tr><tr><td>initialMargin</td><td>0</td><td>Adds an offset when determining the elements to be selected. For example, if the <b>labelStep</b> is 3, the selected indexes should be 0, 3, 6, 9, .... If <b>initialMargin</b> is set to 1, the indexes becomes 1, 4, 7, 10, ....</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+An integer filter id representing the filter.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

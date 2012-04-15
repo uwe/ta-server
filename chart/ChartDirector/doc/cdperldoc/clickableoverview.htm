@@ -1,0 +1,20 @@
+<HTML>
+<HEAD>
+<Title>Clickable Charts Operation Overview</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Clickable Charts Operation Overview</p>
+<hr class="separator">
+<div class="content">For a browser to display an image with an image map, the following sequence of events must have occurred:<br><br>
+<ol> <li>The browser sends a HTTP request to the server.<br><br>
+<li>The server returns a HTML web page that contains an &lt;IMG&gt; tag for the image, and the &lt;MAP&gt; and &lt;AREA&gt; tags for the image map.<br><br>
+<li>The browser receives the HTML web page. It then sends another HTTP request to the server using the URL in the &lt;IMG&gt; tag for the actual image.<br><br>
+<li>The server returns the actual image to the browser. </ol>
+Note that a ChartDirector chart image needs to be generated in step (2), so that we can produce the image map. However, the image itself can only be delivered to the browser in step (4), which is another HTTP connection. So after the chart image is produced in step (2), it must be saved in "some place". When step (4) occurs, the server can send the image to the browser.<br><br>
+The "some place" can be a "temporary file" or a "session variable".<br><br>
+For Perl, there is no standard way to use session variables in web servers, so the clickable examples in this documentation will be based on the "temporary file" approach.<br><br>
+To make using temporary files easy, ChartDirector has a special method <a href="BaseChart.makeTmpFile.htm">BaseChart.makeTmpFile</a> that saves charts in temporary files and automatically remove old temporary files.</div><br>
+<hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div></body>
+</HTML>

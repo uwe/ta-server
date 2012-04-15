@@ -1,0 +1,41 @@
+<HTML>
+<HEAD>
+<Title>MeterPointer.setShape</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="MeterPointer.htm">MeterPointer</a>.setShape</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setShape(pointerType [, lengthRatio [, widthRatio ]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the shape of the meter pointer to one of the built-in shapes.<br><br>
+<img src="images/apointerdemo.png" hspace="20"><img src="images/vpointerdemo.png"><br><br>
+The built-in symbols are specified by using the following predefined constants as the <b>pointerType</b> argument.<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="19%">Constant<th width="19%%">Value<th width="60%">Description <tr><td><a href="perlchartdir.DiamondPointer.htm">DiamondPointer</a><td>0<td>The blue pointers in the meters above. <tr><td><a href="perlchartdir.TriangularPointer.htm">TriangularPointer</a><td>1<td>The purple pointers in the meters above. <tr><td><a href="perlchartdir.ArrowPointer.htm">ArrowPointer</a><td>2<td>The red pointers in the meters above. <tr><td><a href="perlchartdir.ArrowPointer2.htm">ArrowPointer2</a><td>3<td>The yellow pointers in the meters above. <tr><td><a href="perlchartdir.LinePointer.htm">LinePointer</a><td>4<td>The green pointers in the meters above. <tr><td><a href="perlchartdir.PencilPointer.htm">PencilPointer</a><td>5<td>The grey pointers in the meters above. </table><br>
+The length and width of the pointer can be scaled by using the <b>lengthRatio</b> and <b>widthRatio</b> arguments. The meters above are using default length and width ratios, which are both 1 for angular meters, and 0.75 and 1 for linear meters.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>pointerType</td><td>(Mandatory)</td><td>One of the predefined pointer shape constants to specify the pointer shape to use.</td></tr><tr><td>lengthRatio</td><td><a href="perlchartdir.NoValue.htm">NoValue</a></td><td>The length ratio applies to the pointer. NoValue means the lengthRatio is not modified. The default is 1.0 for angular meters and 0.75 for linear meters.</td></tr><tr><td>widthRatio</td><td><a href="perlchartdir.NoValue.htm">NoValue</a></td><td>The width ratio applies to the pointer. NoValue means the widthRatio is not modified. The default is 1.0.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

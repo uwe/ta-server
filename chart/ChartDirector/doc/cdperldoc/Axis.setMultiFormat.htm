@@ -1,0 +1,52 @@
+<HTML>
+<HEAD>
+<Title>Axis.setMultiFormat</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="Axis.htm">Axis</a>.setMultiFormat</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setMultiFormat(filter1, format1, filter2, format2 [, labelSpan [, promoteFirst ]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets multiple formats for numeric or date/time axis labels.<br><br>
+This method is typically used to format date/time labels. For example, for an axis that spans 90 days, this method can be used to format the first labels of each month in bold as "mmm-dd", while other labels are shown in normal font as "dd".<br><br>
+The multiple formats are defined as a list of filters and format strings. If the label value satisfies the first filter, it will be formatted using the first format string. Otherwise if the label value satisfies the second filter, it will be formatted using the second format string, and so on. If a label value does not satisfy any filter, it will be discarded.<br><br>
+In the above example, the first filter can be a "start of month" filter (created using <a href="perlchartdir.StartOfMonthFilter.htm">perlchartdir::StartOfMonthFilter</a>), and the first format string can be "{value|mmm-dd}". The second filter can be the "all pass" filter (created using <a href="perlchartdir.AllPassFilter.htm">perlchartdir::AllPassFilter</a>), and the format string can be "{value|dd}".<br><br>
+Supported filters in ChartDirector include:<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="38%">Filter<th width="60%">Description
+<tr><td><a href="perlchartdir.StartOfHourFilter.htm">perlchartdir::StartOfHourFilter</a><td>Creates a data filter that matches date/times that represent the start of a new hour in a date/time series.
+<tr><td><a href="perlchartdir.StartOfDayFilter.htm">perlchartdir::StartOfDayFilter</a><td>Creates a data filter that matches date/times that represent the start of a new day in a date/time series.
+<tr><td><a href="perlchartdir.StartOfWeekFilter.htm">perlchartdir::StartOfWeekFilter</a><td>Creates a data filter that matches date/times that represent the start of a new week in a date/time series.
+<tr><td><a href="perlchartdir.StartOfMonthFilter.htm">perlchartdir::StartOfMonthFilter</a><td>Creates a data filter that matches date/times that represent the start of a new month in a date/time series.
+<tr><td><a href="perlchartdir.StartOfYearFilter.htm">perlchartdir::StartOfYearFilter</a><td>Creates a data filter that matches date/times that represent the start of a new year in a date/time series.
+<tr><td><a href="perlchartdir.RegularSpacingFilter.htm">perlchartdir::RegularSpacingFilter</a><td> Creates a data filter that matches 1 out of every N elements. <tr><td><a href="perlchartdir.AllPassFilter.htm">perlchartdir::AllPassFilter</a><td> Creates a data filter that matches every element. <tr><td><a href="perlchartdir.NonePassFilter.htm">perlchartdir::NonePassFilter</a><td> Creates a data filter that matches no element. <tr><td><a href="perlchartdir.SelectItemFilter.htm">perlchartdir::SelectItemFilter</a><td> Creates a data filter that matches one specified item. </table><br>
+For the format strings, please refer to <a href="paramsub.htm">Parameter Substitution and Formatting</a> on their syntax.<br><br>
+A single setMultiFormat method supports two filters and two format strings. You can use multiple setMultiFormat and/or <a href="Axis.setMultiFormat2.htm">Axis.setMultiFormat2</a> methods to add more filters and format strings.<br><br>
+One common issue in putting labels on the axis is that there may be too many labels on the axis. The setMultiFormat method supports a <b>labelSpan</b> argument that specifies how many label positions a single label will occupy. If a label occupies more than 1 position, ChartDirector will not put labels on nearby positions, even if they meet the filter criteria.<br><br>
+The setMultiFormat method supports special handling of the first label on the axis. For example, in the above example, we may want to show the the first label as "mmm-dd", even if it is not actually the "start of month". The <b>promoteFirst</b> argument, if set to true, will cause the first label to be promoted to a higher filter category in the multi-format list. For example, if the first label satisfies only the second filter, it will be formatted as if it satisfies the first filter.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>filter1</td><td>(Mandatory)</td><td>The filter that defines the first kind of labels.</td></tr><tr><td>format1</td><td>(Mandatory)</td><td>The format string for the first kind of labels.</td></tr><tr><td>filter2</td><td>(Mandatory)</td><td>The filter that defines the second kind of labels.</td></tr><tr><td>format2</td><td>(Mandatory)</td><td>The format string for the second kind of labels.</td></tr><tr><td>labelSpan</td><td>1</td><td>The number of label positions that are claimed by one label. If a label occupies more than 1 position, ChartDirector will not put labels on nearby positions, even if they meet the filter criteria.</td></tr><tr><td>promoteFirst</td><td>true (non-zero)</td><td>If set to true, the first label will be promoted to a higher filter category in the multi-format list.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

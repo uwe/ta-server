@@ -1,0 +1,207 @@
+<HTML>
+<HEAD>
+<Title>Multi-Stacked Bar Chart</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Multi-Stacked Bar Chart</p>
+<hr class="separator">
+<div class="content">
+<img src="images/multistackbar.png">
+<br><br>
+This example demonstrates combining multi-bar style with stacked bar style. It also demonstrates drawing horizontal bar charts, using icons in axis labels with <a href="cdml.htm">CDML</a>, customizing legend and bar labels, controlling bar widths and centering legend box.<br><br>
+A multi-stacked bar chart combines the multi-bar style with the stacked bar style by allowing each bar in a multi-bar chart to be a stacked bar. This provides two levels of data grouping. The data from the data sets are clusters based on their index position. Within each cluster, the data are grouped again to form stack bars.<br><br>
+The standard multi-bar chart provides the first level of grouping. The <a href="Layer.addDataGroup.htm">Layer.addDataGroup</a> method is used to provide the second level of grouping.<br><br>
+The key features demonstrated in this example are:<br><br>
+<ul><li> Use <a href="Layer.addDataGroup.htm">Layer.addDataGroup</a> to start a new data group. All subsequent data sets added to the layer will belong to that group. The group ends when <a href="Layer.addDataGroup.htm">Layer.addDataGroup</a> is called again to start another new group.<br><br>
+<li> Embed icons in axis labels by using <a href="cdml.htm">CDML</a> to encode the labels.<br><br>
+<li> Set the bar border to <a href="perlchartdir.Transparent.htm">Transparent</a> using <a href="Layer.setBorderColor.htm">Layer.setBorderColor</a>.<br><br>
+<li> Set a 20% bar gap between the bar clusters and 0% (no gap) for bars within a bar cluster by using <a href="BarLayer.setBarGap.htm">BarLayer.setBarGap</a>.<br><br>
+<li> Swap the x and y axes to create a horizontal bar chart using <a href="XYChart.swapXY.htm">XYChart.swapXY</a>.<br><br>
+<li> Reserve 20% space at the right side of the plot area for the bar labels by using <a href="Axis.setAutoScale.htm">Axis.setAutoScale</a>.<br><br>
+<li> Customize the aggregate bar labels by using <a href="Layer.setAggregateLabelFormat.htm">Layer.setAggregateLabelFormat</a>.<br><br>
+<li> Customize the legend entries by using <a href="TextBox.setText.htm">TextBox.setText</a> of the <a href="LegendBox.htm">LegendBox</a> object.<br><br>
+<li> Center the legend box under the plot area by using <a href="TextBox.setAlignment.htm">TextBox.setAlignment</a> of the <a href="LegendBox.htm">LegendBox</a> object.</ul>
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\multistackbar.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# The data for the bar chart
+my $data0 = [44, 55, 100];
+my $data1 = [97, 87, 167];
+my $data2 = [156, 78, 147];
+my $data3 = [125, 118, 211];
+
+# The labels for the bar chart. The labels contains embedded images as icons.
+my $labels = ["&lt;*img=service.png*&gt;&lt;*br*&gt;Service",
+    "&lt;*img=software.png*&gt;&lt;*br*&gt;Software", "&lt;*img=computer.png*&gt;&lt;*br*&gt;Hardware"];
+
+# Create a XYChart object of size 600 x 350 pixels, using 0xe0e0ff as the background
+# color, 0xccccff as the border color, with 1 pixel 3D border effect.
+my $c = new XYChart(600, 350, 0xe0e0ff, 0xccccff, 1);
+
+# Add a title to the chart using 14 points Times Bold Itatic font and light blue
+# (0x9999ff) as the background color
+$c-&gt;addTitle("Business Results 2001 vs 2002", "timesbi.ttf", 14)-&gt;setBackground(
+    0x9999ff);
+
+# Set the plotarea at (60, 45) and of size 500 x 210 pixels, using white (0xffffff)
+# as the background
+$c-&gt;setPlotArea(60, 45, 500, 210, 0xffffff);
+
+# Swap the x and y axes to create a horizontal bar chart
+$c-&gt;swapXY();
+
+# Add a title to the y axis using 11 pt Times Bold Italic as font
+$c-&gt;yAxis()-&gt;setTitle("Revenue (millions)", "timesbi.ttf", 11);
+
+# Set the labels on the x axis
+$c-&gt;xAxis()-&gt;setLabels($labels);
+
+# Disable x-axis ticks by setting the tick length to 0
+$c-&gt;xAxis()-&gt;setTickLength(0);
+
+# Add a stacked bar layer to the chart
+my $layer = $c-&gt;addBarLayer2($perlchartdir::Stack);
+
+# Add the first two data sets to the chart as a stacked bar group
+$layer-&gt;addDataGroup("2001");
+$layer-&gt;addDataSet($data0, 0xaaaaff, "Local");
+$layer-&gt;addDataSet($data1, 0x6666ff, "International");
+
+# Add the remaining data sets to the chart as another stacked bar group
+$layer-&gt;addDataGroup("2002");
+$layer-&gt;addDataSet($data2, 0xffaaaa, "Local");
+$layer-&gt;addDataSet($data3, 0xff6666, "International");
+
+# Set the sub-bar gap to 0, so there is no gap between stacked bars with a group
+$layer-&gt;setBarGap(0.2, 0);
+
+# Set the bar border to transparent
+$layer-&gt;setBorderColor($perlchartdir::Transparent);
+
+# Set the aggregate label format
+$layer-&gt;setAggregateLabelFormat("Year {dataGroupName}\n{value} millions");
+
+# Set the aggregate label font to 8 point Arial Bold Italic
+$layer-&gt;setAggregateLabelStyle("arialbi.ttf", 8);
+
+# Reverse 20% space at the right during auto-scaling to allow space for the aggregate
+# bar labels
+$c-&gt;yAxis()-&gt;setAutoScale(0.2);
+
+# Add a legend box at (310, 300) using TopCenter alignment, with 2 column grid
+# layout, and use 8 pts Arial Bold Italic as font
+my $legendBox = $c-&gt;addLegend2(310, 300, 2, "arialbi.ttf", 8);
+$legendBox-&gt;setAlignment($perlchartdir::TopCenter);
+
+# Set the format of the text displayed in the legend box
+$legendBox-&gt;setText("Year {dataGroupName} {dataSetName} Revenue");
+
+# Set the background and border of the legend box to transparent
+$legendBox-&gt;setBackground($perlchartdir::Transparent, $perlchartdir::Transparent);
+
+# Output the chart
+$c-&gt;makeChart("multistackbar.png")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\multistackbar.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The data for the bar chart
+my $data0 = [44, 55, 100];
+my $data1 = [97, 87, 167];
+my $data2 = [156, 78, 147];
+my $data3 = [125, 118, 211];
+
+# The labels for the bar chart. The labels contains embedded images as icons.
+my $labels = ["&lt;*img=service.png*&gt;&lt;*br*&gt;Service",
+    "&lt;*img=software.png*&gt;&lt;*br*&gt;Software", "&lt;*img=computer.png*&gt;&lt;*br*&gt;Hardware"];
+
+# Create a XYChart object of size 600 x 350 pixels, using 0xe0e0ff as the background
+# color, 0xccccff as the border color, with 1 pixel 3D border effect.
+my $c = new XYChart(600, 350, 0xe0e0ff, 0xccccff, 1);
+
+#Set directory for loading images to current script directory
+#Need when running under Microsoft IIS
+$c-&gt;setSearchPath(dirname($0));
+
+# Add a title to the chart using 14 points Times Bold Itatic font and light blue
+# (0x9999ff) as the background color
+$c-&gt;addTitle("Business Results 2001 vs 2002", "timesbi.ttf", 14)-&gt;setBackground(
+    0x9999ff);
+
+# Set the plotarea at (60, 45) and of size 500 x 210 pixels, using white (0xffffff)
+# as the background
+$c-&gt;setPlotArea(60, 45, 500, 210, 0xffffff);
+
+# Swap the x and y axes to create a horizontal bar chart
+$c-&gt;swapXY();
+
+# Add a title to the y axis using 11 pt Times Bold Italic as font
+$c-&gt;yAxis()-&gt;setTitle("Revenue (millions)", "timesbi.ttf", 11);
+
+# Set the labels on the x axis
+$c-&gt;xAxis()-&gt;setLabels($labels);
+
+# Disable x-axis ticks by setting the tick length to 0
+$c-&gt;xAxis()-&gt;setTickLength(0);
+
+# Add a stacked bar layer to the chart
+my $layer = $c-&gt;addBarLayer2($perlchartdir::Stack);
+
+# Add the first two data sets to the chart as a stacked bar group
+$layer-&gt;addDataGroup("2001");
+$layer-&gt;addDataSet($data0, 0xaaaaff, "Local");
+$layer-&gt;addDataSet($data1, 0x6666ff, "International");
+
+# Add the remaining data sets to the chart as another stacked bar group
+$layer-&gt;addDataGroup("2002");
+$layer-&gt;addDataSet($data2, 0xffaaaa, "Local");
+$layer-&gt;addDataSet($data3, 0xff6666, "International");
+
+# Set the sub-bar gap to 0, so there is no gap between stacked bars with a group
+$layer-&gt;setBarGap(0.2, 0);
+
+# Set the bar border to transparent
+$layer-&gt;setBorderColor($perlchartdir::Transparent);
+
+# Set the aggregate label format
+$layer-&gt;setAggregateLabelFormat("Year {dataGroupName}\n{value} millions");
+
+# Set the aggregate label font to 8 point Arial Bold Italic
+$layer-&gt;setAggregateLabelStyle("arialbi.ttf", 8);
+
+# Reverse 20% space at the right during auto-scaling to allow space for the aggregate
+# bar labels
+$c-&gt;yAxis()-&gt;setAutoScale(0.2);
+
+# Add a legend box at (310, 300) using TopCenter alignment, with 2 column grid
+# layout, and use 8 pts Arial Bold Italic as font
+my $legendBox = $c-&gt;addLegend2(310, 300, 2, "arialbi.ttf", 8);
+$legendBox-&gt;setAlignment($perlchartdir::TopCenter);
+
+# Set the format of the text displayed in the legend box
+$legendBox-&gt;setText("Year {dataGroupName} {dataSetName} Revenue");
+
+# Set the background and border of the legend box to transparent
+$legendBox-&gt;setBackground($perlchartdir::Transparent, $perlchartdir::Transparent);
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

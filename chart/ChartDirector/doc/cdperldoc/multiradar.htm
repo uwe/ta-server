@@ -1,0 +1,131 @@
+<HTML>
+<HEAD>
+<Title>Multi Radar Chart</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Multi Radar Chart</p>
+<hr class="separator">
+<div class="content">
+<img src="images/multiradar.png">
+<br><br>
+This example demonstrates a radar chart with two layers and a number of chart formatting effects.<br><br>
+<ul><li> Create a <a href="PolarChart.htm">PolarChart</a> object using <a href="PolarChart.PolarChart.htm">PolarChart.PolarChart</a>, using a golden color created with <a href="perlchartdir.goldColor.htm">perlchartdir::goldColor</a> as the background color.<br><br>
+<li> Add a title to the chart with white text on a deep blue background using <a href="BaseChart.addTitle.htm">BaseChart.addTitle</a>.<br><br>
+<li> Specify the polar plot area of the chart using <a href="PolarChart.setPlotArea.htm">PolarChart.setPlotArea</a>.<br><br>
+<li> Add a legend box to the chart using <a href="BaseChart.addLegend.htm">BaseChart.addLegend</a>. Set the legend box background to silver with 3D border effect using <a href="Box.setBackground.htm">Box.setBackground</a>. The silver color is created using <a href="perlchartdir.silverColor.htm">perlchartdir::silverColor</a>.<br><br>
+<li> Add two polar area layers using <a href="PolarChart.addAreaLayer.htm">PolarChart.addAreaLayer</a>. Use semi-transparent colors as the area fill colors to avoid the top layer blocking the bottom layer.<br><br>
+<li> Add two polar line layers with <a href="PolarChart.addLineLayer.htm">PolarChart.addLineLayer</a>, using the same data as the polar area layer. Set a thick line width using <a href="PolarLayer.setLineWidth.htm">PolarLayer.setLineWidth</a>. The line layers becomes borders of the area layers to highlight the areas.<br><br>
+<li> Specify the labels on the angular axis using <a href="AngularAxis.setLabels.htm">AngularAxis.setLabels</a>.<br><br>
+<li> Generate the chart using <a href="BaseChart.makeChart.htm">BaseChart.makeChart</a>.</ul>
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\multiradar.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# The data for the chart
+my $data0 = [90, 60, 85, 75, 55];
+my $data1 = [60, 80, 70, 80, 85];
+
+# The labels for the chart
+my $labels = ["Speed", "Reliability", "Comfort", "Safety", "Efficiency"];
+
+# Create a PolarChart object of size 480 x 380 pixels. Set background color to gold,
+# with 1 pixel 3D border effect
+my $c = new PolarChart(480, 380, perlchartdir::goldColor(), 0x000000, 1);
+
+# Add a title to the chart using 15 pts Times Bold Italic font. The title text is
+# white (ffffff) on a deep blue (000080) background
+$c-&gt;addTitle("Space Travel Vehicles Compared", "timesbi.ttf", 15, 0xffffff
+    )-&gt;setBackground(0x000080);
+
+# Set plot area center at (240, 210), with 150 pixels radius, and a white (ffffff)
+# background.
+$c-&gt;setPlotArea(240, 210, 150, 0xffffff);
+
+# Add a legend box at top right corner (470, 35) using 10 pts Arial Bold font. Set
+# the background to silver, with 1 pixel 3D border effect.
+my $b = $c-&gt;addLegend(470, 35, 1, "arialbd.ttf", 10);
+$b-&gt;setAlignment($perlchartdir::TopRight);
+$b-&gt;setBackground(perlchartdir::silverColor(), $perlchartdir::Transparent, 1);
+
+# Add an area layer to the chart using semi-transparent blue (0x806666cc). Add a blue
+# (0x6666cc) line layer using the same data with 3 pixel line width to highlight the
+# border of the area.
+$c-&gt;addAreaLayer($data0, 0x806666cc, "Model Saturn");
+$c-&gt;addLineLayer($data0, 0x6666cc)-&gt;setLineWidth(3);
+
+# Add an area layer to the chart using semi-transparent red (0x80cc6666). Add a red
+# (0xcc6666) line layer using the same data with 3 pixel line width to highlight the
+# border of the area.
+$c-&gt;addAreaLayer($data1, 0x80cc6666, "Model Jupiter");
+$c-&gt;addLineLayer($data1, 0xcc6666)-&gt;setLineWidth(3);
+
+# Set the labels to the angular axis as spokes.
+$c-&gt;angularAxis()-&gt;setLabels($labels);
+
+# Output the chart
+$c-&gt;makeChart("multiradar.png")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\multiradar.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The data for the chart
+my $data0 = [90, 60, 85, 75, 55];
+my $data1 = [60, 80, 70, 80, 85];
+
+# The labels for the chart
+my $labels = ["Speed", "Reliability", "Comfort", "Safety", "Efficiency"];
+
+# Create a PolarChart object of size 480 x 380 pixels. Set background color to gold,
+# with 1 pixel 3D border effect
+my $c = new PolarChart(480, 380, perlchartdir::goldColor(), 0x000000, 1);
+
+# Add a title to the chart using 15 pts Times Bold Italic font. The title text is
+# white (ffffff) on a deep blue (000080) background
+$c-&gt;addTitle("Space Travel Vehicles Compared", "timesbi.ttf", 15, 0xffffff
+    )-&gt;setBackground(0x000080);
+
+# Set plot area center at (240, 210), with 150 pixels radius, and a white (ffffff)
+# background.
+$c-&gt;setPlotArea(240, 210, 150, 0xffffff);
+
+# Add a legend box at top right corner (470, 35) using 10 pts Arial Bold font. Set
+# the background to silver, with 1 pixel 3D border effect.
+my $b = $c-&gt;addLegend(470, 35, 1, "arialbd.ttf", 10);
+$b-&gt;setAlignment($perlchartdir::TopRight);
+$b-&gt;setBackground(perlchartdir::silverColor(), $perlchartdir::Transparent, 1);
+
+# Add an area layer to the chart using semi-transparent blue (0x806666cc). Add a blue
+# (0x6666cc) line layer using the same data with 3 pixel line width to highlight the
+# border of the area.
+$c-&gt;addAreaLayer($data0, 0x806666cc, "Model Saturn");
+$c-&gt;addLineLayer($data0, 0x6666cc)-&gt;setLineWidth(3);
+
+# Add an area layer to the chart using semi-transparent red (0x80cc6666). Add a red
+# (0xcc6666) line layer using the same data with 3 pixel line width to highlight the
+# border of the area.
+$c-&gt;addAreaLayer($data1, 0x80cc6666, "Model Jupiter");
+$c-&gt;addLineLayer($data1, 0xcc6666)-&gt;setLineWidth(3);
+
+# Set the labels to the angular axis as spokes.
+$c-&gt;angularAxis()-&gt;setLabels($labels);
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

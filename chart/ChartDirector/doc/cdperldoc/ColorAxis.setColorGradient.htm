@@ -1,0 +1,38 @@
+<HTML>
+<HEAD>
+<Title>ColorAxis.setColorGradient</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="ColorAxis.htm">ColorAxis</a>.setColorGradient</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setColorGradient([ isContinuous [, colors [, overflowColor [, underflowColor ]]]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the continuous color gradient or discrete color steps for the color axis.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>isContinuous</td><td>true (non-zero)</td><td>True ti set to continuous color gradient. False to set to discrete color steps.</td></tr><tr><td>colors</td><td>[Empty_Array]</td><td>An array of colors used to define the continuous color gradient. If an empty array is used, the colors are automatically determined.<br><br>
+ChartDirector will interpolate between the colors to create the continuous gradient. If discrete color steps are used, ChartDirector will take samples along the continuous color gradient. The number of samples is determined by the number of ticks on the axis, and may not equal the number of colors in the colors array.</td></tr><tr><td>overflowColor</td><td>-1</td><td>The color to use if a value exceeds the maximum value of the axis scale. -1 means the overflowColor is the same color at the maximum value.</td></tr><tr><td>underflowColor</td><td>-1</td><td>The color to use if a value falls below the minimum value of the axis scale. -1 means the underflowColor is the same color at the minimum value.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

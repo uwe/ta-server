@@ -1,0 +1,43 @@
+<HTML>
+<HEAD>
+<Title>Layer.setXData</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="Layer.htm">Layer</a>.setXData</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setXData(xData)
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the x values of the data points in the data sets.<br><br>
+In most ChartDirector XY chart layers, when a data set is added, only the y Values for the data points are needed. For example, in a bar layer, you just need to specify the values of the bars (y values). ChartDirector will automatically layout the bars evenly on the x-axis. You can then specify the labels on the x-axis using <a href="Axis.setLabels.htm">Axis.setLabels</a>.<br><br>
+In ChartDirector, this type of x-axis scaling is called "enumerated" scale. Please refer to <a href="Axis.setLabels.htm">Axis.setLabels</a> for a more detail explanation of "enumerated" scale.<br><br>
+However, in some cases, it may be necessary to specify the x values explicitly. For example, if a chart contains data points that are not evenly distributed on the x-axis, it is necessary to specify the x values explicitly. It is because enumerated scale always assume the data points are distributed evenly on the x- axis. In this case, the setXData method can be used to specify the x values for the data points.<br><br>
+In general, if the data points are evenly distributed on the x-axis, it is recommended enumerated x-scale be used and no x values are necessary. Even the data points are evenly distributed, except that some data points are missing, it is still possible to use enumerated x-scale by using the <a href="perlchartdir.NoValue.htm">NoValue</a> constant to represent missing data points.<br><br>
+On the other hand, if the data points are by its nature not evenly distributed, the x values should be provided explicitly using the setXData method.<br><br>
+Each layer only supports one x values series. All data sets in the layer will use the same x value series. If two data sets have different x values, they should be put in two separate layers.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>xData</td><td>(Mandatory)</td><td>An array of numbers representing the x value series.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

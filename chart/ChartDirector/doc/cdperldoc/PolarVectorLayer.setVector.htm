@@ -1,0 +1,43 @@
+<HTML>
+<HEAD>
+<Title>PolarVectorLayer.setVector</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="PolarVectorLayer.htm">PolarVectorLayer</a>.setVector</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setVector(lengths, directions [, lengthScale ])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the lengths and directions for the vectors.<br><br>
+ChartDirector supports specifying the vector lengths and directions directly, or indirectly as the lengths and directions from the reference points to the reference end points. This is controlled by <b>lengthScale</b> as described in the following table.<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="19%">Constant<th width="19%%">Value<th width="60%">Description
+<tr><td><a href="perlchartdir.PixelScale.htm">PixelScale</a><td>0<td>The lengths are measured in pixels. The angles are measured clockwise in degrees, with the upwards position as 0.
+<tr><td><a href="perlchartdir.RadialAxisScale.htm">RadialAxisScale</a><td>2<td>radial axis scale
+<tr><td><a href="perlchartdir.EndPoints.htm">EndPoints</a><td>3<td>The vector lengths and directions are measured as the lengths and directions between the reference points and the reference end points.
+</table>
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>lengths</td><td>(Mandatory)</td><td>An array of numbers representing either the lengths of the vectors or the radial coordinates of the reference end points, depending on <b>lengthScale</b>.</td></tr><tr><td>directions</td><td>(Mandatory)</td><td>An array of numbers representing either the directions of the vectors or the angular coordinates of the reference end points, depending on <b>lengthScale</b>.</td></tr><tr><td>lengthScale</td><td><a href="perlchartdir.PixelScale.htm">PixelScale</a></td><td>The method to specify vector lengths and directions, which must be one of the predefined constants in the table above.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

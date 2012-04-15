@@ -1,0 +1,17 @@
+<HTML>
+<HEAD>
+<Title>Making Other Objects Clickable</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Making Other Objects Clickable</p>
+<hr class="separator">
+<div class="content">Note that ChartDirector image map support is "open-ended". You can always insert additional &lt;AREA&gt; tags inside the image map.<br><br>
+In general, if an object contains multiple hot spots (e.g. the bars in a bar chart), the "getHTMLImageMap" method of that object may be used to generate &lt;AREA&gt; tags for all hot spots at once. These &lt;AREA&gt; tags will use the same handler and the hot spots will be distinguished by query parameters.<br><br>
+On the other hand, if an object only has one hot spot (e.g. a single sector or a text box), it is more convenient to enter the handler and tool tip attributes directly into the &lt;AREA&gt; tag. In this case, the "getImageCoor" method of that object may be used for getting the image map coordinates of the hot spot.<br><br>
+In case an object has no "getHTMLImageMap" or "getImageCoor" method, it may be necessary to compute or estimate its coordinates to create the &lt;AREA&gt; tag.<br><br>
+For example, suppose you want the vertical y-axis of an XYChart to be clickable. The end points of the y-axis are known. They are just the corners of the plot area. The "width" of the y-axis may be unknown, but for clickable purposes, it may be acceptable to assume a reasonable width. In this way, the coordinates of the bounding rectangle of the y-axis can be determined.<br><br>
+If the (x, y) coordinates of an object is only known by their data values, you can convert them to pixel coordinates using <a href="Layer.getXCoor.htm">Layer.getXCoor</a> and <a href="Layer.getYCoor.htm">Layer.getYCoor</a> (or <a href="PolarChart.getXCoor.htm">PolarChart.getXCoor</a> and <a href="PolarChart.getYCoor.htm">PolarChart.getYCoor</a> for polar charts).</div><br>
+<hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div></body>
+</HTML>

@@ -1,0 +1,60 @@
+<HTML>
+<HEAD>
+<Title>The First Project</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">The First Project</p>
+<hr class="separator">
+<div class="content"><img src="images/simplebar.png"><br><br>
+To get a feeling of using ChartDirector, and to verify the ChartDirector development environment is set up properly, we will begin by building a very simple bar chart.<br><br>
+If you have not yet tried the sample programs, it is highly recommended you try them now. Please refer to the <a href="install.htm">Installation</a> section for details. They are very useful for exploring and testing the features of ChartDirector.<br><br>
+<b>[Standalone Version]</b> perldemo\simplebar.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# The data for the bar chart
+my $data = [85, 156, 179.5, 211, 123];
+
+# The labels for the bar chart
+my $labels = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+
+# Create a XYChart object of size 250 x 250 pixels
+my $c = new XYChart(250, 250);
+
+# Set the plotarea at (30, 20) and of size 200 x 200 pixels
+$c-&gt;setPlotArea(30, 20, 200, 200);
+
+# Add a bar chart layer using the given data
+$c-&gt;addBarLayer($data);
+
+# Set the labels on the x axis.
+$c-&gt;xAxis()-&gt;setLabels($labels);
+
+# Output the chart
+$c-&gt;makeChart("simplebar.png")</pre></tr></td></table><br>
+The code is explained below:<br><br>
+<ul>
+<li><pre>use <a href="perlchartdir.htm">perlchartdir</a>;</pre><br>
+This line imports the ChartDirector for Perl module so that you can use it.<br><br>
+<li><pre>my $c = new <a href="XYChart.XYChart.htm">XYChart</a>(250, 250);</pre><br>
+The first step in creating any chart in ChartDirector is to create the appropriate chart object. In this example, an <a href="XYChart.htm">XYChart</a> object of size 250 x 250 pixels is created. In ChartDirector, XYChart represents any chart that has x-axis and y-axis, such as the bar chart we are drawing.<br><br>
+<li><pre>$c-&gt;<a href="XYChart.setPlotArea.htm">setPlotArea</a>(30, 20, 200, 200);</pre><br>
+The second step in creating a bar chart is to specify where should we draw the bar chart. This is by specifying the rectangle that contains the bar chart. The rectangle is specified by using the (x, y) coordinates of its top-left corner, together with its width and height.<br><br>
+For this simple bar chart, we will use the majority of the chart area to draw the bar chart. We will leave some margin to allow for the text labels on the axis. In the above code, the top-left corner is set to (30, 30), and both the width and height is set to 200 pixels. Since the entire chart is 250 x 250 in size, there will be 20 to 30 pixels margin for the text labels.<br><br>
+Note that ChartDirector uses a pixel coordinate system that is customary for computer screen. The x pixel coordinate is increasing from left to right. The y pixel coordinate is increasing from top to bottom. The origin (0, 0) is at the top-left corner.<br><br>
+For more complex charts which may contain titles, legend box and other things, we can use this method (and other methods) to design the exact layout of the entire chart.<br><br>
+<li><pre>$c-&gt;<a href="XYChart.addBarLayer.htm">addBarLayer</a>($data);</pre><br>
+The above code adds a bar layer to the XYChart. In ChartDirector, any chart type that has x-axis and y-axis is represented as a layer in the XYChart. An XYChart can contain multiple layers. This allows "combination charts" to be created easily by combining different layers on the same chart (eg., a chart containing a line layer on top of a bar layer) .<br><br>
+In the above line of code, the argument is an array of numbers representing the values of the data points.<br><br>
+<li><pre>$c-&gt;<a href="XYChart.xAxis.htm">xAxis</a>()-&gt;<a href="Axis.setLabels.htm">setLabels</a>($labels);</pre><br>
+The above code sets the labels on the x-axis. The first method <a href="XYChart.xAxis.htm">XYChart.xAxis</a> retrieves the <a href="Axis.htm">Axis</a> object that represents the x-axis. The second method <a href="Axis.setLabels.htm">Axis.setLabels</a> binds the text labels to the x-axis. The argument to the setLabels method is an array of text strings.<br><br>
+<li><pre>$c-&gt;<a href="BaseChart.makeChart.htm">makeChart</a>("simplebar.png");</pre><br>
+Up to this point, the chart is completed. We need to output it somehow. In our simple project, we output the chart as a PNG formatted file.<br><br>
+For the image format, in addition to PNG, ChartDirector supports JPG, GIF, BMP and WBMP.<br><br>
+</ul>
+<div style="background-color:#cccccc;width:99%;padding:10px"> <b>Note:</b> If you are running ChartDirector on Linux/FreeBSD/Solaris, the charts produced may be slightly different from the chart samples in this documentation, which are produced under Windows. This is because of the different fonts available on Windows and Linux/FreeBSD/Solaris. Please refer to <a href="fontspec.htm">Font Specification</a> on why you may want to download Windows fonts to be used on Linux/FreeBSD/Solaris. </div><br>
+<div style="background-color:#cccccc;width:99%;padding:10px"> <b>Note:</b> The trial version of ChartDirector will include small yellow banners at the bottom of the charts it produces. These banners will disappear in the licensed version of ChartDirector. </div></div><br>
+<hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div></body>
+</HTML>

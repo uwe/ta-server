@@ -1,0 +1,136 @@
+<HTML>
+<HEAD>
+<Title>Start Angle and Direction</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Start Angle and Direction</p>
+<hr class="separator">
+<div class="content">
+<img src="images/anglepie0.png">&nbsp;&nbsp;<img src="images/anglepie1.png">
+<br><br>
+This example demonstrates different sector layout angles and directions.<br><br>
+By default, ChartDirector positions sectors starting from the upward pointing position, and in clockwise direction.<br><br>
+The start angle and layout direction can be changed using <a href="PieChart.setStartAngle.htm">PieChart.setStartAngle</a>.<br><br>
+One common application for <a href="PieChart.setStartAngle.htm">PieChart.setStartAngle</a> is to facilitate layout of pie charts containing many small sectors. Please refer to <a href="sidelabelpie.htm">Side Label Layout</a> for an example.
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\anglepie.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+sub createChart
+{
+    my $img = shift;
+
+    # Determine the starting angle and direction based on input parameter
+    my $angle = 0;
+    my $clockwise = 1;
+    if ($img ne "0") {
+        $angle = 90;
+        $clockwise = 0;
+    }
+
+    # The data for the pie chart
+    my $data = [25, 18, 15, 12, 8, 30, 35];
+
+    # The labels for the pie chart
+    my $labels = ["Labor", "Licenses", "Taxes", "Legal", "Insurance", "Facilities",
+        "Production"];
+
+    # Create a PieChart object of size 280 x 240 pixels
+    my $c = new PieChart(280, 240);
+
+    # Set the center of the pie at (140, 130) and the radius to 80 pixels
+    $c-&gt;setPieSize(140, 130, 80);
+
+    # Add a title to the pie to show the start angle and direction
+    if ($clockwise) {
+        $c-&gt;addTitle("Start Angle = $angle degrees\nDirection = Clockwise");
+    } else {
+        $c-&gt;addTitle("Start Angle = $angle degrees\nDirection = AntiClockwise");
+    }
+
+    # Set the pie start angle and direction
+    $c-&gt;setStartAngle($angle, $clockwise);
+
+    # Draw the pie in 3D
+    $c-&gt;set3D();
+
+    # Set the pie data and the pie labels
+    $c-&gt;setData($data, $labels);
+
+    # Explode the 1st sector (index = 0)
+    $c-&gt;setExplode(0);
+
+    # Output the chart
+    $c-&gt;makeChart("anglepie$img.png")
+}
+
+createChart(0);
+createChart(1);</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\anglepie.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# Get HTTP query parameters
+use CGI;
+my $query = new CGI;
+
+# Determine the starting angle and direction based on input parameter
+my $angle = 0;
+my $clockwise = 1;
+if ($query-&gt;param("img") ne "0") {
+    $angle = 90;
+    $clockwise = 0;
+}
+
+# The data for the pie chart
+my $data = [25, 18, 15, 12, 8, 30, 35];
+
+# The labels for the pie chart
+my $labels = ["Labor", "Licenses", "Taxes", "Legal", "Insurance", "Facilities",
+    "Production"];
+
+# Create a PieChart object of size 280 x 240 pixels
+my $c = new PieChart(280, 240);
+
+# Set the center of the pie at (140, 130) and the radius to 80 pixels
+$c-&gt;setPieSize(140, 130, 80);
+
+# Add a title to the pie to show the start angle and direction
+if ($clockwise) {
+    $c-&gt;addTitle("Start Angle = $angle degrees\nDirection = Clockwise");
+} else {
+    $c-&gt;addTitle("Start Angle = $angle degrees\nDirection = AntiClockwise");
+}
+
+# Set the pie start angle and direction
+$c-&gt;setStartAngle($angle, $clockwise);
+
+# Draw the pie in 3D
+$c-&gt;set3D();
+
+# Set the pie data and the pie labels
+$c-&gt;setData($data, $labels);
+
+# Explode the 1st sector (index = 0)
+$c-&gt;setExplode(0);
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

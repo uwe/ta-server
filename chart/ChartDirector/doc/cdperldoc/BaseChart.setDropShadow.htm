@@ -1,0 +1,40 @@
+<HTML>
+<HEAD>
+<Title>BaseChart.setDropShadow</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="BaseChart.htm">BaseChart</a>.setDropShadow</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setDropShadow([ color [, offsetX [, offsetY [, blurRadius ]]]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Adds a drop shadow to the chart.<br><br>
+The drop shadow effect is created using a single color representation of the non-transparent part of the chart, offsetted by an amount, and put under the chart. The drop shadow can be blurred to create a soft drop shadow effect.<br><br>
+Note that adding a drop shadow will increase the width and height of the chart image so as to accommodate the drop shadow.<br><br>
+Because the drop shadow is located exterior to the original chart, it uses an exterior  background color different from the background color of the original chart. The exterior background color is by default white, and can be configured with <a href="BaseChart.setRoundedFrame.htm">BaseChart.setRoundedFrame</a>.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>color</td><td>AAAAAA</td><td>The color of the drop shadow.</td></tr><tr><td>offsetX</td><td>5</td><td>The x offset of the drop shadow.</td></tr><tr><td>offsetY</td><td>7fffffff</td><td>The y offset of the drop shadow. 7fffffff means it is the same as the x offset.</td></tr><tr><td>blurRadius</td><td>5</td><td>The blur radius of the drop shadow.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

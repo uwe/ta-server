@@ -1,0 +1,41 @@
+<HTML>
+<HEAD>
+<Title>Axis.syncAxis</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="Axis.htm">Axis</a>.syncAxis</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+syncAxis(axis [, slope [, intercept ]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Synchronizes this axis with another axis using a linear formula.<br><br>
+This method is typically used if the two axes represent the same quantity but in different units. For example, one axis may represent temperature in Celsius, and the other in Fahrenheit, or they may represent lengths in meters and feet.<br><br>
+The scale of this axis (value) will be related to the scale of the another axis (value2) using the following formula:<br><br>
+<div style="margin-left:25;font-family:courier new,courier"> value = value2 * slope + intercept </div><br>
+Typically, one of the axis will be for actual charting, and its scale will be determined in the standard way using auto or manual scaling. Then the second axis is set to synchronize with the first axis.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>axis</td><td>(Mandatory)</td><td>The axis to synchronize to. A value of null means not to synchronize to any axis.</td></tr><tr><td>slope</td><td>1</td><td>The slope for synchronizing this axis to the other axis.</td></tr><tr><td>intercept</td><td>0</td><td>The intercept parameter for synchronizing this axis to the other axis.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

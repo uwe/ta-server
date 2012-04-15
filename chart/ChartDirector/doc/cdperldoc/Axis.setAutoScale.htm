@@ -1,0 +1,53 @@
+<HTML>
+<HEAD>
+<Title>Axis.setAutoScale</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="Axis.htm">Axis</a>.setAutoScale</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setAutoScale([ topExtension [, bottomExtension [, zeroAffinity ]]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the margins at the two ends of the axis during auto-scaling, and whether to start the axis from zero.<br><br>
+During auto-scaling, it is often desirable to leave some margins at the ends of the axis. For example, suppose in a bar chart, the longest bar is 10 units. If auto-scaling chooses 0 - 10 as the scale, the longest bar will touch the top edge of the plot area. In many cases, the chart will look better if there is some margin so that the longest bar does not touch the top edge.<br><br>
+The setAutoScale can be used to reserve some margins at the ends of the axis by using a scale that is larger than necessary. For example, in the above case, if a scale of 0 - 12 is used, then the longest bar will not touch the top edge.<br><br>
+Other common reasons for reserving margins at the ends of the axis include making sure the data labels (which may be drawn on top of the data points) will not go outside the plot area, and that objects put at the top or bottom of the plot area (such as legend box and custom text box) will not overlap with the data points.<br><br>
+Note that there is an alternative way to reserve space at the ends of the axis - the <a href="Axis.setMargin.htm">Axis.setMargin</a> method.<br><br>
+In the setAutoScale method, the amount of margins reserved is controlled by the <b>topExtension</b> and <b>bottomExtension</b> arguments. These arguments determine the portion of the axis where no data point can reach. For example, a topExtension of 0.2 will ensure no data point can fall within the top 20% of the axis.<br><br>
+Note that ChartDirector will not extend the scale across the 0 point.<br><br>
+For example, suppose the data range is 0.1 - 9.9. If 10% margin is added to the bottom end of the axis, the bottom end may become negative. In this case, ChartDirector will extend the bottom end to 0 at most.<br><br>
+In other words, if the data range is completely positive, ChartDirector will not extend the axis to negative, as it would be undesirable in most applications. The same applies if the data range is completely negative.<br><br>
+For a purely positive axis, the bottom end has "zero affinity". That means ChartDirector will tend to choose 0 as the bottom end because zero is a natural starting point for the axis. However, if the data range is too extreme (e.g. the data is in the range 10000 - 10005), it may be "unreasonable" to choose 0 as the axis starting point. In this case, ChartDirector will not use 0 as the axis starting point.<br><br>
+ChartDirector will determine that it is "unreasonable" to use 0 as the axis starting point if the data fluctuation (the difference between the maximum and minimum data values) is too small compare with the data value. ChartDirector test the "too small" condition using the formula:<br><br>
+<div style="margin-left:25;font-family:courier new,courier"> maxDataValue * zeroAffinity &lt; minDataValue </div><br>
+where zeroAffinity by default is 0.8.<br><br>
+Similar "zero affinity" mechanism applies to the top end of the axis for a purely negative axis. If the data range contains both positive and negative values, the zero point is always included.<br><br>
+The <b>zeroAffinity</b> argument of the setAutoScale method allows you to modify the zero affinity when performing auto-scaling. Zero affinity should be between 0 and 1. A large value encourages ChartDirector to start the axis from zero.<br><br>
+A zero affinity of 1 means the axis always includes the zero point. A zero affinity of 0 means that the axis is scaled purely according to the data range, without any preference for the zero point.<br><br>
+Note that zero affinity is ignored for log scale axis as log scale axis cannot contain 0.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>topExtension</td><td>0.1</td><td>The top portion of the axis that no data point should fall into. For example, a value of 0.2 means no data value will fall within the top 20% of the axis. The topExtension must be between 0 to 1.</td></tr><tr><td>bottomExtension</td><td>0.1</td><td>The bottom portion of the axis that no data point should fall into. For example, a value of 0.2 means no data value will fall within the bottom 20% of the axis. The bottomExtension must be between 0 to 1.</td></tr><tr><td>zeroAffinity</td><td>0.8</td><td>The tendency of ChartDirector to include zero in the axis during auto-scaling. The value must be between 0 and 1. A large value encourages ChartDirector to start the axis from zero. A value of 1 means the axis always includes the zero point. A value of 0 means there is no preference for the zero point during auto-scaling.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

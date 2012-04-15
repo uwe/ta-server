@@ -1,0 +1,31 @@
+<HTML>
+<HEAD>
+<Title>WebChartViewer.isViewPortChangedEvent</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="WebChartViewer.htm">WebChartViewer</a>.isViewPortChangedEvent</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+isViewPortChangedEvent()
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Checks if the <a href="JsChartViewer.ViewPortChanged.htm">JsChartViewer.ViewPortChanged</a> event has occurred.<br><br>
+When mouse actions (such as drag to scroll, drag to select region to zoom into, click to zoom in/out, etc) occurs on the browser side, the <a href="JsChartViewer.ViewPortChanged.htm">JsChartViewer.ViewPortChanged</a> event will occur. Typically, the event handler will send either a partial chart update request (AJAX request) or a full page update request to the server.<br><br>
+However, in a typical web page, there may be other causes of a partial chart update request or full page update request. For example, for a time based chart, the web page may have a FORM to allow the user to enter the start date and end date used, and then press the submit button.<br><br>
+This method determines if the <a href="JsChartViewer.ViewPortChanged.htm">JsChartViewer.ViewPortChanged</a> event has occurred, so as to identify if it is the cause of the HTTP request.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">None</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+True if the <a href="JsChartViewer.ViewPortChanged.htm">JsChartViewer.ViewPortChanged</a> event has occurred, otherwise false.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

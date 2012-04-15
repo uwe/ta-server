@@ -1,0 +1,46 @@
+<HTML>
+<HEAD>
+<Title>MeterPointer.setShape2</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="MeterPointer.htm">MeterPointer</a>.setShape2</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setShape2(pointerCoor [, lengthRatio [, widthRatio ]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the shape of the meter pointer to a custom polygon.<br><br>
+The custom polygon is specified as a list of numbers representing the (x, y) coordinates of polygon vertices.<br><br>
+For an angular meter, the polygon should be defined with a nominal dimension of 1000 units. ChartDirector will scale the polygon so that 1000 units will become the radius of the meter.<br><br>
+For a linear meter, the length of the pointer should be defined with a nominal dimension of 1000 units. ChartDirector will scale the polygon so that 1000 units will be the length required for the pointer to reach the meter scale. The width of the pointer will be in 0.1 pixel units (that is, 10 units = 1 pixel).<br><br>
+The coordinate system for defining the polygon is that the x-axis points from left to right, and the y-axis points from bottom to top. The polygon will be defined as a pointer with the pivot at the origin, pointing to the upward direction.<br><br>
+As an example, the coordinates of the standard diamond pointer for an angular meter are:<br><br>
+<div style="margin-left:25;font-family:courier new,courier"> 0, -100, -50, -50, 0, 1000, 50, -50 </div><br>
+The coordinates for the standard pencil pointer for a linear meter are:<br><br>
+<div style="margin-left:25;font-family:courier new,courier"> -30, 0, 30, 0, 30, 768, 0, 1000, -30, 768 </div><br>
+After scaling the pointers based on the nominal units, ChartDirector will in addition applies the <b>lengthRatio</b> and <b>widthRatio</b> scaling factor to the pointer. These ratios allow you to change the pointer sizes without changing the polygon definition. For example, if you want the meter pointer to be only 80% of the radius in the angular meter, you can set the lengthRatio to 0.80.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>pointerCoor</td><td>(Mandatory)</td><td>An array of numbers x0, y0, x1, y1, x2, y2, ..., representing the coordinates the polygon vertices.</td></tr><tr><td>lengthRatio</td><td><a href="perlchartdir.NoValue.htm">NoValue</a></td><td>The length ratio applies to the pointer. NoValue means the lengthRatio is not modified. The default is 1.0 for angular meters and 0.75 for linear meters.</td></tr><tr><td>widthRatio</td><td><a href="perlchartdir.NoValue.htm">NoValue</a></td><td>The width ratio applies to the pointer. NoValue means the widthRatio is not modified. The default is 1.0.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

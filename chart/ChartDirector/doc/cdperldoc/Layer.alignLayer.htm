@@ -1,0 +1,39 @@
+<HTML>
+<HEAD>
+<Title>Layer.alignLayer</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="Layer.htm">Layer</a>.alignLayer</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+alignLayer(layer, dataSet)
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Aligns the layer with a data set of another bar chart layer in <a href="perlchartdir.Side.htm">Side</a> layout.<br><br>
+The <a href="perlchartdir.Side.htm">Side</a> layout is a layout method specific to the bar chart layer. In this layout method, multiple bars belonging to the same x-position are laid out side by side. Thus the bars are not centered exactly on the x-position, but are shifted. The shift amount depends on the data set numbers of the bars.<br><br>
+In some cases, it may be necessary to overlay another layer (eg. a line chart layer, or a box-whisker chart layer) on top of the bars. The alignLayer method ensures the data points are shifted by the same amount as a given data set on a given <a href="BarLayer.htm">BarLayer</a>.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>layer</td><td>(Mandatory)</td><td>The <a href="BarLayer.htm">BarLayer</a> which contains the bars to synchronize with.</td></tr><tr><td>dataSet</td><td>(Mandatory)</td><td>The data set of the bars to synchronize with.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

@@ -1,0 +1,53 @@
+<HTML>
+<HEAD>
+<Title>JsChartViewer.streamUpdate</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="JsChartViewer.htm">JsChartViewer</a>.streamUpdate</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+streamUpdate(timeout)
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Refreshes the &lt;IMG&gt; that the JsChartViewer is bound to.<br><br>
+Unlike <a href="JsChartViewer.partialUpdate.htm">JsChartViewer.partialUpdate</a>, this method does not send the JsChartViewer state to the server. It merely sends a new request to the server using the existing URL of the &lt;IMG&gt; tag.<br><br>
+If this method is called periodically (eg. using a Javascript timer), and the server sends the most updated chart for these requests, then the chart will appear to be automatically update.<br><br>
+One can always refresh an &lt;IMG&gt; tag using standard client side Javascript without using JsChartViewer at all. This method offers the following additional features:<br><br>
+<ul>
+<li>Double buffering<br><br>
+Instead of directly refreshing the &lt;IMG&gt; tag, this method will create a hidden Javascript Image object using the same URL as the &lt;IMG&gt; tag, and will update that hidden Image object. When the update is completed, it will copy the hidden Image object to the &lt;IMG&gt;.<br><br>
+<li>Overlapping updating<br><br>
+Due to the nature of Internet connections, it is sometimes hard to predict the response time for a chart update. For application that needs to update the chart frequently, it may be possible the a new request be sent before an existing request is completed.<br><br>
+In standard Javascript, if a new update request is sent before an existing request is completed, the existing request will be aborted, and the new request will be used. However, for periodic updates, if new requests are sent faster than the time needed to update the chart (eg. the chart update needs 20 seconds, but new requests are sent every 15 seconds), then all update requests will be aborted by the next update requests, and the chart will not update at all. Furthermore, the network and/or the server will be overwhelmed by these requests.<br><br>
+In the streamUpdate method, new update requests will be ignored until existing requests are completed, or until a given timeout has occurred. This ensures the chart does get updated.<br><br>
+<li>Error handling<br><br>
+In standard Javascript, if an &lt;IMG&gt; tag update request failed, the browser may display a "broken image symbol".<br><br>
+In the streamUpdate method, if the update request failed, nothing will happen, and the existing chart will still be shown. The system will simply wait for the next update request.<br><br>
+<li>Cache avoidance<br><br>
+To avoid caching by the browser and/or intermediate proxy servers, the streamUpdate method will append dummy unique query parameters to the &lt;IMG&gt; URL to ensure each URL is unique, and so avoids the cache.<br><br>
+<ul>
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>timeout</td><td>60</td><td>If there is already an existing update request in progress, the timeout value determines whether to abort the existing request and continue with the new request, or vice versa. If the existing request has been in progress for longer than the timeout value in seconds, it will be aborted, otherwise the new request will be aborted.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+True if a new streamUpdate request is sent out. False if the new streamUpdate request is aborted (due to an outstanding request).
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

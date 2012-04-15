@@ -1,0 +1,37 @@
+<HTML>
+<HEAD>
+<Title>DrawArea.clone</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="DrawArea.htm">DrawArea</a>.clone</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+clone(d, x, y, align [, newWidth [, newHeight [, filter [, blur ]]]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Copy the current DrawArea object to another DrawArea object, with optional resizing.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>d</td><td>(Mandatory)</td><td>The destination DrawArea object where the current DrawArea is copied to.</td></tr><tr><td>x</td><td>(Mandatory)</td><td>The x coordinate of a reference point in the destination DrawArea object.</td></tr><tr><td>y</td><td>(Mandatory)</td><td>The y coordinate of a reference point in the destination DrawArea object.</td></tr><tr><td>align</td><td>(Mandatory)</td><td>The alignment of the current DrawArea relative to the reference point. See <a href="alignment.htm">Alignment Specification</a> for supported alignment types.</td></tr><tr><td>newWidth</td><td>-1</td><td>The new width to which the current DrawArea will be resized to before copying. -1 means no resizing.</td></tr><tr><td>newHeight</td><td>-1</td><td>The new height to which the current DrawArea will be resized to before copying. -1 means no resizing.</td></tr><tr><td>filter</td><td><a href="perlchartdir.LinearFilter.htm">LinearFilter</a></td><td>The filter to use for <a href="resampling.htm">re-sampling</a>. (Only applies if there is resizing.)</td></tr><tr><td>blur</td><td>1</td><td>The blur factor to use for <a href="resampling.htm">re-sampling</a>. (Only applies if there is resizing.)</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

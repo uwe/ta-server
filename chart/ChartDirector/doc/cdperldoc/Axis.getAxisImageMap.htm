@@ -1,0 +1,40 @@
+<HTML>
+<HEAD>
+<Title>Axis.getAxisImageMap</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="Axis.htm">Axis</a>.getAxisImageMap</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+getAxisImageMap(noOfSegments, mapWidth, url [, queryFormat [, extraAttr [, offsetX, offsetY ]]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Generates an HTML image map for the axis itself.<br><br>
+This method is similar to <a href="Axis.getHTMLImageMap.htm">Axis.getHTMLImageMap</a>. The difference is instead of generating an image map for the labels, it generates an image map for the axis itself. The axis will be divided into a number of segments, with an image map entry created for each segment.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>noOfSegments</td><td>(Mandatory)</td><td>The number of segments to divide the axis into.</td></tr><tr><td>mapWidth</td><td>(Mandatory)</td><td>The width of the axis used for the purpose of generating the image map.</td></tr><tr><td>url</td><td>(Mandatory)</td><td>The URL to be used in the "href" attribute of the image map. <a href="paramsub.htm">Parameter Substitution and Formatting</a> is supported. Use an empty string if no href attribute is needed.</td></tr><tr><td>queryFormat</td><td>""</td><td>A text string representing the template of the query parameters to be appended to the URL. <a href="paramsub.htm">Parameter Substitution and Formatting</a> is supported.<br><br>
+The special keyword "{default}" represents the default query parameters. This is useful for specifying appending to the default.<br><br>
+Note that an empty string means to use the default query query parameters. To specify no query parameter, use a space character.</td></tr><tr><td>extraAttr</td><td>""</td><td>A text string to specify additional attributes to add to the &lt;area&gt; tag. <a href="paramsub.htm">Parameter Substitution and Formatting</a> is supported.</td></tr><tr><td>offsetX</td><td>0</td><td>An offset to be added to all x coordinates in the image map. This is useful if the current image will be shifted and inserted into another image. In this case, the image map will need to be shifted by the same offset.</td></tr><tr><td>offsetY</td><td>0</td><td>An offset to be added to all y coordinates in the image map. See offsetX above for description.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+A text string containing the image map generated.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

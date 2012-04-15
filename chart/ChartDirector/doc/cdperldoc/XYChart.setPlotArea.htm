@@ -1,0 +1,37 @@
+<HTML>
+<HEAD>
+<Title>XYChart.setPlotArea</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="XYChart.htm">XYChart</a>.setPlotArea</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setPlotArea(x, y, width, height [, bgColor [, altBgColor [, edgeColor [, hGridColor [, vGridColor ]]]]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the position, size, background colors, edge color and grid colors of the plot area.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>x</td><td>(Mandatory)</td><td>The x coordinate of the left of the plot area.</td></tr><tr><td>y</td><td>(Mandatory)</td><td>The y coordinate of the top of the plot area.</td></tr><tr><td>width</td><td>(Mandatory)</td><td>The width of the plot area in pixels.</td></tr><tr><td>height</td><td>(Mandatory)</td><td>The height of the plot area in pixels.</td></tr><tr><td>bgColor</td><td><a href="perlchartdir.Transparent.htm">Transparent</a></td><td>The background color of the plot area.</td></tr><tr><td>altBgColor</td><td>-1</td><td>The second background color of the plot area. -1 means there is no second background color. If there is a second background color, the two background colors will be used alternatively as horizontal bands on the background grid.</td></tr><tr><td>edgeColor</td><td>-1</td><td>The border color of the plot area. -1 means to use the default, which is <a href="perlchartdir.LineColor.htm">LineColor</a>. However, if the axes are configured in 4 quadrant mode (see <a href="XYChart.setAxisAtOrigin.htm">XYChart.setAxisAtOrigin</a>), the default will change to <a href="perlchartdir.Transparent.htm">Transparent</a>.</td></tr><tr><td>hGridColor</td><td>C0C0C0</td><td>The horizontal grid color.</td></tr><tr><td>vGridColor</td><td><a href="perlchartdir.Transparent.htm">Transparent</a></td><td>The vertical grid color.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+The <a href="PlotArea.htm">PlotArea</a> object representing the plot area.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

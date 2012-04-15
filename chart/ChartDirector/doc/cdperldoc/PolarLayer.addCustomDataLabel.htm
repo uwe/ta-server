@@ -1,0 +1,38 @@
+<HTML>
+<HEAD>
+<Title>PolarLayer.addCustomDataLabel</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="PolarLayer.htm">PolarLayer</a>.addCustomDataLabel</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+addCustomDataLabel(i, label [, font [, fontSize [, fontColor [, fontAngle ]]]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Adds a custom data label to a data point.<br><br>
+See <a href="fontspec.htm">Font Specification</a> for details on various font attributes.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>i</td><td>(Mandatory)</td><td>The data point number for the data point. The first data point is 0, while the nth data point is (n - 1).</td></tr><tr><td>label</td><td>(Mandatory)</td><td>A text string representing the data label. <a href="paramsub.htm">Parameter Substitution and Formatting</a> is supported.</td></tr><tr><td>font</td><td>""</td><td>The font used to draw the label.</td></tr><tr><td>fontSize</td><td>8</td><td>The font size used to draw the label.</td></tr><tr><td>fontColor</td><td><a href="perlchartdir.TextColor.htm">TextColor</a></td><td>The color used to draw the label.</td></tr><tr><td>fontAngle</td><td>0</td><td>The rotation angle of the label.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+A <a href="TextBox.htm">TextBox</a> object representing the prototype of the custom data label. This may be used to fine-tune the appearance of the custom data label.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

@@ -1,0 +1,45 @@
+<HTML>
+<HEAD>
+<Title>XYChart.addVectorLayer</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="XYChart.htm">XYChart</a>.addVectorLayer</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+addVectorLayer(xData, yData, lengths, directions [, lengthScale [, color [, name ]]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Adds a vector layer to the chart.<br><br>
+By default, the vectors start from the given reference points and point away from it. You may use <a href="VectorLayer.setArrowAlignment.htm">VectorLayer.setArrowAlignment</a> to specify other options, such as for the vectors to point into the reference points, or to have the reference points being the mid-points of the vectors.<br><br>
+ChartDirector supports specifying the vector lengths and directions directly, or indirectly as the lengths and directions from the reference points to the reference end points. This is controlled by <b>lengthScale</b> as described in the following table.<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="19%">Constant<th width="19%%">Value<th width="60%">Description
+<tr><td><a href="perlchartdir.PixelScale.htm">PixelScale</a><td>0<td>The lengths are measured in pixels. The angles are measured clockwise in degrees, with the upwards position as 0.
+<tr><td><a href="perlchartdir.XAxisScale.htm">XAxisScale</a><td>1<td>The lengths are measured in x-axis scale. The angles are measured clockwise in degrees, with the upwards position as 0.
+<tr><td><a href="perlchartdir.YAxisScale.htm">YAxisScale</a><td>2<td>The lengths are measured in y-axis scale. The angles are measured clockwise in degrees, with the upwards position as 0.
+<tr><td><a href="perlchartdir.EndPoints.htm">EndPoints</a><td>3<td>The vector lengths and directions are measured as the lengths and directions between the reference points and the reference end points.
+</table>
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>xData</td><td>(Mandatory)</td><td>An array of numbers representing the x coordinates for the reference points of the vectors.</td></tr><tr><td>yData</td><td>(Mandatory)</td><td>An array of numbers representing the y coordinates for the reference points of the vectors.</td></tr><tr><td>lengths</td><td>(Mandatory)</td><td>An array of numbers representing either the lengths of the vectors or the x coordinates of the reference end points, depending on <b>lengthScale</b>.</td></tr><tr><td>directions</td><td>(Mandatory)</td><td>An array of numbers representing either the directions of the vectors or the y coordinates of the reference end points, depending on <b>lengthScale</b>.</td></tr><tr><td>lengthScale</td><td><a href="perlchartdir.PixelScale.htm">PixelScale</a></td><td>The method to specify vector lengths and directions, which must be one of the predefined constants in the table above.</td></tr><tr><td>color</td><td>-1</td><td>The color to draw the data points. -1 means that the color is automatically selected from the palette.</td></tr><tr><td>name</td><td>""</td><td>The name of the layer. The name will be used in the legend box, if one is available. An empty string means the layer has no name.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+A <a href="VectorLayer.htm">VectorLayer</a> object representing the vector layer created.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

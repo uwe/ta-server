@@ -1,0 +1,105 @@
+<HTML>
+<HEAD>
+<Title>3D Depth</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">3D Depth</p>
+<hr class="separator">
+<div class="content">
+<img src="images/threeddepthpie0.png">&nbsp;&nbsp;<img src="images/threeddepthpie1.png">&nbsp;&nbsp;<img src="images/threeddepthpie2.png">&nbsp;&nbsp;<img src="images/threeddepthpie3.png">&nbsp;&nbsp;<img src="images/threeddepthpie4.png">
+<br><br>
+This example demonstrates the effects of different 3D depths.<br><br>
+ChartDirector allows the 3D depth and angles to be configured using <a href="PieChart.set3D.htm">PieChart.set3D</a> and <a href="PieChart.set3D2.htm">PieChart.set3D2</a>.
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\threeddepthpie.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+sub createChart
+{
+    my $img = shift;
+
+    # the tilt angle of the pie
+    my $depth = int($img) * 5 + 5;
+
+    # The data for the pie chart
+    my $data = [25, 18, 15, 12, 8, 30, 35];
+
+    # Create a PieChart object of size 100 x 110 pixels
+    my $c = new PieChart(100, 110);
+
+    # Set the center of the pie at (50, 55) and the radius to 38 pixels
+    $c-&gt;setPieSize(50, 55, 38);
+
+    # Set the depth of the 3D pie
+    $c-&gt;set3D($depth);
+
+    # Add a title showing the depth
+    $c-&gt;addTitle("Depth = $depth pixels", "arial.ttf", 8);
+
+    # Set the pie data
+    $c-&gt;setData($data);
+
+    # Disable the sector labels by setting the color to Transparent
+    $c-&gt;setLabelStyle("", 8, $perlchartdir::Transparent);
+
+    # Output the chart
+    $c-&gt;makeChart("threeddepthpie$img.png")
+}
+
+createChart(0);
+createChart(1);
+createChart(2);
+createChart(3);
+createChart(4);</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\threeddepthpie.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# Get HTTP query parameters
+use CGI;
+my $query = new CGI;
+
+# the tilt angle of the pie
+my $depth = int($query-&gt;param("img")) * 5 + 5;
+
+# The data for the pie chart
+my $data = [25, 18, 15, 12, 8, 30, 35];
+
+# Create a PieChart object of size 100 x 110 pixels
+my $c = new PieChart(100, 110);
+
+# Set the center of the pie at (50, 55) and the radius to 38 pixels
+$c-&gt;setPieSize(50, 55, 38);
+
+# Set the depth of the 3D pie
+$c-&gt;set3D($depth);
+
+# Add a title showing the depth
+$c-&gt;addTitle("Depth = $depth pixels", "arial.ttf", 8);
+
+# Set the pie data
+$c-&gt;setData($data);
+
+# Disable the sector labels by setting the color to Transparent
+$c-&gt;setLabelStyle("", 8, $perlchartdir::Transparent);
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

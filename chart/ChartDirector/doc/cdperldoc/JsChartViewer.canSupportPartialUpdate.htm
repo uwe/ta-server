@@ -1,0 +1,38 @@
+<HTML>
+<HEAD>
+<Title>JsChartViewer.canSupportPartialUpdate</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="JsChartViewer.htm">JsChartViewer</a>.canSupportPartialUpdate</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+canSupportPartialUpdate()
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Checks if the browser is capable of supporting partial chart updates (AJAX requests).<br><br>
+<div style="background-color:#cccccc;width:99%;padding:10px">
+<b>Note:</b> This method is a static method (class method). It should be accessed as JsChartViewer.canSupportPartialUpdate, not <i>objName</i>.canSupportPartialUpdate.
+</div><br>
+This method allows one to switch between partial chart updates and full page update depending on the capabilities of the browser.<br><br>
+In the current version of JsChartViewer, partial chart updates (AJAX requests) require the browser to support one of the followings:<br><br>
+<ul>
+<li>XMLHttpRequest object: This object is supported in most non-Microsoft DOM compliant browsers, such as FireFox, Mozilla, Opera, Safari, etc.<br><br>
+<li>Msxml2.XMLHTTP or Microsoft.XMLHTTP ActiveX object on IE 5.0 or above: These objects are included as standard in IE 5.0 or above, so they should be available on IE 5.0 or above.<br><br>
+<li>IE 5.5 or above: IE 5.0 or above normally can use the Msxml2.XMLHTTP or Microsoft.XMLHTTP ActiveX object for partial updates. However, some browsers may have ActiveX support disabled for security reasons. In this case, if the browser is IE 5.5 or above, JsChartViewer will to use a "hidden IFRAME" method to communicate with the server.<br><br>
+</ul>
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">None</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+True if partial chart update is supported, otherwise false.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

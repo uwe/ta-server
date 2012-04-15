@@ -1,0 +1,41 @@
+<HTML>
+<HEAD>
+<Title>ColorAxis.setLevels</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="ColorAxis.htm">ColorAxis</a>.setLevels</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+setLevels(maxLevels)
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the maximum number of contour intervals on the axis.<br><br>
+If discrete color steps are used, the number of contour intervals is the number of color steps on the axis.<br><br>
+For a general color axis, the number of contour intervals is equal to the number of ticks minus 1. For example, an axis with 6 ticks at [0, 2, 4, 6, 8, 10] has 6 contour lines and 5 contour intervals.<br><br>
+The main usage of this method is to limit the number of contour lines and/or color steps on the contour layer.<br><br>
+If this method is never called, the default maximum number of contour intervals is 16.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>maxLevels</td><td>(Mandatory)</td><td>An integer representing the maximum number of contour intervals.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

@@ -1,0 +1,501 @@
+<HTML>
+<HEAD>
+<Title>Zooming and Scrolling Demonstration (2)</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Zooming and Scrolling Demonstration (2)</p>
+<hr class="separator">
+<div class="content"><img src="images/zoomscroll2_web.png"><br><br>
+This sample program demonstrates a general zoomable and scrollable chart. The followings are the key elements of this sample program:<br><br>
+<ul>
+<li>The axis ranges of the chart can be controlled by mouse actions, such as drag to scroll, drag to zoom and click to zoom. The view port can also be moved by dragging on the rectangle on the navigation pad.<br><br>
+<li>Charts are updated using partial chart update (AJAX requests) by default. If the browser does not support AJAX, it will fall back to full page update.<br><br>
+<li>Data points are with tool tips.<br><br>
+</ul>
+The source code listing of this sample program is included at the end of this section. The code consists of the following main parts:<br><br>
+<ul>
+<li>createFirstChart: This function is for handing the initial chart request. In this example, it simply initializes the initial state of the JsChartViewer. It then calls drawChart to draw the chart.<br><br>
+<li>processPartialUpdate: This function is for handling partial chart updates (AJAX request). In this example, as there is no external controls that needs server side support, this function simply calls drawChart to update the chart.<br><br>
+<li>processFullUpdate: This is the function for handling full page updates (postback). Similar to processPartialUpdate, it simply calls drawChart to update the chart.<br><br>
+<li>drawChart: This is the main charting code. It draws the chart according to the selected axis range.<br><br>
+<li>HTML: The HTML part of the code is for creating the web page. This include Javascript code for implementing the push buttons, and the navigation pad with the draggable rectangle.<br><br>
+<li>initJsChartViewer: This Javascript function performs browser side initialization. It is invoked by the onload event handler of the &lt;BODY&gt; tag. It connects the browser side JsChartViewer with buttons for setting the mouse usage modes, and to the navigation pad for directly setting the view port. It detects if the browser supports partial chart updates and sets up the ViewPortChanged event handler accordingly.<br><br>
+</ul>
+</div><p class="heading1a">Files in this Demonstration</p><div class="content">
+This sample script requires the following files. When developing your own script using this sample script as a template, please ensure you copy the necessary files to the proper directories and reference them using proper paths.<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="24%">File<th width="74%">Description
+<tr><td>zoomscrolldemo2.pl<td>Main source code for this demo.
+<tr><td>pointer.gif<br>zoomInIcon.gif<br>zoomOutIcon.gif<td>The images used in the push buttons in this demo.
+<tr><td>getchart.pl<td>A utility script used in the image url for retrieving the chart image from<br><br>
+a temporary file (see <a href="BaseChart.makeTmpFile.htm">BaseChart.makeTmpFile</a>).
+<tr><td>cdjcv.js<br>zoomin.cur<br>zoomout.cur<br>nozoom.cur<br>wait.gif<td>The script file for <a href="JsChartViewer.htm">JsChartViewer</a>, and the supporting cursor and image files. These files must be in the same directory.
+<tr><td>loadresource.pl<td>A utility script for loading non-CGI files from the CGI directory.<br><br>
+For convenience of distribution, in this demonstration, all files, including Javascript, GIF and CUR files, are put in the same directory as the CGI script, and "loadresource.pl" is used to load them. This is less efficient. In your own script, it is recommended that you put the Javascript, GIF and CUR files in a web document directory, so that "loadresource.pl" is not needed.
+</table><br>
+</div><p class="heading1a">Source Code Listing</p><div class="content">
+<b>[CGI Version]</b> perldemo_cgi\zoomscrolldemo2.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# Get HTTP query parameters
+use CGI;
+my $query = new CGI;
+
+#
+# Copyright 2006 Advanced Software Engineering Limited
+#
+# You may use and modify the sample code in this file in your application, provided the Sample Code
+# and its modifications are used only in conjunction with ChartDirector. Usage of this software is
+# subjected to the terms and condition of the ChartDirector license.
+#
+
+#
+# In this demo, the generated web page needs to load the "cdjcv.js" Javascript file and several GIF
+# files. For ease of installation, we put these files in the same directory as this script. However,
+# if this script is installed in a CGI only directory (such as cgi-bin), the web server would not
+# allow the browser to access these non-CGI files.
+#
+# To get around this potential issue, a special load resource script is used to load these files.
+# Instead of using:
+#
+#    &lt;SCRIPT SRC="cdjcv.js"&gt;
+#
+# we now use:
+#
+#    &lt;SCRIPT SRC="loadresource.pl?file=cdjcv.js"&gt;
+#
+# Similar methods are used to load the GIF files.
+#
+# If this script is not in a CGI only directory, you may replace the following loadResource string
+# with an empty string "" to improve performance.
+#
+my $loadResource = "loadresource.pl?file=";
+
+#
+# We need to handle 3 types of request: - initial request for the full web page - partial update
+# (AJAX chart update) to update the chart without reloading the page - full page update for old
+# browsers that does not support partial updates
+#
+
+#
+# Handles the initial request
+#
+sub createFirstChart
+{
+    my ($viewer) = @_;
+    # Initialize the Javascript ChartViewer
+    $viewer-&gt;setScrollDirection($perlchartdir::DirectionHorizontalVertical);
+    $viewer-&gt;setZoomDirection($perlchartdir::DirectionHorizontalVertical);
+    $viewer-&gt;setMouseUsage($perlchartdir::MouseUsageScroll);
+
+    # Draw the chart
+    drawChart($viewer);
+}
+
+#
+# Handles partial update (AJAX chart update)
+#
+sub processPartialUpdate
+{
+    my ($viewer) = @_;
+    # In this demo, we just need to redraw the chart
+    drawChart($viewer);
+}
+
+#
+# Handles full update
+#
+sub processFullUpdate
+{
+    my ($viewer) = @_;
+    # In this demo, we just need to redraw the chart
+    drawChart($viewer);
+}
+
+#
+# Draw the chart
+#
+sub drawChart
+{
+    my ($viewer) = @_;
+    #
+    # For simplicity, in this demo, we just use hard coded data. In a real application, the data may
+    # come from a dynamic source such as a database. (See "Using Data Sources with ChartDirector" in
+    # the ChartDirector documentation if you need some sample code on how to read data from database
+    # to array variables.)
+    #
+    my $dataX0 = [10, 15, 6, -12, 14, -8, 13, -3, 16, 12, 10.5, -7, 3, -10, -5, 2, 5];
+    my $dataY0 = [130, 150, 80, 110, -110, -105, -130, -15, -170, 125, 125, 60, 25, 150, 150, 15,
+        120];
+    my $dataX1 = [6, 7, -4, 3.5, 7, 8, -9, -10, -12, 11, 8, -3, -2, 8, 4, -15, 15];
+    my $dataY1 = [65, -40, -40, 45, -70, -80, 80, 10, -100, 105, 60, 50, 20, 170, -25, 50, 75];
+    my $dataX2 = [-10, -12, 11, 8, 6, 12, -4, 3.5, 7, 8, -9, 3, -13, 16, -7.5, -10, -15];
+    my $dataY2 = [65, -80, -40, 45, -70, -80, 80, 90, -100, 105, 60, -75, -150, -40, 120, -50, -30];
+
+    # Create an XYChart object 500 x 480 pixels in size, with light blue (c0c0ff) as background
+    # color
+    my $c = new XYChart(500, 480, 0xc0c0ff);
+
+    # Set the plotarea at (50, 40) and of size 400 x 400 pixels. Use light grey (c0c0c0) horizontal
+    # and vertical grid lines. Set 4 quadrant coloring, where the colors of the quadrants alternate
+    # between lighter and deeper grey (dddddd/eeeeee).
+    $c-&gt;setPlotArea(50, 40, 400, 400, -1, -1, -1, 0xc0c0c0, 0xc0c0c0)-&gt;set4QBgColor(0xdddddd,
+        0xeeeeee, 0xdddddd, 0xeeeeee, 0x000000);
+
+    # Enable clipping mode to clip the part of the data that is outside the plot area.
+    $c-&gt;setClipping();
+
+    # Set 4 quadrant mode, with both x and y axes symetrical around the origin
+    $c-&gt;setAxisAtOrigin($perlchartdir::XYAxisAtOrigin, $perlchartdir::XAxisSymmetric +
+        $perlchartdir::YAxisSymmetric);
+
+    # Add a legend box at (450, 40) (top right corner of the chart) with vertical layout and 8 pts
+    # Arial Bold font. Set the background color to semi-transparent grey (40dddddd).
+    my $legendBox = $c-&gt;addLegend(450, 40, 1, "arialbd.ttf", 8);
+    $legendBox-&gt;setAlignment($perlchartdir::TopRight);
+    $legendBox-&gt;setBackground(0x40dddddd);
+
+    # Add titles to axes
+    $c-&gt;xAxis()-&gt;setTitle("Alpha Index");
+    $c-&gt;yAxis()-&gt;setTitle("Beta Index");
+
+    # Set axes line width to 2 pixels
+    $c-&gt;xAxis()-&gt;setWidth(2);
+    $c-&gt;yAxis()-&gt;setWidth(2);
+
+    # The default ChartDirector settings has a denser y-axis grid spacing and less-dense x-axis grid
+    # spacing. In this demo, we want the tick spacing to be symmetrical. We use around 40 pixels
+    # between major ticks and 20 pixels between minor ticks.
+    $c-&gt;xAxis()-&gt;setTickDensity(40, 20);
+    $c-&gt;yAxis()-&gt;setTickDensity(40, 20);
+
+    #
+    # In this example, we represent the data by scatter points. If you want to represent the data by
+    # somethings else (lines, bars, areas, floating boxes, etc), just modify the code below to use
+    # the layer type of your choice.
+    #
+
+    # Add scatter layer, using 11 pixels red (ff33333) X shape symbols
+    $c-&gt;addScatterLayer($dataX0, $dataY0, "Group A", perlchartdir::Cross2Shape(), 11, 0xff3333);
+
+    # Add scatter layer, using 11 pixels green (33ff33) circle symbols
+    $c-&gt;addScatterLayer($dataX1, $dataY1, "Group B", $perlchartdir::CircleShape, 11, 0x33ff33);
+
+    # Add scatter layer, using 11 pixels blue (3333ff) triangle symbols
+    $c-&gt;addScatterLayer($dataX2, $dataY2, "Group C", $perlchartdir::TriangleSymbol, 11, 0x3333ff);
+
+    if (!defined($viewer-&gt;getCustomAttr("minY")) || ($viewer-&gt;getCustomAttr("minY") eq "")) {
+        # The axis scale has not yet been set up. This means this is the first time the chart is
+        # drawn and it is drawn with no zooming. We can use auto-scaling to determine the
+        # axis-scales, then remember them for future use.
+
+        # explicitly auto-scale axes so we can get the axis scales
+        $c-&gt;layout();
+
+        # save the axis scales for future use
+        $viewer-&gt;setCustomAttr("minX", $c-&gt;xAxis()-&gt;getMinValue());
+        $viewer-&gt;setCustomAttr("maxX", $c-&gt;xAxis()-&gt;getMaxValue());
+        $viewer-&gt;setCustomAttr("minY", $c-&gt;yAxis()-&gt;getMinValue());
+        $viewer-&gt;setCustomAttr("maxY", $c-&gt;yAxis()-&gt;getMaxValue());
+    } else {
+        # Retrieve the original full axes scale
+        my $minX = $viewer-&gt;getCustomAttr("minX");
+        my $maxX = $viewer-&gt;getCustomAttr("maxX");
+        my $minY = $viewer-&gt;getCustomAttr("minY");
+        my $maxY = $viewer-&gt;getCustomAttr("maxY");
+
+        # Compute the zoomed-in axis scales by multiplying the full axes scale with the view port
+        # ratio
+        my $xScaleMin = $minX + ($maxX - $minX) * $viewer-&gt;getViewPortLeft();
+        my $xScaleMax = $minX + ($maxX - $minX) * ($viewer-&gt;getViewPortLeft() +
+            $viewer-&gt;getViewPortWidth());
+        my $yScaleMax = $maxY - ($maxY - $minY) * $viewer-&gt;getViewPortTop();
+        my $yScaleMin = $maxY - ($maxY - $minY) * ($viewer-&gt;getViewPortTop() +
+            $viewer-&gt;getViewPortHeight());
+
+        # Set the axis scales
+        $c-&gt;xAxis()-&gt;setLinearScale($xScaleMin, $xScaleMax);
+        $c-&gt;yAxis()-&gt;setLinearScale($yScaleMin, $yScaleMax);
+
+        # By default, ChartDirector will round the axis scale to the tick position. For zooming, we
+        # want to use the exact computed axis scale and so we disable rounding.
+        $c-&gt;xAxis()-&gt;setRounding(0, 0);
+        $c-&gt;yAxis()-&gt;setRounding(0, 0);
+    }
+
+    # Create the image
+    my $chartQuery = $c-&gt;makeTmpFile("/tmp/tmpcharts");
+
+    # Include tool tip for the chart
+    my $imageMap = $c-&gt;getHTMLImageMap("", "",
+        "title='[{dataSetName}] Alpha = {x|G}, Beta = {value|G}'");
+
+    # Set the chart URL, image map, and chart metrics to the viewer
+    $viewer-&gt;setImageUrl("getchart.pl?img=/tmp/tmpcharts/".$chartQuery);
+    $viewer-&gt;setImageMap($imageMap);
+    $viewer-&gt;setChartMetrics($c-&gt;getChartMetrics());
+}
+
+# Create the WebChartViewer object
+my $viewer = new WebChartViewer($query, "chart1");
+
+if ($viewer-&gt;isPartialUpdateRequest()) {
+    # Is a partial update request (AJAX chart update)
+    processPartialUpdate($viewer);
+    # Since it is a partial update, there is no need to output the entire web page. We stream the
+    # chart and then terminate the script immediately.
+    print $viewer-&gt;partialUpdateChart();
+    exit 0;
+} elsif ($viewer-&gt;isFullUpdateRequest()) {
+    # Is a full update request
+    processFullUpdate($viewer);
+} else {
+    # Is a initial request
+    createFirstChart($viewer);
+}
+
+print "Content-type: text/html\n\n";
+print &lt;&lt;EndOfHTML
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;ChartDirector Zoom and Scroll Demonstration (2)&lt;/title&gt;
+    &lt;script type="text/javascript" src="${loadResource}cdjcv.js"&gt;&lt;/script&gt;
+    &lt;style type="text/css"&gt;
+        div.chartPushButtonSelected { padding:5px; background:#ccffcc; cursor:hand; }
+        div.chartPushButton { padding:5px; cursor:hand; }
+        td.chartPushButton { font-family:Verdana; font-size:9pt; cursor:pointer; border-bottom:#000000 1px solid; }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body style="margin:0px" onload="initJsChartViewer()"&gt;
+&lt;script type="text/javascript"&gt;
+// Initialize browser side Javascript controls
+function initJsChartViewer()
+{
+    // Check if the Javascript ChartViewer library is loaded
+    if (!window.JsChartViewer)
+        return;
+
+    // Get the Javascript ChartViewer object
+    var viewer = JsChartViewer.get('@{[$viewer-&gt;getId()]}');
+
+    // Connect the mouse usage buttons to the Javascript ChartViewer object
+    connectViewerMouseUsage('ViewerMouseUsage1', viewer);
+
+    // Connect the view port window navigation pad to the Javascript ChartViewer object
+    connectViewerViewPort('ViewerViewPort1', viewer);
+
+    // Detect if browser is capable of support partial update (AJAX chart update)
+    if (JsChartViewer.canSupportPartialUpdate())
+        // Browser can support partial update, so connect the view port change event to
+        // trigger a partial update
+        viewer.attachHandler("ViewPortChanged", viewer.partialUpdate);
+    else
+        // Browser cannot support partial update - so use full page update
+        viewer.attachHandler("ViewPortChanged", function() { document.forms[0].submit(); });
+}
+&lt;/script&gt;
+&lt;form method="post"&gt;
+&lt;table cellspacing="0" cellpadding="0" border="0"&gt;
+    &lt;tr&gt;
+        &lt;td align="right" colspan="2" style="background:#000088"&gt;
+            &lt;div style="padding-bottom:2px; padding-right:3px; font-weight:bold; font-size:10pt; font-style:italic; font-family:Arial;"&gt;
+                &lt;a style="color:#FFFF00; text-decoration:none" href="http://www.advsofteng.com/"&gt;Advanced Software Engineering&lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr valign="top"&gt;
+        &lt;td style="width:130px; background:#e0e0e0; border-left:black 1px solid; border-top:black 1px solid; border-bottom:black 1px solid;"&gt;
+            &lt;!-- The following table is to create 3 cells for 3 buttons. The buttons are used to control
+                 the mouse usage mode of the Javascript ChartViewer. --&gt;
+            &lt;table id="ViewerMouseUsage1" cellspacing="0" cellpadding="0" width="100%" border="0"&gt;
+                &lt;tr&gt;
+                    &lt;td class="chartPushButton"&gt;
+                        &lt;div class="chartPushButton" id="ViewerMouseUsage1_Scroll" title="Pointer"&gt;
+                            &lt;img src="${loadResource}pointer.gif" style="vertical-align:middle" width="16" height="16" alt="Pointer" /&gt;&nbsp;&nbsp;Pointer
+                        &lt;/div&gt;
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td class="chartPushButton"&gt;
+                        &lt;div class="chartPushButton" id="ViewerMouseUsage1_ZoomIn" title="Zoom In"&gt;
+                            &lt;img src="${loadResource}zoomInIcon.gif" style="vertical-align:middle" width="16" height="16" alt="Zoom In" /&gt;&nbsp;&nbsp;Zoom In
+                        &lt;/div&gt;
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td class="chartPushButton"&gt;
+                        &lt;div class="chartPushButton" id="ViewerMouseUsage1_ZoomOut" title="Zoom Out"&gt;
+                            &lt;img src="${loadResource}zoomOutIcon.gif" style="vertical-align:middle" width="16" height="16" alt="Zoom Out" /&gt;&nbsp;&nbsp;Zoom Out
+                        &lt;/div&gt;
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/table&gt;
+            &lt;script type="text/javascript"&gt;
+            // Connect the mouse usage buttons to the Javascript ChartViewer
+            function connectViewerMouseUsage(controlId, viewer)
+            {
+                // A cross browser utility to get the object by id.
+                function getObj(id) { return document.getElementById ? document.getElementById(id) : document.all[id]; }
+
+                // Set the button styles (colors) based on mouse usage mode
+                function syncButtons()
+                {
+                    getObj(controlId + "_Scroll").className = (viewer.getMouseUsage() == JsChartViewer.Scroll) ?
+                        "chartPushButtonSelected" : "chartPushButton";
+                    getObj(controlId + "_ZoomIn").className = (viewer.getMouseUsage() == JsChartViewer.ZoomIn) ?
+                        "chartPushButtonSelected" : "chartPushButton";
+                    getObj(controlId + "_ZoomOut").className = (viewer.getMouseUsage() == JsChartViewer.ZoomOut) ?
+                        "chartPushButtonSelected" : "chartPushButton";
+                }
+                syncButtons();
+
+                // Run syncButtons whenever the Javascript ChartViewer is updated
+                viewer.attachHandler("PostUpdate", syncButtons);
+
+                // Set the Javascript ChartViewer mouse usage mode if the buttons are clicked.
+                getObj(controlId + "_Scroll").onclick = function() { viewer.setMouseUsage(JsChartViewer.Scroll); syncButtons(); }
+                getObj(controlId + "_ZoomIn").onclick = function() { viewer.setMouseUsage(JsChartViewer.ZoomIn); syncButtons(); }
+                getObj(controlId + "_ZoomOut").onclick = function() { viewer.setMouseUsage(JsChartViewer.ZoomOut); syncButtons(); }
+            }
+            &lt;/script&gt;
+            &lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;
+            &lt;!-- The following DIV blocks constitute the view port navigation pad. --&gt;
+            &lt;div id="ViewerViewPort1" style="margin: 10px 5px; text-align: center"&gt;
+                &lt;div style="border:black 1px solid; padding:0px; margin:0px; width:120px; height:120px; background-color:#c0c0ff;
+                    text-align:left"&gt;
+                    &lt;div id="ViewerViewPort1_ViewPort" style="border:black 1px solid; padding:0px; margin:0px; visibility:hidden;
+                        width:60px; height:60px; position:relative; background-color:#c0c0c0"&gt;
+                        &lt;img src="" style="display:none" height="1" width="1" alt="" /&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;script type="text/javascript"&gt;
+            // Connect the view port navigation pad to the Javascript ChartViewer
+            function connectViewerViewPort(controlId, viewer)
+            {
+                // A cross browser utility to get the object by id.
+                function getObj(id) { return document.getElementById ? document.getElementById(id) : document.all[id]; }
+
+                // Get the inner rectangle representing the visible view port
+                var p = getObj(controlId + "_ViewPort");
+
+                // Set up the mouse down event handler
+                p.onmousedown = ViewerViewPort_startDrag;
+                p.viewer = viewer;
+
+                // Remember the width and height of the outer container of the navigation pad. The exact definition of
+                // width and height differs depending on browsers (some includes the borders and some exclude the borders).
+                var parent = p.parentElement || p.parentNode;
+                p.parentW = parent.offsetWidth - (document.all ? 2 : 4);
+                p.parentH = parent.offsetHeight - (document.all ? 2 : 4);
+
+                // Connect the view port to the viewer PostUpdate handler
+                connectViewPortHandler(controlId, viewer);
+
+                // The navigation pad has been set up, so can display it now.
+                p.style.visibility = "visible";
+            }
+            // Connect the view port to the viewer PostUpdate handler
+            function connectViewPortHandler(controlId, viewer)
+            {
+                // Set the navigation pad size and position depending on the Javascript ChartViewer view port state
+                var syncViewPort = function()
+                {
+                    // A cross browser utility to get the object by id.
+                    function getObj(id) { return document.getElementById ? document.getElementById(id) : document.all[id]; }
+
+                    // Get the inner rectangle representing the visible view port
+                    var p = getObj(controlId + "_ViewPort");
+
+                    // Set the size and position based on Javascript ChartViewer view port state
+                    p.currentWidth = p.style.width = Math.round(p.parentW * viewer.getViewPortWidth());
+                    p.currentHeight = p.style.height = Math.round(p.parentH * viewer.getViewPortHeight());
+                    p.currentX = p.style.left = Math.round(p.parentW * viewer.getViewPortLeft());
+                    p.currentY = p.style.top = Math.round(p.parentH * viewer.getViewPortTop());
+                }
+                syncViewPort();
+
+                // Run syncViewPort whenever the Javascript ChartViewer is updated
+                viewer.attachHandler("PostUpdate", syncViewPort);
+            }
+            // Mouse down event handler
+            function ViewerViewPort_startDrag(e)
+            {
+                if (document.onmousemove != ViewerViewPort_mouseMove)
+                {
+                    // Remember the current onmousemove and onmouseup event handler and replace them
+                    // with our own handler
+                    document.ViewerViewPort_onmousemovesave = document.onmousemove;
+                    document.ViewerViewPort_onmouseupsave = document.onmouseup;
+                    document.onmousemove = ViewerViewPort_mouseMove;
+                    document.onmouseup = ViewerViewPort_endDrag;
+                }
+
+                // Remember the mouse down position
+                document.ViewerViewPort_dragObj = this;
+                this.refX = this.currentX - (window.event || e).clientX;
+                this.refY = this.currentY - (window.event || e).clientY;
+            }
+            // Mouse move event handler
+            function ViewerViewPort_mouseMove(e)
+            {
+                // Set the position of the navigation pad depending on how far the mouse has been dragged
+                var obj = document.ViewerViewPort_dragObj;
+                obj.currentX = obj.style.left =
+                    Math.max(0, Math.min(obj.refX + (window.event || e).clientX, obj.parentW - obj.currentWidth));
+                obj.currentY = obj.style.top =
+                    Math.max(0, Math.min(obj.refY + (window.event || e).clientY, obj.parentH - obj.currentHeight));
+                return false;
+            }
+            // Mouse up event handler
+            function ViewerViewPort_endDrag(e)
+            {
+                // Restore the previous nmousemove and onmouseup event handler
+                document.onmousemove = document.ViewerViewPort_onmousemovesave;
+                document.onmouseup = document.ViewerViewPort_onmouseupsave;
+
+                // Set the new view port position based on the mouse position
+                var newVpLeft = 0;
+                var newVpTop = 0;
+                var obj = document.ViewerViewPort_dragObj;
+                if (obj.viewer.getViewPortWidth() &lt; 1)
+                    newVpLeft = obj.currentX / (obj.parentW - obj.currentWidth) * (1 - obj.viewer.getViewPortWidth());
+                if (obj.viewer.getViewPortHeight() &lt; 1)
+                    newVpTop = obj.currentY / (obj.parentH - obj.currentHeight) * (1 - obj.viewer.getViewPortHeight());
+
+                // Change the view port only when the new view port position is really different from
+                // existing position (to avoid unnecessary partial or full update)
+                if ((Math.abs(obj.viewer.getViewPortLeft() - newVpLeft) &gt; 0.0000001) ||
+                    (Math.abs(obj.viewer.getViewPortTop() - newVpTop) &gt; 0.0000001))
+                {
+                    obj.viewer.setViewPortLeft(newVpLeft);
+                    obj.viewer.setViewPortTop(newVpTop);
+                    obj.viewer.applyHandlers("ViewPortChanged");
+                }
+            }
+            &lt;/script&gt;
+        &lt;/td&gt;
+        &lt;td style="border: black 1px solid; background-color: #c0c0ff"&gt;
+            &lt;div style="padding:5px"&gt;
+                &lt;!-- ****** Here is the chart image ****** --&gt;
+                @{[$viewer-&gt;renderHTML()]}
+            &lt;/div&gt;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+EndOfHTML
+;</pre></tr></td></table></div><br>
+<hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div></body>
+</HTML>

@@ -1,0 +1,41 @@
+<HTML>
+<HEAD>
+<Title>BaseChart.makeChart2</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="BaseChart.htm">BaseChart</a>.makeChart2</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+makeChart2(format)
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Generates the chart as an image in memory.<br><br>
+This method is most often used to output the chart directly to an HTTP stream.<br><br>
+ChartDirector supports PNG, JPG, GIF, WBMP and BMP formats, denoted by the following predefined constants:<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="19%">Constant<th width="19%%">Value<th width="60%">Description <tr><td><a href="perlchartdir.PNG.htm">PNG</a><td>0<td>The PNG format. <tr><td><a href="perlchartdir.GIF.htm">GIF</a><td>1<td>The GIF format. <tr><td><a href="perlchartdir.JPG.htm">JPG</a><td>2<td>The JPEG format. <tr><td><a href="perlchartdir.WMP.htm">WMP</a><td>3<td>The WAP bitmap format. <tr><td><a href="perlchartdir.BMP.htm">BMP</a><td>4<td>The BMP format. <tr><td><a href="perlchartdir.SVG.htm">SVG</a><td>5<td>The SVG format. <tr><td><a href="perlchartdir.SVGZ.htm">SVGZ</a><td>6<td>The compressed SVG format. </table><br>
+<b>Note</b>: To output true vector graphics in SVG or SVGZ format, please ensure <a href="BaseChart.enableVectorOutput.htm">BaseChart.enableVectorOutput</a> is called immediately after creating the BaseChart object. Otherwise the output will be a bitmap image embedded in SVG or SVGZ.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>format</td><td>(Mandatory)</td><td>A constant representing the format of the image.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+A string containing the binary image of the chart in the requested format.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

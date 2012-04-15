@@ -1,0 +1,38 @@
+<HTML>
+<HEAD>
+<Title>XYChart.addScatterLayer</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="XYChart.htm">XYChart</a>.addScatterLayer</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+addScatterLayer(xData, yData [, name [, symbol [, symbolSize [, fillColor [, edgeColor ]]]]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Adds a scatter chart layer to the XYChart.<br><br>
+A scatter chart can be considered as a special configuration of a line chart, in the data symbols are enabled and the line width is set to zero. Therefore only the data symbols are visible and the chart appears as scattered.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>xData</td><td>(Mandatory)</td><td>An array of numbers representing the x values of the data points. If no explicit x coordinates are used in the chart (eg. using an enumerated x-axis), an empty array may be used for this argument.</td></tr><tr><td>yData</td><td>(Mandatory)</td><td>An array of numbers representing the y values of the data points.</td></tr><tr><td>name</td><td>""</td><td>The name of the data set. The name will be used in the legend box, if one is available. An empty string means the data set has no name.</td></tr><tr><td>symbol</td><td><a href="perlchartdir.SquareShape.htm">SquareShape</a></td><td>One of the predefined symbol constants to specify the symbol to use. (See <a href="shapespec.htm">Shape Specification</a> for available built-in shapes.)</td></tr><tr><td>symbolSize</td><td>5</td><td>The width and height of the symbol in pixels.</td></tr><tr><td>fillColor</td><td>-1</td><td>The color used to fill the symbol. -1 means that the color is automatically selected from the palette.</td></tr><tr><td>edgeColor</td><td>-1</td><td>The edge color used to draw the edge of the symbol. -1 means using <a href="perlchartdir.LineColor.htm">LineColor</a> as the edge color.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+A <a href="ScatterLayer.htm">ScatterLayer</a> object representing the scatter layer created.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

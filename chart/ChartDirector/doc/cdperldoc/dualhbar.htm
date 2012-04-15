@@ -1,0 +1,291 @@
+<HTML>
+<HEAD>
+<Title>Dual Horizontal Bar Charts</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Dual Horizontal Bar Charts</p>
+<hr class="separator">
+<div class="content">
+<img src="images/dualhbar.png">
+<br><br>
+This example demonstrates combining two horizontal bar charts of opposite direction using a <a href="MultiChart.htm">MultiChart</a>, and a number of other ChartDirector features.<br><br>
+<ul><li> The bar charts are created as <a href="XYChart.htm">XYChart</a> objects with <a href="perlchartdir.Transparent.htm">Transparent</a> backgrounds. This ensures they will not block each others when put into the <a href="MultiChart.htm">MultiChart</a>.<br><br>
+<li> The bars are configured with 3D border effects using <a href="Layer.setBorderColor.htm">Layer.setBorderColor</a>.<br><br>
+<li> The bars are configured with to touch each others (no gap in between) by using <a href="BarLayer.setBarGap.htm">BarLayer.setBarGap</a> with the <a href="perlchartdir.TouchBar.htm">TouchBar</a> predefined constant.<br><br>
+<li> Custom <i>Male/Female</i> labels are added to the internal corners of the plot areas as custom texts, using <a href="BaseChart.addText.htm">BaseChart.addText</a>.<br><br>
+<li> Both male and female data are added to both bar charts. This technique ensures the same y-axis scale on both charts. (This example uses auto-scaling, so if the charts containing different data, the axis scales can be different.) On the right chart, the male data is configured to be <a href="perlchartdir.Transparent.htm">Transparent</a>, so only the female data can be seen. The opposite is done for the left chart.<br><br>
+<li> The left bar chart is configured to use a reversed y-axis (horizontal axis) that points from right to left. This is by using <a href="Axis.setReverse.htm">Axis.setReverse</a>.<br><br>
+<li> The axis labels between the bar charts belong to the right chart. They are configured to have a width equal to the gap between the charts, with <a href="perlchartdir.Center.htm">Center</a> alignment. This is by using the <a href="TextBox.htm">TextBox</a> object that represents the prototype of the axis labels, obtained during <a href="Axis.setLabels.htm">Axis.setLabels</a>.<br><br>
+<li> A <a href="MultiChart.htm">MultiChart</a> object is created, and the two bar charts are added to it using <a href="MultiChart.addChart.htm">MultiChart.addChart</a>. The titles at the top and bottom of the chart belong to the MultiChart, created using <a href="BaseChart.addTitle.htm">BaseChart.addTitle</a> and <a href="BaseChart.addTitle2.htm">BaseChart.addTitle2</a>.</ul>
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\dualhbar.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# The age groups
+my $labels = ["0 - 4", "5 - 9", "10 - 14", "15 - 19", "20 - 24", "24 - 29",
+    "30 - 34", "35 - 39", "40 - 44", "44 - 49", "50 - 54", "55 - 59", "60 - 64",
+    "65 - 69", "70 - 74", "75 - 79", "80+"];
+
+# The male population (in thousands)
+my $male = [215, 238, 225, 236, 235, 260, 286, 340, 363, 305, 259, 164, 135, 127,
+    102, 68, 66];
+
+# The female population (in thousands)
+my $female = [194, 203, 201, 220, 228, 271, 339, 401, 384, 304, 236, 137, 116, 122,
+    112, 85, 110];
+
+
+#=============================================================
+#    Draw the right bar chart
+#=============================================================
+
+# Create a XYChart object of size 320 x 300 pixels
+my $c = new XYChart(320, 300);
+
+# Set the plotarea at (50, 0) and of size 250 x 255 pixels. Use pink (0xffdddd) as
+# the background.
+$c-&gt;setPlotArea(50, 0, 250, 255, 0xffdddd);
+
+# Add a custom text label at the top right corner of the right bar chart
+$c-&gt;addText(300, 0, "Female", "timesbi.ttf", 12, 0xa07070)-&gt;setAlignment(
+    $perlchartdir::TopRight);
+
+# Add the pink (0xf0c0c0) bar chart layer using the female data
+my $femaleLayer = $c-&gt;addBarLayer($female, 0xf0c0c0);
+
+# Swap the axis so that the bars are drawn horizontally
+$c-&gt;swapXY(1);
+
+# Set the bar to touch each others
+$femaleLayer-&gt;setBarGap($perlchartdir::TouchBar);
+
+# Set the border style of the bars to 1 pixel 3D border
+$femaleLayer-&gt;setBorderColor(-1, 1);
+
+# Add a Transparent line layer to the chart using the male data. As it is
+# Transparent, only the female bar chart can be seen. We need to put both male and
+# female data in both left and right charts, because we want auto-scaling to produce
+# the same scale for both chart.
+$c-&gt;addLineLayer($male, $perlchartdir::Transparent);
+
+# Set the y axis label font to Arial Bold
+$c-&gt;yAxis()-&gt;setLabelStyle("arialbd.ttf");
+
+# Set the labels between the two bar charts, which can be considered as the x-axis
+# labels for the right chart
+my $tb = $c-&gt;xAxis()-&gt;setLabels($labels);
+
+# Use a fix width of 50 for the labels (height = automatic) with center alignment
+$tb-&gt;setSize(50, 0);
+$tb-&gt;setAlignment($perlchartdir::Center);
+
+# Set the label font to Arial Bold
+$tb-&gt;setFontStyle("arialbd.ttf");
+
+# Disable ticks on the x-axis by setting the tick length to 0
+$c-&gt;xAxis()-&gt;setTickLength(0);
+
+#=============================================================
+#    Draw the left bar chart
+#=============================================================
+
+# Create a XYChart object of size 280 x 300 pixels with a transparent background.
+my $c2 = new XYChart(280, 300, $perlchartdir::Transparent);
+
+# Set the plotarea at (20, 0) and of size 250 x 255 pixels. Use pale blue (0xddddff)
+# as the background.
+$c2-&gt;setPlotArea(20, 0, 250, 255, 0xddddff);
+
+# Add a custom text label at the top left corner of the left bar chart
+$c2-&gt;addText(20, 0, "Male", "timesbi.ttf", 12, 0x7070a0);
+
+# Add the pale blue (0xaaaaff) bar chart layer using the male data
+my $maleLayer = $c2-&gt;addBarLayer($male, 0xaaaaff);
+
+# Swap the axis so that the bars are drawn horizontally
+$c2-&gt;swapXY(1);
+
+# Reverse the direction of the y-axis so it runs from right to left
+$c2-&gt;yAxis()-&gt;setReverse();
+
+# Set the bar to touch each others
+$maleLayer-&gt;setBarGap($perlchartdir::TouchBar);
+
+# Set the border style of the bars to 1 pixel 3D border
+$maleLayer-&gt;setBorderColor(-1, 1);
+
+# Add a Transparent line layer to the chart using the female data. As it is
+# Transparent, only the male bar chart can be seen. We need to put both male and
+# female data in both left and right charts, because we want auto-scaling to produce
+# the same scale for both chart.
+$c2-&gt;addLineLayer($female, $perlchartdir::Transparent);
+
+# Set the y axis label font to Arial Bold
+$c2-&gt;yAxis()-&gt;setLabelStyle("arialbd.ttf");
+
+#=============================================================
+#    Use a MultiChart to contain both bar charts
+#=============================================================
+
+# Create a MultiChart object of size 590 x 320 pixels.
+my $m = new MultiChart(590, 320);
+
+# Add a title to the chart using Arial Bold Italic font
+$m-&gt;addTitle("Demographics Hong Kong Year 2002", "arialbi.ttf");
+
+# Add another title at the bottom using Arial Bold Italic font
+$m-&gt;addTitle2($perlchartdir::Bottom, "Population (in thousands)", "arialbi.ttf", 10);
+
+# Put the right chart at (270, 25)
+$m-&gt;addChart(270, 25, $c);
+
+# Put the left chart at (0, 25)
+$m-&gt;addChart(0, 25, $c2);
+
+# Output the chart
+$m-&gt;makeChart("dualhbar.png")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\dualhbar.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The age groups
+my $labels = ["0 - 4", "5 - 9", "10 - 14", "15 - 19", "20 - 24", "24 - 29",
+    "30 - 34", "35 - 39", "40 - 44", "44 - 49", "50 - 54", "55 - 59", "60 - 64",
+    "65 - 69", "70 - 74", "75 - 79", "80+"];
+
+# The male population (in thousands)
+my $male = [215, 238, 225, 236, 235, 260, 286, 340, 363, 305, 259, 164, 135, 127,
+    102, 68, 66];
+
+# The female population (in thousands)
+my $female = [194, 203, 201, 220, 228, 271, 339, 401, 384, 304, 236, 137, 116, 122,
+    112, 85, 110];
+
+
+#=============================================================
+#    Draw the right bar chart
+#=============================================================
+
+# Create a XYChart object of size 320 x 300 pixels
+my $c = new XYChart(320, 300);
+
+# Set the plotarea at (50, 0) and of size 250 x 255 pixels. Use pink (0xffdddd) as
+# the background.
+$c-&gt;setPlotArea(50, 0, 250, 255, 0xffdddd);
+
+# Add a custom text label at the top right corner of the right bar chart
+$c-&gt;addText(300, 0, "Female", "timesbi.ttf", 12, 0xa07070)-&gt;setAlignment(
+    $perlchartdir::TopRight);
+
+# Add the pink (0xf0c0c0) bar chart layer using the female data
+my $femaleLayer = $c-&gt;addBarLayer($female, 0xf0c0c0);
+
+# Swap the axis so that the bars are drawn horizontally
+$c-&gt;swapXY(1);
+
+# Set the bar to touch each others
+$femaleLayer-&gt;setBarGap($perlchartdir::TouchBar);
+
+# Set the border style of the bars to 1 pixel 3D border
+$femaleLayer-&gt;setBorderColor(-1, 1);
+
+# Add a Transparent line layer to the chart using the male data. As it is
+# Transparent, only the female bar chart can be seen. We need to put both male and
+# female data in both left and right charts, because we want auto-scaling to produce
+# the same scale for both chart.
+$c-&gt;addLineLayer($male, $perlchartdir::Transparent);
+
+# Set the y axis label font to Arial Bold
+$c-&gt;yAxis()-&gt;setLabelStyle("arialbd.ttf");
+
+# Set the labels between the two bar charts, which can be considered as the x-axis
+# labels for the right chart
+my $tb = $c-&gt;xAxis()-&gt;setLabels($labels);
+
+# Use a fix width of 50 for the labels (height = automatic) with center alignment
+$tb-&gt;setSize(50, 0);
+$tb-&gt;setAlignment($perlchartdir::Center);
+
+# Set the label font to Arial Bold
+$tb-&gt;setFontStyle("arialbd.ttf");
+
+# Disable ticks on the x-axis by setting the tick length to 0
+$c-&gt;xAxis()-&gt;setTickLength(0);
+
+#=============================================================
+#    Draw the left bar chart
+#=============================================================
+
+# Create a XYChart object of size 280 x 300 pixels with a transparent background.
+my $c2 = new XYChart(280, 300, $perlchartdir::Transparent);
+
+# Set the plotarea at (20, 0) and of size 250 x 255 pixels. Use pale blue (0xddddff)
+# as the background.
+$c2-&gt;setPlotArea(20, 0, 250, 255, 0xddddff);
+
+# Add a custom text label at the top left corner of the left bar chart
+$c2-&gt;addText(20, 0, "Male", "timesbi.ttf", 12, 0x7070a0);
+
+# Add the pale blue (0xaaaaff) bar chart layer using the male data
+my $maleLayer = $c2-&gt;addBarLayer($male, 0xaaaaff);
+
+# Swap the axis so that the bars are drawn horizontally
+$c2-&gt;swapXY(1);
+
+# Reverse the direction of the y-axis so it runs from right to left
+$c2-&gt;yAxis()-&gt;setReverse();
+
+# Set the bar to touch each others
+$maleLayer-&gt;setBarGap($perlchartdir::TouchBar);
+
+# Set the border style of the bars to 1 pixel 3D border
+$maleLayer-&gt;setBorderColor(-1, 1);
+
+# Add a Transparent line layer to the chart using the female data. As it is
+# Transparent, only the male bar chart can be seen. We need to put both male and
+# female data in both left and right charts, because we want auto-scaling to produce
+# the same scale for both chart.
+$c2-&gt;addLineLayer($female, $perlchartdir::Transparent);
+
+# Set the y axis label font to Arial Bold
+$c2-&gt;yAxis()-&gt;setLabelStyle("arialbd.ttf");
+
+#=============================================================
+#    Use a MultiChart to contain both bar charts
+#=============================================================
+
+# Create a MultiChart object of size 590 x 320 pixels.
+my $m = new MultiChart(590, 320);
+
+# Add a title to the chart using Arial Bold Italic font
+$m-&gt;addTitle("Demographics Hong Kong Year 2002", "arialbi.ttf");
+
+# Add another title at the bottom using Arial Bold Italic font
+$m-&gt;addTitle2($perlchartdir::Bottom, "Population (in thousands)", "arialbi.ttf", 10);
+
+# Put the right chart at (270, 25)
+$m-&gt;addChart(270, 25, $c);
+
+# Put the left chart at (0, 25)
+$m-&gt;addChart(0, 25, $c2);
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $m-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

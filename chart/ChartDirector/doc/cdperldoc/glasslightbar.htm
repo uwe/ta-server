@@ -1,0 +1,136 @@
+<HTML>
+<HEAD>
+<Title>Glass Bar Shading</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Glass Bar Shading</p>
+<hr class="separator">
+<div class="content">
+<img src="images/glasslightbar.png">
+<br><br>
+This example demonstrates using glass shading effect for bars and gradient color for plot area background. It also demonstrates axis labels on both sides of the plot area.<br><br>
+Glass lighting is a complex shading effect that gives a look and feel of tinted glass or semi-transparent plastic material. This effect involves glare and variation of lighting caused by reflection and refraction inside the material.<br><br>
+<ul><li> The gradient plot area background is configured by using <a href="BaseChart.linearGradientColor.htm">BaseChart.linearGradientColor</a> to define the gradient color, then use <a href="XYChart.setPlotArea.htm">XYChart.setPlotArea</a> to apply it to the plot area.<br><br>
+<li> The <a href="XYChart.setPlotArea.htm">XYChart.setPlotArea</a> also sets the plot area border and grid line colors to white.<br><br>
+<li> The glass shading effect of the bars is defined using <a href="perlchartdir.glassEffect.htm">perlchartdir::glassEffect</a>, then applied to the bars using <a href="Layer.setBorderColor.htm">Layer.setBorderColor</a>.<br><br>
+<li> <a href="XYChart.syncYAxis.htm">XYChart.syncYAxis</a> is used to show two synchronized y-axes on both sides of the plot area.<br><br>
+<li> <a href="Axis.setColors.htm">Axis.setColors</a> is used to set the y-axes to <a href="perlchartdir.Transparent.htm">Transparent</a>, so only the axis labels are visible.<br><br>
+<li> The axis label font is set to Arial Bold using <a href="Axis.setLabelStyle.htm">Axis.setLabelStyle</a>.</ul>
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\glasslightbar.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# The data for the bar chart
+my $data = [450, 560, 630, 800, 1100, 1350, 1600, 1950, 2300, 2700];
+
+# The labels for the bar chart
+my $labels = ["1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004",
+    "2005"];
+
+# Create a XYChart object of size 600 x 360 pixels
+my $c = new XYChart(600, 360);
+
+# Set the plotarea at (60, 40) and of size 480 x 280 pixels. Use a vertical gradient
+# color from light blue (eeeeff) to deep blue (0000cc) as background. Set border and
+# grid lines to white (ffffff).
+$c-&gt;setPlotArea(60, 40, 480, 280, $c-&gt;linearGradientColor(60, 40, 60, 280, 0xeeeeff,
+    0x0000cc), -1, 0xffffff, 0xffffff);
+
+# Add a title to the chart using 18pts Times Bold Italic font
+$c-&gt;addTitle("Annual Revenue for Star Tech", "timesbi.ttf", 18);
+
+# Add a multi-color bar chart layer using the supplied data. Use glass lighting
+# effect with light direction from the left.
+$c-&gt;addBarLayer3($data)-&gt;setBorderColor($perlchartdir::Transparent,
+    perlchartdir::glassEffect($perlchartdir::NormalGlare, $perlchartdir::Left));
+
+# Set the x axis labels
+$c-&gt;xAxis()-&gt;setLabels($labels);
+
+# Show the same scale on the left and right y-axes
+$c-&gt;syncYAxis();
+
+# Set the left y-axis and right y-axis title using 10pt Arial Bold font
+$c-&gt;yAxis()-&gt;setTitle("USD (millions)", "arialbd.ttf", 10);
+$c-&gt;yAxis2()-&gt;setTitle("USD (millions)", "arialbd.ttf", 10);
+
+# Set all axes to transparent
+$c-&gt;xAxis()-&gt;setColors($perlchartdir::Transparent);
+$c-&gt;yAxis()-&gt;setColors($perlchartdir::Transparent);
+$c-&gt;yAxis2()-&gt;setColors($perlchartdir::Transparent);
+
+# Set the label styles of all axes to 8pt Arial Bold font
+$c-&gt;xAxis()-&gt;setLabelStyle("arialbd.ttf", 8);
+$c-&gt;yAxis()-&gt;setLabelStyle("arialbd.ttf", 8);
+$c-&gt;yAxis2()-&gt;setLabelStyle("arialbd.ttf", 8);
+
+# Output the chart
+$c-&gt;makeChart("glasslightbar.png")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\glasslightbar.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# The data for the bar chart
+my $data = [450, 560, 630, 800, 1100, 1350, 1600, 1950, 2300, 2700];
+
+# The labels for the bar chart
+my $labels = ["1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004",
+    "2005"];
+
+# Create a XYChart object of size 600 x 360 pixels
+my $c = new XYChart(600, 360);
+
+# Set the plotarea at (60, 40) and of size 480 x 280 pixels. Use a vertical gradient
+# color from light blue (eeeeff) to deep blue (0000cc) as background. Set border and
+# grid lines to white (ffffff).
+$c-&gt;setPlotArea(60, 40, 480, 280, $c-&gt;linearGradientColor(60, 40, 60, 280, 0xeeeeff,
+    0x0000cc), -1, 0xffffff, 0xffffff);
+
+# Add a title to the chart using 18pts Times Bold Italic font
+$c-&gt;addTitle("Annual Revenue for Star Tech", "timesbi.ttf", 18);
+
+# Add a multi-color bar chart layer using the supplied data. Use glass lighting
+# effect with light direction from the left.
+$c-&gt;addBarLayer3($data)-&gt;setBorderColor($perlchartdir::Transparent,
+    perlchartdir::glassEffect($perlchartdir::NormalGlare, $perlchartdir::Left));
+
+# Set the x axis labels
+$c-&gt;xAxis()-&gt;setLabels($labels);
+
+# Show the same scale on the left and right y-axes
+$c-&gt;syncYAxis();
+
+# Set the left y-axis and right y-axis title using 10pt Arial Bold font
+$c-&gt;yAxis()-&gt;setTitle("USD (millions)", "arialbd.ttf", 10);
+$c-&gt;yAxis2()-&gt;setTitle("USD (millions)", "arialbd.ttf", 10);
+
+# Set all axes to transparent
+$c-&gt;xAxis()-&gt;setColors($perlchartdir::Transparent);
+$c-&gt;yAxis()-&gt;setColors($perlchartdir::Transparent);
+$c-&gt;yAxis2()-&gt;setColors($perlchartdir::Transparent);
+
+# Set the label styles of all axes to 8pt Arial Bold font
+$c-&gt;xAxis()-&gt;setLabelStyle("arialbd.ttf", 8);
+$c-&gt;yAxis()-&gt;setLabelStyle("arialbd.ttf", 8);
+$c-&gt;yAxis2()-&gt;setLabelStyle("arialbd.ttf", 8);
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

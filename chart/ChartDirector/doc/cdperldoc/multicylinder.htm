@@ -1,0 +1,143 @@
+<HTML>
+<HEAD>
+<Title>Multi-Cylinder Chart</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1">Multi-Cylinder Chart</p>
+<hr class="separator">
+<div class="content">
+<img src="images/multicylinder.png">
+<br><br>
+This example demonstrates a multi-bar chart with cylinder shading effects. It also demonstrates using dotted line style for grid lines.<br><br>
+The cylinder shading effect is the result of using the cylinder bar shape in 2D. This is by using <a href="BarLayer.setBarShape.htm">BarLayer.setBarShape</a> with <a href="perlchartdir.CircleShape.htm">CircleShape</a>.<br><br>
+The dotted grid lines in this example is configured by using <a href="BaseChart.dashLineColor.htm">BaseChart.dashLineColor</a> to define the dotted line color, then use it in <a href="XYChart.setPlotArea.htm">XYChart.setPlotArea</a> as the the grid line color.
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[Standalone Version]</b> perldemo\multicylinder.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+use perlchartdir;
+
+# Data for the chart
+my $data0 = [100, 125, 245, 147, 67, 96, 160, 145, 97, 167, 220, 125];
+my $data1 = [85, 156, 179, 211, 123, 225, 127, 99, 111, 260, 175, 156];
+my $data2 = [97, 87, 56, 267, 157, 157, 67, 156, 77, 87, 197, 87];
+my $labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct",
+    "Nov", "Dec"];
+
+# Create a XYChart object of size 560 x 280 pixels.
+my $c = new XYChart(560, 280);
+
+# Add a title to the chart using 14 pts Arial Bold Italic font
+$c-&gt;addTitle("     Average Weekly Network Load", "arialbi.ttf", 14);
+
+# Set the plotarea at (50, 50) and of 500 x 200 pixels in size. Use alternating light
+# grey (f8f8f8) / white (ffffff) background. Set border to transparent and use grey
+# (CCCCCC) dotted lines as horizontal and vertical grid lines
+$c-&gt;setPlotArea(50, 50, 500, 200, 0xffffff, 0xf8f8f8, $perlchartdir::Transparent,
+    $c-&gt;dashLineColor(0xcccccc, $perlchartdir::DotLine), $c-&gt;dashLineColor(0xcccccc,
+    $perlchartdir::DotLine));
+
+# Add a legend box at (50, 22) using horizontal layout. Use 10 pt Arial Bold Italic
+# font, with transparent background
+$c-&gt;addLegend(50, 22, 0, "arialbi.ttf", 10)-&gt;setBackground($perlchartdir::Transparent
+    );
+
+# Set the x axis labels
+$c-&gt;xAxis()-&gt;setLabels($labels);
+
+# Draw the ticks between label positions (instead of at label positions)
+$c-&gt;xAxis()-&gt;setTickOffset(0.5);
+
+# Add axis title
+$c-&gt;yAxis()-&gt;setTitle("Throughput (MBytes Per Hour)");
+
+# Set axis line width to 2 pixels
+$c-&gt;xAxis()-&gt;setWidth(2);
+$c-&gt;yAxis()-&gt;setWidth(2);
+
+# Add a multi-bar layer with 3 data sets
+my $layer = $c-&gt;addBarLayer2($perlchartdir::Side);
+$layer-&gt;addDataSet($data0, 0xff0000, "Server #1");
+$layer-&gt;addDataSet($data1, 0x00ff00, "Server #2");
+$layer-&gt;addDataSet($data2, 0x0000ff, "Server #3");
+
+# Set bar shape to circular (cylinder)
+$layer-&gt;setBarShape($perlchartdir::CircleShape);
+
+# Configure the bars within a group to touch each others (no gap)
+$layer-&gt;setBarGap(0.2, $perlchartdir::TouchBar);
+
+# Output the chart
+$c-&gt;makeChart("multicylinder.png")</pre></tr></td></table><br><b>[CGI Version]</b> perldemo_cgi\multicylinder.pl
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>#!/usr/bin/perl
+
+# Include current script directory in the module path (needed on Microsoft IIS).
+# This allows this script to work by copying ChartDirector to the same directory
+# as the script (as an alternative to installation in Perl module directory)
+use File::Basename;
+use lib dirname($0) =~ /(.*)/;
+
+use perlchartdir;
+
+# Data for the chart
+my $data0 = [100, 125, 245, 147, 67, 96, 160, 145, 97, 167, 220, 125];
+my $data1 = [85, 156, 179, 211, 123, 225, 127, 99, 111, 260, 175, 156];
+my $data2 = [97, 87, 56, 267, 157, 157, 67, 156, 77, 87, 197, 87];
+my $labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct",
+    "Nov", "Dec"];
+
+# Create a XYChart object of size 560 x 280 pixels.
+my $c = new XYChart(560, 280);
+
+# Add a title to the chart using 14 pts Arial Bold Italic font
+$c-&gt;addTitle("     Average Weekly Network Load", "arialbi.ttf", 14);
+
+# Set the plotarea at (50, 50) and of 500 x 200 pixels in size. Use alternating light
+# grey (f8f8f8) / white (ffffff) background. Set border to transparent and use grey
+# (CCCCCC) dotted lines as horizontal and vertical grid lines
+$c-&gt;setPlotArea(50, 50, 500, 200, 0xffffff, 0xf8f8f8, $perlchartdir::Transparent,
+    $c-&gt;dashLineColor(0xcccccc, $perlchartdir::DotLine), $c-&gt;dashLineColor(0xcccccc,
+    $perlchartdir::DotLine));
+
+# Add a legend box at (50, 22) using horizontal layout. Use 10 pt Arial Bold Italic
+# font, with transparent background
+$c-&gt;addLegend(50, 22, 0, "arialbi.ttf", 10)-&gt;setBackground($perlchartdir::Transparent
+    );
+
+# Set the x axis labels
+$c-&gt;xAxis()-&gt;setLabels($labels);
+
+# Draw the ticks between label positions (instead of at label positions)
+$c-&gt;xAxis()-&gt;setTickOffset(0.5);
+
+# Add axis title
+$c-&gt;yAxis()-&gt;setTitle("Throughput (MBytes Per Hour)");
+
+# Set axis line width to 2 pixels
+$c-&gt;xAxis()-&gt;setWidth(2);
+$c-&gt;yAxis()-&gt;setWidth(2);
+
+# Add a multi-bar layer with 3 data sets
+my $layer = $c-&gt;addBarLayer2($perlchartdir::Side);
+$layer-&gt;addDataSet($data0, 0xff0000, "Server #1");
+$layer-&gt;addDataSet($data1, 0x00ff00, "Server #2");
+$layer-&gt;addDataSet($data2, 0x0000ff, "Server #3");
+
+# Set bar shape to circular (cylinder)
+$layer-&gt;setBarShape($perlchartdir::CircleShape);
+
+# Configure the bars within a group to touch each others (no gap)
+$layer-&gt;setBarGap(0.2, $perlchartdir::TouchBar);
+
+# Output the chart
+binmode(STDOUT);
+print "Content-type: image/png\n\n";
+print $c-&gt;makeChart2($perlchartdir::PNG);</pre></tr></td></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

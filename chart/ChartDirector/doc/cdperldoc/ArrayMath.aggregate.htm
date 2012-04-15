@@ -1,0 +1,45 @@
+<HTML>
+<HEAD>
+<Title>ArrayMath.aggregate</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="ArrayMath.htm">ArrayMath</a>.aggregate</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+aggregate(srcArray, aggregateMethod [, param ])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Aggregates a data array by merging groups of elements, similar to the GROUP BY clause in SQL statements.<br><br>
+This primary usage of this method is for changing data resolution, such as to convert a daily data into weekly data.<br><br>
+If the data is from a database, aggregation can often be more efficiently and conveniently performed by using the GROUP BY clause of SQL. This method should only be used when the data are not coming from a database, or the aggregation method are not supported by the database used.<br><br>
+In this method, the ArrayMath object represents the delimiters used to group elements in the <b>srcArray</b>. The positions of all non-<a href="perlchartdir.NoValue.htm">NoValue</a> elements in the ArrayMath object will be used as delimiters positions.<br><br>
+For example, if the ArrayMath object consists of an array of 50 elements, and only the elements at 0, 10, 20, 30, 40 are not NoValue, then the groups will be defined as positions 0 - 9, 10 - 19, 20 - 29, 30 - 39 and 40 - 49.<br><br>
+Note that a group includes the starting delimiter position but excludes the ending delimiter position.<br><br>
+The ArrayMath object is typically created by applying <a href="ArrayMath.selectStartOfHour.htm">ArrayMath.selectStartOfHour</a>, <a href="ArrayMath.selectStartOfDay.htm">ArrayMath.selectStartOfDay</a>, <a href="ArrayMath.selectStartOfWeek.htm">ArrayMath.selectStartOfWeek</a>, <a href="ArrayMath.selectStartOfMonth.htm">ArrayMath.selectStartOfMonth</a>, <a href="ArrayMath.selectStartOfYear.htm">ArrayMath.selectStartOfYear</a> or <a href="ArrayMath.selectRegularSpacing.htm">ArrayMath.selectRegularSpacing</a> to a data array.<br><br>
+For example, to group daily data into weekly data, one may create an ArrayMath object with the dates of the daily data, then <a href="ArrayMath.selectStartOfWeek.htm">ArrayMath.selectStartOfWeek</a> to select only the elements representing the start of a week. The resulting ArrayMath object can then be used to aggregate daily data into weekly data.<br><br>
+Due to aggregation, the length of the output array will usually be shorter than, and never be longer than, the length of the input array.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>srcArray</td><td>(Mandatory)</td><td>The array to be aggregated.</td></tr><tr><td>aggregateMethod</td><td>(Mandatory)</td><td>The method to aggregate the data, which must be one of <a href="perlchartdir.AggregateSum.htm">AggregateSum</a>, <a href="perlchartdir.AggregateAvg.htm">AggregateAvg</a>, <a href="perlchartdir.AggregateStdDev.htm">AggregateStdDev</a>, <a href="perlchartdir.AggregateMin.htm">AggregateMin</a>, <a href="perlchartdir.AggregateMed.htm">AggregateMed</a>, <a href="perlchartdir.AggregateMax.htm">AggregateMax</a>, <a href="perlchartdir.AggregatePercentile.htm">AggregatePercentile</a>, <a href="perlchartdir.AggregateFirst.htm">AggregateFirst</a>, <a href="perlchartdir.AggregateLast.htm">AggregateLast</a>, <a href="perlchartdir.AggregateCount.htm">AggregateCount</a>.</td></tr><tr><td>param</td><td>50</td><td>The aggregation parameter, if needed. Currently, only <a href="perlchartdir.AggregatePercentile.htm">AggregatePercentile</a> needs a parameter to specify the percentile used.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+The aggregated array.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

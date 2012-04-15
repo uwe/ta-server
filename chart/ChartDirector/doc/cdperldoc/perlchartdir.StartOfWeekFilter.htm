@@ -1,0 +1,40 @@
+<HTML>
+<HEAD>
+<Title>perlchartdir.StartOfWeekFilter</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="perlchartdir.htm">perlchartdir</a>.StartOfWeekFilter</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+StartOfWeekFilter([ labelStep [, initialMargin ]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Creates a data filter that matches date/times that represent the start of a new week in a date/time series.<br><br>
+This method is typically used in <a href="Axis.setMultiFormat.htm">Axis.setMultiFormat</a> and <a href="Axis.setMultiFormat2.htm">Axis.setMultiFormat2</a> to select specific dates/times for formatting as axis labels.<br><br>
+In a date/time series, an element is considered that start of a new week if it is of a different week than the previous element. It does not need to be at exactly the starting instance of the week.<br><br>
+For the first element of the date/time series, because there is no previous element to compare with, it will be considered as the start of a new week if it is "near" the exact starting instance of the current week, in which "near" is defined using the <b>initialMargin</b> argument, expressed as a ratio (0 to 1) of the week duration.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>labelStep</td><td>1</td><td>For dates/times that matches the start of week criteria, picks only 1 out of every "labelStep" number of elements. For example, if this argument is 3, only 1 of every 3 elements that at at the start of week will be selected.</td></tr><tr><td>initialMargin</td><td>0.05</td><td>If the first label is "near" the exact starting instance of the current week to within the ratio specified in the initial margin, it will be considered to have matched the start of week criteria.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+An integer filter id representing the filter.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

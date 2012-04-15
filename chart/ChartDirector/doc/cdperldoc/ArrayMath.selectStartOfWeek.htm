@@ -1,0 +1,44 @@
+<HTML>
+<HEAD>
+<Title>ArrayMath.selectStartOfWeek</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector Ver 5.0 (Perl Edition)</p>
+<p class="heading1"><a href="ArrayMath.htm">ArrayMath</a>.selectStartOfWeek</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+selectStartOfWeek([ majorTickStep [, initialMargin ]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Selects the elements of the ArrayMath object that represents a different week from the previous element.<br><br>
+This method assumes the elements of the ArrayMath object are <a href="dateformat.htm">dates/times</a>.<br><br>
+The primary purpose of this method is to select the appropriate elements as ticks on an enumerated axis.<br><br>
+Suppose you want to plot a variable against time. The x-values of the data points will be an array of dates/times. If an enumerated x-axis is used (see <a href="Axis.setLabels.htm">Axis.setLabels</a>), there will be a tick at every data point, which may be too dense if there are too many data points.<br><br>
+This method can be used to reduce the ticks to one tick per week (or one tick per multiple weeks). This is by selecting the dates/times in the data array only if it is not the same week as the previous element in the array. The selected elements will be left unchanged, while the elements not select will be replaced by <a href="perlchartdir.NoValue.htm">NoValue</a>. The resulting array can be used directly in <a href="Axis.setLabels2.htm">Axis.setLabels2</a>.<br><br>
+For the first data point, there is no previous data point to compare, so it is handled differently. The first data point will be selected if it is near the beginning of the week it represents. By default, near means within 2 days (172800 seconds). This is configurable using the <b>initialMargin</b> argument.<br><br>
+Note that if the data points does not have data in a certain time range, no element can be selected in that time range, and so there will be no tick for that time range. This is appropriate for many chart types, such as finance charts, in which missing time ranges (non-trading hours, holidays, etc) are traditionally skipped.<br><br>
+However, if the data points may contain missing time ranges, but the ticks cannot be skipped, it may be more appropriate to use a non-enumerated x-axis by using <a href="Layer.setXData.htm">Layer.setXData</a> and <a href="Axis.setDateScale3.htm">Axis.setDateScale3</a> (or <a href="Axis.setDateScale.htm">Axis.setDateScale</a> or <a href="Axis.setDateScale2.htm">Axis.setDateScale2</a>).
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>majorTickStep</td><td>1</td><td>The tick step. A value of n means one tick per n weeks.</td></tr><tr><td>initialMargin</td><td>172800</td><td>The margin for the first data point. The first data point will be selected if it is within initialMargin number of seconds from beginning of the week it represents. The default is 2 days (172800 seconds).</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+The current ArrayMath object.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2010 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>
