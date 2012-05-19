@@ -20,7 +20,7 @@ foreach my $year (2000 .. $today->year) {
         $mech->get(join '/', $url, $year, $month);
 
         my $link = $mech->find_link(url_regex => qr/get.php/);
-        my $file = sprintf('eur-usd-%4d-%02d.zip', $year, $month);
+        my $file = sprintf('zip/eur-usd-%4d-%02d.zip', $year, $month);
         $mech->save_url($link->url, $file);
     }
 }
