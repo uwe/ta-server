@@ -1,0 +1,12 @@
+tick data, one day per file
+
+# meta:
+- symbol
+- day
+- fixed post decimal positions
+
+# data
+- time offset in milliseconds (86.4m - 32 bit int)
+- bid (32 bit int)
+- ask (32 bit int)
+
