@@ -14,7 +14,7 @@ my %CURRENCY = (
     usdmxn => 201011, gbpchf => 200208, gbpjpy => 200205, gbpusd => 200005,
     audjpy => 200208, audusd => 200006, chfjpy => 200208, nzdjpy => 200609,
     nzdusd => 200508, xauusd => 200903, eurcad => 200703, audcad => 200707,
-    cadjpy => 200703, eurnzd => 200803, grzeur => 201011, ndzcad => 200803,
+    cadjpy => 200703, eurnzd => 200803, grxeur => 201011, nzdcad => 200803,
     sgdjpy => 200808, usdhkd => 200808, usdnok => 200808, usdtry => 201011,
     xauaud => 200905, audchf => 200803, auxaud => 201011, eurhuf => 201011,
     eurpln => 201011, frxeur => 201011, hkxhkd => 201011, nzdchf => 200803,
