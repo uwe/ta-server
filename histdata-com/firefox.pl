@@ -54,11 +54,13 @@ if (@months and not @years) {
     @years = ($today->year);
 }
 
-@currencies = keys %CURRENCY         unless @currencies;
+@currencies = sort keys %CURRENCY    unless @currencies;
 @years      = (2000 .. $today->year) unless @years;
 @months     = (1 .. 12)              unless @months;
 
 my $mech = WWW::Mechanize::Firefox->new;
+$mech->get('http://www.histdata.com/download-free-forex-data/');
+$mech->get($url);
 
 foreach my $currency (@currencies) {
     unless ($CURRENCY{$currency}) {
@@ -72,9 +74,13 @@ foreach my $currency (@currencies) {
 
     print "$currency\n";
 
+    $mech->get(join '/', $url, uc $currency);
+
     foreach my $year (@years) {
         next if $year < $start_year;
         next if $year > $today->year;
+
+        $mech->get(join '/', $url, $currency, $year);
 
         foreach my $month (@months) {
             next if $year == $start_year and $month < $start_month;
