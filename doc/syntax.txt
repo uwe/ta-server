@@ -1,0 +1,28 @@
+- quote data
+OPEN
+HIGH
+LOW
+CLOSE
+VOLUME
+OI
+
+- special quote data
+MID
+OHLC
+
+- aliases
+O
+H
+L
+C
+V
+
+- indicators
+SMA(50)
+HIST_VOL
+HIST_VOL(30)
+HIST_VOL(30, MID)
+
+- complex examples
+DIFF(HIST_VOL, IMPL_VOL)
+
